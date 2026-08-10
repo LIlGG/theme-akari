@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/entries/error.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${'404 · ' + site.title}",
+    titleFallback: "404",
+    descriptionExpression: "${site.seo.description}",
+    schemaType: "WebPage",
+    robots: "noindex, nofollow",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|404 · ${site.title}|">404</title>
+  </Fragment>
+
+  <section class="page-view notfound-view is-visible" data-page="error">
+    <div class="notfound-card" data-hero-copy>
+      <div class="notfound-scene">
+        <img th:src="${#theme.assets('/images/akari-character.png')}" alt="" />
+        <span>404</span>
+      </div>
+      <div>
+        <p class="eyebrow">
+          <span>LOST PAGE</span> · <akari-halo-tag-th-block
+            th:text="#{error.eyebrow}">好像走远了</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="#{error.404.title}">Not found</h1>
+        <p th:text="#{error.404.subtitle}">Description</p>
+        <div class="hero-actions">
+          <a class="primary-button" th:href="@{/}"
+            ><span class="i-lucide-house"></span><span
+              th:text="#{error.backHome}">Home</span
+            ></a
+          >
+          <a class="text-button" th:href="${site.routes.archivesUri}"
+            ><span th:text="#{nav.archives}">Archives</span><span
+              class="i-lucide-arrow-right"></span></a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

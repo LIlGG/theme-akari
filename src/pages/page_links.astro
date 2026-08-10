@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/links.css";
+import FriendLinksContent from "../components/links/FriendLinksContent.astro";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${singlePage.spec.title}",
+    titleFallback: "Links",
+    descriptionExpression:
+      "${not #strings.isEmpty(singlePage.status.excerpt) ? singlePage.status.excerpt : site.seo.description}",
+    canonicalExpression: "${site.url + singlePage.status.permalink}",
+    schemaType: "CollectionPage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${singlePage.spec.title} · ${site.title}|">
+      友邻 · Akari
+    </title>
+  </Fragment>
+
+  <section
+    class="page-view inner-view is-visible"
+    data-page="links"
+    th:if="${pluginFinder.available('PluginLinks')}"
+    th:with="linksPage=${singlePage},linkGroups=${linkFinder.groupBy()},linkCount=${#aggregates.sum(linkGroups.![#lists.size(links)])},guestbookPage=${akariGuestbookPage}"
+  >
+    <div class="inner-shell">
+      <FriendLinksContent />
+    </div>
+  </section>
+
+  <section
+    class="page-view inner-view is-visible"
+    data-page="links"
+    th:unless="${pluginFinder.available('PluginLinks')}"
+  >
+    <div class="inner-shell">
+      <div class="empty-state">
+        <span class="i-lucide-link-2-off"></span>
+        <p th:text="#{links.missing}">
+          安装并启用 PluginLinks 后，这里会渲染动态友链。
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

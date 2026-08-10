@@ -1,0 +1,121 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/listings.css";
+import Pagination from "../components/content/Pagination.astro";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${category.spec.displayName}",
+    titleFallback: "Category",
+    descriptionExpression:
+      "${not #strings.isEmpty(category.spec.description) ? category.spec.description : site.seo.description}",
+    canonicalExpression: "${site.url + category.status.permalink}",
+    schemaType: "CollectionPage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${category.spec.displayName} · ${site.title}|">
+      Category
+    </title>
+  </Fragment>
+
+  <section class="page-view inner-view is-visible" data-page="category">
+    <div class="inner-shell">
+      <header class="page-intro" data-hero-copy>
+        <p class="eyebrow">
+          <span>NOTEBOOK</span> · <akari-halo-tag-th-block
+            th:text="#{posts.eyebrow}">慢慢写</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="${category.spec.displayName}">旅行手记</h1>
+        <p
+          th:text="${category.spec.description ?: #messages.msg('posts.filteredSubtitle', category.postCount)}"
+        >
+          这一册共收进若干篇手记。
+        </p>
+      </header>
+
+      <nav
+        class="filter-row"
+        data-post-filters
+        data-post-filter-mode="category"
+        th:data-posts-url="${akariPostsUrl}"
+        th:aria-label="#{posts.filter}"
+      >
+        <a
+          class="filter-chip"
+          th:href="${akariPostsUrl}"
+          th:text="#{photos.all}">全部</a
+        >
+        <a
+          class="filter-chip"
+          th:each="item,stat : ${categoryFinder.listAll()}"
+          th:if="${stat.index < 5}"
+          th:classappend="${item.metadata.name == category.metadata.name ? ' is-active' : ''}"
+          th:aria-current="${item.metadata.name == category.metadata.name ? 'page' : null}"
+          th:href="${item.status.permalink}"
+          th:text="${item.spec.displayName}">日常</a
+        >
+      </nav>
+
+      <section class="posts-results" data-post-results aria-live="polite">
+        <div class="post-list" th:if="${posts.total > 0}">
+          <article
+            th:each="post,stat : ${posts.items}"
+            th:with="fallbackCover=${stat.index % 4 == 0
+              ? #theme.assets('/images/akari-cover-journal.jpg')
+              : (stat.index % 4 == 1
+                ? #theme.assets('/images/akari-cover-journey.jpg')
+                : (stat.index % 4 == 2
+                  ? #theme.assets('/images/akari-cover-reading.jpg')
+                  : #theme.assets('/images/akari-cover-cinema.jpg')))}"
+            data-reveal
+          >
+            <a th:href="${post.status.permalink}">
+              <img
+                th:if="${not #strings.isEmpty(post.spec.cover)}"
+                th:src="${thumbnail.gen(post.spec.cover, 'm')}"
+                th:data-fallback-src="${fallbackCover}"
+                th:alt="${post.spec.title}"
+                loading="lazy"
+              />
+              <img
+                th:unless="${not #strings.isEmpty(post.spec.cover)}"
+                th:src="${fallbackCover}"
+                th:alt="${post.spec.title}"
+                loading="lazy"
+              />
+            </a>
+            <div>
+              <p class="meta">
+                <span th:text="${category.spec.displayName}">旅行</span><span>
+                  ·
+                </span><time
+                  th:text="${#dates.format(post.spec.publishTime,'yyyy.MM.dd')}"
+                  >2026.07.28</time
+                >
+              </p>
+              <h2>
+                <a
+                  class="title-link"
+                  th:href="${post.status.permalink}"
+                  th:text="${post.spec.title}">沿海电车的第七站</a
+                >
+              </h2>
+              <p th:text="${post.status.excerpt}">把黄昏留在车窗里。</p>
+            </div>
+          </article>
+        </div>
+        <div class="empty-state" th:if="${posts.total == 0}">
+          <span class="i-lucide-book-dashed"></span><p th:text="#{list.empty}">
+            Empty
+          </p>
+        </div>
+        <akari-halo-tag-th-block th:with="result=${posts}"
+          ><Pagination /></akari-halo-tag-th-block
+        >
+      </section>
+    </div>
+  </section>
+</BaseLayout>

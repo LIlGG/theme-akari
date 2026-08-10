@@ -1,0 +1,775 @@
+/* Akari style layer: comments. Generated once from the visual baseline, then maintained by hand. */
+/* Article responses: Halo comments rendered as a quiet stack of letters. */
+.article-comments {
+  scroll-margin-top: calc(var(--header-height) + 28px);
+}
+
+.article-comments-heading {
+  margin-bottom: 24px;
+  align-items: flex-end;
+}
+
+.article-comments-subtitle {
+  max-width: 520px;
+  margin: 8px 0 0;
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.article-comment-compose-toggle {
+  min-height: 44px;
+  padding: 0 2px;
+  border: 0;
+  color: var(--coral);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.article-comment-compose-toggle [class*="i-lucide-"] {
+  width: 17px;
+  height: 17px;
+}
+
+.article-compose-chevron {
+  transition: transform 220ms ease;
+}
+
+.article-comment-compose-toggle.is-open .article-compose-chevron {
+  transform: rotate(180deg);
+}
+
+.article-comment-compose-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.article-comment-composer {
+  position: relative;
+  margin: 0 0 24px;
+  padding: 24px 26px 22px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--coral) 28%, var(--border));
+  border-radius: 24px 24px 24px 8px;
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(in srgb, var(--peach) 34%, transparent),
+      transparent 46%
+    ),
+    var(--surface);
+  box-shadow: 0 18px 48px color-mix(in srgb, var(--ink) 8%, transparent);
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.article-comment-composer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 32px;
+  width: 54px;
+  height: 6px;
+  background: var(--coral);
+  border-radius: 0 0 999px 999px;
+}
+
+.article-comment-composer[hidden] {
+  display: none;
+}
+
+.article-comment-composer-mark {
+  width: 54px;
+  height: 54px;
+  color: var(--coral);
+  background: color-mix(in srgb, var(--peach) 64%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--coral) 22%, var(--border));
+  border-radius: 18px 18px 18px 6px;
+  display: grid;
+  place-items: center;
+}
+
+.article-comment-composer-mark [class*="i-lucide-"] {
+  width: 23px;
+  height: 23px;
+}
+
+.article-comment-composer-copy {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 190px) minmax(0, 1fr);
+  gap: 15px 18px;
+}
+
+.article-comment-composer-title,
+.article-comment-composer-footer,
+.article-comment-captcha,
+.article-comment-state {
+  grid-column: 1 / -1;
+}
+
+.article-comment-composer-title {
+  min-height: 46px;
+  padding-right: 2px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.article-comment-composer-title strong,
+.article-comment-composer-title small {
+  display: block;
+}
+
+.article-comment-composer-title strong {
+  font:
+    700 19px/1.4 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.article-comment-composer-title small {
+  margin-top: 3px;
+  color: var(--ink-3);
+  font-size: 10px;
+  line-height: 1.65;
+}
+
+.article-comment-stamp {
+  flex: 0 0 auto;
+  padding: 5px 8px;
+  color: var(--coral);
+  border: 1px dashed color-mix(in srgb, var(--coral) 42%, var(--border));
+  border-radius: 7px;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  transform: rotate(1.5deg);
+}
+
+.article-comment-composer label > span {
+  margin-bottom: 7px;
+  display: block;
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.article-comment-composer input,
+.article-comment-composer textarea,
+.article-inline-reply input,
+.article-inline-reply textarea,
+.article-inline-captcha input {
+  width: 100%;
+  outline: none;
+  color: var(--ink);
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--canvas) 74%, var(--surface));
+  font: inherit;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.article-comment-composer input {
+  min-height: 48px;
+  padding: 0 13px;
+  border-radius: 11px;
+}
+
+.article-comment-composer input.is-current-user {
+  color: var(--ink-2);
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--mint) 12%, transparent),
+      transparent 64%
+    ),
+    var(--surface);
+}
+
+.article-comment-composer textarea {
+  min-height: 132px;
+  padding: 12px 14px 28px;
+  border-radius: 13px;
+  resize: vertical;
+  line-height: 1.75;
+}
+
+.article-comment-composer input:focus,
+.article-comment-composer textarea:focus,
+.article-inline-reply input:focus,
+.article-inline-reply textarea:focus,
+.article-inline-captcha input:focus {
+  border-color: color-mix(in srgb, var(--coral) 62%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--coral) 12%, transparent);
+  background: var(--surface);
+}
+
+.article-comment-message-field {
+  position: relative;
+}
+
+.article-comment-message-field > small {
+  position: absolute;
+  right: 11px;
+  bottom: 8px;
+  color: var(--ink-3);
+  font-size: 9px;
+}
+
+.article-comment-message-field > small.is-near-limit {
+  color: var(--coral);
+  font-weight: 800;
+}
+
+.article-comment-captcha {
+  padding: 11px;
+  border: 1px dashed color-mix(in srgb, var(--coral) 28%, var(--border));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-soft) 58%, transparent);
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  align-items: end;
+  gap: 12px;
+}
+
+.article-comment-captcha[hidden] {
+  display: none;
+}
+
+.article-comment-captcha > button {
+  min-height: 44px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.article-comment-captcha img {
+  width: 100%;
+  height: 44px;
+  object-fit: cover;
+  display: block;
+}
+
+.article-comment-captcha input {
+  min-height: 44px;
+}
+
+.article-comment-composer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.article-comment-composer-footer p {
+  margin: 0;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.article-comment-composer-footer p [class*="i-lucide-"] {
+  width: 14px;
+  height: 14px;
+  color: var(--mint);
+  flex: 0 0 auto;
+}
+
+.article-comment-state {
+  min-height: 16px;
+  color: var(--ink-3);
+  font-size: 10px;
+}
+
+.article-comment-state:empty {
+  min-height: 0;
+}
+
+.article-comment-state[data-tone="error"] {
+  color: var(--coral);
+}
+.article-comment-state[data-tone="success"] {
+  color: color-mix(in srgb, var(--mint) 72%, var(--ink));
+}
+
+.article-response-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 14px;
+}
+
+.article-response-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+}
+
+.article-response-copy {
+  min-width: 0;
+}
+
+.article-response-card.is-pinned {
+  grid-column: 1 / -1;
+  border-color: color-mix(in srgb, var(--coral) 34%, var(--border));
+}
+
+.article-response-header {
+  min-height: 27px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.article-response-avatar {
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  color: var(--surface);
+  background: var(--mint);
+  border-radius: 50% 50% 50% 14px;
+  display: grid;
+  place-items: center;
+  font:
+    700 16px/1.7 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.response-sun .article-response-avatar {
+  color: var(--ink);
+  background: #efcc70;
+}
+
+.response-peach .article-response-avatar {
+  color: var(--coral);
+  background: color-mix(in srgb, var(--peach) 76%, var(--surface));
+}
+
+.article-response-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-response-meta {
+  min-width: 0;
+  line-height: 1.7;
+}
+
+.article-response-meta strong,
+.article-response-meta time {
+  display: inline-block;
+}
+
+.article-response-meta strong {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.article-response-meta time {
+  margin-left: 8px;
+  color: var(--ink-3);
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.article-response-badge {
+  padding: 4px 7px;
+  color: var(--coral);
+  border: 1px dashed color-mix(in srgb, var(--coral) 36%, var(--border));
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+}
+
+.article-response-badge [class*="i-lucide-"] {
+  width: 11px;
+  height: 11px;
+}
+
+.article-response-content {
+  margin: 6px 0 0;
+  overflow-wrap: anywhere;
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.article-response-content > :first-child {
+  margin-top: 0;
+}
+.article-response-content > :last-child {
+  margin-bottom: 0;
+}
+.article-response-content p {
+  margin: 0 0 0.7em;
+}
+.article-response-content a {
+  color: var(--coral);
+  text-underline-offset: 3px;
+}
+.article-response-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.article-response-footer {
+  min-height: 24px;
+  margin-top: 7px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.article-response-footer button {
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  color: var(--ink-3);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+.article-response-footer button:hover,
+.article-response-footer button.is-open,
+.article-response-footer button.is-liked {
+  color: var(--coral);
+}
+
+.article-response-footer button.is-liked [class*="i-lucide-heart"] {
+  fill: currentColor;
+}
+
+.article-response-footer button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.article-response-footer button [class*="i-lucide-"] {
+  width: 13px;
+  height: 13px;
+}
+.article-response-footer .article-response-badge {
+  margin-left: auto;
+}
+
+.article-response-replies {
+  margin-top: 14px;
+  padding-top: 15px;
+  border-top: 1px dashed color-mix(in srgb, var(--ink-3) 28%, transparent);
+}
+
+.article-response-replies[hidden] {
+  display: none;
+}
+
+.article-reply-list {
+  display: grid;
+  gap: 13px;
+}
+
+.article-reply-item {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: start;
+  gap: 9px;
+}
+
+.article-reply-avatar {
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  color: var(--coral);
+  background: color-mix(in srgb, var(--peach) 62%, var(--surface));
+  border-radius: 50% 50% 50% 9px;
+  display: grid;
+  place-items: center;
+  font:
+    700 10px/1 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.article-reply-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-reply-copy header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.article-reply-copy header strong {
+  font-size: 11px;
+}
+.article-reply-copy header time {
+  color: var(--ink-3);
+  font-size: 9px;
+}
+
+.article-reply-content {
+  margin-top: 3px;
+  overflow-wrap: anywhere;
+  color: var(--ink-2);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.article-reply-content p {
+  margin: 0 0 0.55em;
+}
+.article-reply-content > :last-child {
+  margin-bottom: 0;
+}
+.article-reply-empty {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 11px;
+}
+
+.article-reply-loading {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.article-reply-loading span {
+  width: 5px;
+  height: 5px;
+  background: var(--coral);
+  border-radius: 50%;
+  animation: akari-reply-dot 900ms ease-in-out infinite alternate;
+}
+
+.article-reply-loading span:nth-child(2) {
+  animation-delay: 120ms;
+}
+.article-reply-loading span:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+.article-inline-reply {
+  margin-top: 14px;
+  padding: 14px;
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
+  border-radius: 13px 13px 13px 5px;
+  display: grid;
+  gap: 9px;
+}
+
+.article-inline-reply input,
+.article-inline-reply textarea,
+.article-inline-captcha input {
+  padding: 9px 10px;
+  border-radius: 9px;
+  font-size: 11px;
+}
+
+.article-inline-reply textarea {
+  min-height: 78px;
+  resize: vertical;
+}
+
+.article-inline-reply-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.article-inline-reply-actions button {
+  min-height: 35px;
+  padding: 0 12px;
+  color: white;
+  background: var(--coral);
+  border: 0;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.article-inline-reply-actions button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.article-inline-reply-actions [class*="i-lucide-"] {
+  width: 13px;
+  height: 13px;
+}
+
+.article-inline-captcha {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.article-inline-captcha > button {
+  padding: 0;
+  overflow: hidden;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.article-inline-captcha img {
+  width: 100%;
+  height: 38px;
+  object-fit: cover;
+  display: block;
+}
+
+.article-response-skeleton {
+  height: 154px;
+  overflow: hidden;
+  opacity: 0;
+  position: relative;
+  background: color-mix(in srgb, var(--surface-mint) 32%, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: 18px 18px 18px 7px;
+  animation: akari-skeleton-arrive 180ms 140ms ease-out forwards;
+}
+
+.article-response-skeleton:nth-child(2) {
+  background: color-mix(in srgb, var(--sun) 25%, var(--surface));
+}
+
+.article-response-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 25%,
+    color-mix(in srgb, white 56%, transparent) 45%,
+    transparent 65%
+  );
+  transform: translateX(-100%);
+  animation: akari-paper-shimmer 1.5s ease-in-out infinite;
+}
+
+.article-comment-empty {
+  grid-column: 1 / -1;
+  min-height: 166px;
+  padding: 26px;
+  color: var(--ink-3);
+  background: color-mix(in srgb, var(--sun) 22%, var(--surface));
+  border: 1px dashed color-mix(in srgb, var(--coral) 28%, var(--border));
+  border-radius: 18px 18px 18px 7px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 9px;
+  text-align: center;
+}
+
+.article-comment-empty.is-error {
+  background: color-mix(in srgb, var(--peach) 28%, var(--surface));
+}
+
+.article-comment-empty [class*="i-lucide-"] {
+  width: 28px;
+  height: 28px;
+  color: var(--coral);
+}
+
+.article-comment-empty p {
+  margin: 0;
+  font:
+    14px/1.7 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.article-comment-load-more {
+  min-height: 44px;
+  margin: 20px auto 0;
+  padding: 0 16px;
+  color: var(--coral);
+  background: color-mix(in srgb, var(--surface) 88%, var(--peach));
+  border: 1px solid color-mix(in srgb, var(--coral) 24%, var(--border));
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--shadow-low);
+}
+
+.article-comment-load-more[hidden] {
+  display: none;
+}
+.article-comment-load-more:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.article-comment-load-more [class*="i-lucide-"] {
+  width: 14px;
+  height: 14px;
+}
+
+.article-comment-toast {
+  position: fixed;
+  z-index: 82;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: max(24px, env(safe-area-inset-bottom));
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 13px 16px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 13px 13px 13px 5px;
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 16%, transparent);
+  backdrop-filter: blur(16px);
+  font-size: 12px;
+}
+
+.article-comment-toast[data-tone="success"] {
+  border-color: color-mix(in srgb, var(--mint) 48%, var(--border));
+}
+.article-comment-toast[data-tone="error"] {
+  color: var(--coral);
+  border-color: color-mix(in srgb, var(--coral) 44%, var(--border));
+}

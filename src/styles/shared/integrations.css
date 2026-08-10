@@ -1,0 +1,184 @@
+/* Akari style layer: shared-after. Generated once from the visual baseline, then maintained by hand. */
+/* Halo native bridge: keep the MVP geometry while Iconify provides the glyphs. */
+
+.mvp-icon,
+.nav-icon,
+.nav-chevron,
+.icon-button > span,
+.scene-label > span:first-child,
+.today-strip [class*="i-lucide-"],
+.primary-button [class*="i-lucide-"],
+.text-button [class*="i-lucide-"],
+.card-topline [class*="i-lucide-"],
+.round-play [class*="i-lucide-"],
+.moment-head > [class*="i-lucide-"],
+.image-tag [class*="i-lucide-"],
+.media-link > [class*="i-lucide-"] {
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.card-topline [class*="i-lucide-"] {
+  width: 15px;
+  height: 15px;
+  color: var(--mint);
+}
+
+.track-copy .round-play [class*="i-lucide-"],
+.global-player .round-play [class*="i-lucide-"] {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+}
+
+.nav-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.menu-item-icon,
+.more-menu-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.menu-item-icon > :where(svg, [class*="i-lucide-"]) {
+  width: 100%;
+  height: 100%;
+}
+
+.more-menu-icon {
+  width: 34px;
+  height: 34px;
+  color: var(--coral);
+}
+
+.more-menu-icon > :where(svg, [class*="i-lucide-"]) {
+  width: 19px;
+  height: 19px;
+}
+
+.nav-chevron {
+  width: 14px;
+  height: 14px;
+}
+
+.mobile-nav a {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 10px;
+  color: inherit;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.mobile-nav a:hover,
+.mobile-nav a.is-active {
+  color: var(--coral);
+  background: var(--surface-soft);
+}
+
+.mobile-nav a > [class*="i-lucide-"] {
+  width: 20px;
+  height: 20px;
+}
+
+.more-nav-panel a {
+  width: 100%;
+  min-height: 58px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 11px;
+  color: inherit;
+  background: transparent;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  text-decoration: none;
+}
+
+.more-nav-panel a:hover {
+  color: var(--coral);
+  background: var(--surface-soft);
+}
+
+.more-nav-panel a > [class*="i-lucide-"] {
+  width: 19px;
+  height: 19px;
+  color: var(--coral);
+}
+
+.scene-label > span:first-child {
+  width: 20px;
+  height: 20px;
+  color: var(--coral);
+}
+
+@media (max-width: 767px) {
+  .mobile-nav {
+    width: min(100% - 24px, 1200px);
+  }
+}
+
+.filter-chip,
+.year-button,
+.archive-entry,
+.category-card,
+.tag-cloud a,
+.friend-card,
+.media-shelf a {
+  text-decoration: none;
+}
+
+.timeline article > .text-button {
+  margin-top: 14px;
+}
+
+.archive-entry > [class*="i-lucide-"] {
+  width: 18px;
+  height: 18px;
+  color: var(--ink-3);
+}
+
+.friend-comments,
+.about-prose {
+  margin-top: 52px;
+  padding-top: 36px;
+  border-top: 1px solid var(--border);
+}
+
+.guestbook-instructions {
+  margin-top: auto;
+  padding-top: 22px;
+  display: grid;
+  gap: 12px;
+}
+
+.guestbook-instructions p {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 9px;
+  color: var(--ink-2);
+  font-size: 12px;
+}
+
+.guestbook-instructions [class*="i-lucide-"] {
+  width: 18px;
+  height: 18px;
+  color: var(--coral);
+}
+
+.message-form .room-icon {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+}

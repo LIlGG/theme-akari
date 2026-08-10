@@ -1,0 +1,68 @@
+:root {
+  /* The configurable brand color is a source token. Semantic accents below
+     remain free to adapt to the contrast needs of each color scheme. */
+  --akari-accent-source: #b94363;
+  --akari-accent-hover: color-mix(
+    in oklab,
+    var(--akari-accent-source) 84%,
+    #4a2432
+  );
+  --font-sans:
+    "Hiragino Sans GB", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC",
+    system-ui, sans-serif;
+  --font-display:
+    "Songti SC", "STSong", "Noto Serif CJK SC", "Yu Mincho",
+    "Hiragino Mincho ProN", serif;
+  --canvas: #f8f0e5;
+  --canvas-deep: #efe1d1;
+  --surface: rgba(255, 252, 247, 0.9);
+  --surface-solid: #fffcf7;
+  --surface-soft: rgba(255, 248, 240, 0.72);
+  --ink: #342d31;
+  --ink-soft: #6d6164;
+  --ink-muted: #998a8c;
+  --accent: var(--akari-accent-source);
+  --accent-soft: #e8a2a6;
+  --accent-pale: #f8dddc;
+  --accent-shadow: rgba(195, 83, 96, 0.22);
+  --tea: #6f8f80;
+  --night: #40364f;
+  --night-soft: #5a4a66;
+  --line: rgba(76, 57, 63, 0.12);
+  --line-strong: rgba(76, 57, 63, 0.2);
+  --shadow-soft: 0 18px 60px rgba(75, 53, 58, 0.09);
+  --shadow-card: 0 14px 34px rgba(75, 53, 58, 0.1);
+  --header-bg: rgba(248, 240, 229, 0.78);
+  --selection: rgba(217, 104, 114, 0.22);
+}
+
+:root[data-theme="dark"] {
+  --akari-accent-hover: color-mix(
+    in oklab,
+    var(--akari-accent-source) 8%,
+    #ff9eb4
+  );
+  /* Keep the canonical dark palette aligned with the visual baseline. This
+     selector intentionally owns the semantic aliases in dark mode. */
+  --canvas: #211a22;
+  --canvas-deep: #17151b;
+  --surface: #2c232d;
+  --surface-solid: #2c232d;
+  --surface-soft: #392733;
+  --ink: #fff5f0;
+  --ink-soft: #d9c5cc;
+  --ink-muted: #bea7b0;
+  --accent: color-mix(in oklab, var(--akari-accent-source) 12%, #f08aa3);
+  --accent-soft: #c87980;
+  --accent-pale: rgba(239, 141, 146, 0.15);
+  --accent-shadow: rgba(239, 141, 146, 0.18);
+  --tea: #8eb4a3;
+  --night: #17141e;
+  --night-soft: #332b40;
+  --line: #513b48;
+  --line-strong: #7d596a;
+  --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.24);
+  --shadow-card: 0 16px 38px rgba(0, 0, 0, 0.24);
+  --header-bg: rgba(33, 26, 34, 0.88);
+  --selection: rgba(239, 141, 146, 0.3);
+}

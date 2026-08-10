@@ -1,0 +1,67 @@
+{
+  "name": "theme-akari",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "晚灯小屋 Akari：温馨、富媒体、具有二次元色彩的 Halo 个人博客主题。",
+  "scripts": {
+    "dev": "nodemon --config nodemon.json --exec 'pnpm build:promote'",
+    "dev:astro": "astro dev",
+    "build": "pnpm check && node scripts/package-theme.mjs",
+    "build:theme": "astro check && pnpm build:promote",
+    "build:astro": "astro build",
+    "build:promote": "pnpm build:astro && node scripts/promote-astro-build.mjs",
+    "package": "pnpm build",
+    "check": "pnpm lint && pnpm build:theme",
+    "lint": "eslint 'src/js/**/*.{js,ts}' astro.config.mjs scripts/*.mjs --max-warnings=0",
+    "lint:fix": "pnpm lint --fix",
+    "format:astro": "prettier --write 'src/**/*.{astro,vue,ts}' astro.config.mjs scripts/*.mjs"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@halo-dev/theme-package-cli": "1.1.1",
+    "@iconify-json/lucide": "1.2.120",
+    "@iconify-json/simple-icons": "1.2.92",
+    "@types/node": "^24.10.0",
+    "@unocss/astro": "66.7.5",
+    "@unocss/preset-icons": "66.7.5",
+    "@unocss/preset-typography": "66.7.5",
+    "@unocss/preset-wind4": "66.7.5",
+    "@unocss/transformer-variant-group": "66.7.5",
+    "eslint": "10.8.1",
+    "eslint-plugin-unicorn": "73.0.0",
+    "globals": "17.9.0",
+    "nodemon": "^3.1.14",
+    "prettier": "3.8.1",
+    "prettier-plugin-astro": "0.14.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.66.0",
+    "unocss": "66.7.5",
+    "astro": "7.2.0",
+    "motion": "12.43.0",
+    "tocbot": "4.36.8"
+  },
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-astro"
+    ],
+    "overrides": [
+      {
+        "files": "*.astro",
+        "options": {
+          "parser": "astro"
+        }
+      }
+    ]
+  },
+  "pnpm": {
+    "overrides": {
+      "js-yaml@>=4.0.0 <4.3.1": "4.3.1",
+      "nanoid@<3.3.17": "3.3.17"
+    }
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

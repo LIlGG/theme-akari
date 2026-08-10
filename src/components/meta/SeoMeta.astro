@@ -1,0 +1,132 @@
+---
+export interface Props {
+  titleExpression?: string;
+  titleFallback?: string;
+  descriptionExpression?: string;
+  descriptionFallback?: string;
+  canonicalExpression?: string;
+  canonicalFallback?: string;
+  imageExpression?: string;
+  imageFallback?: string;
+  type?: "website" | "article";
+  schemaType?:
+    | "WebSite"
+    | "WebPage"
+    | "AboutPage"
+    | "CollectionPage"
+    | "ImageGallery"
+    | "BlogPosting"
+    | "ProfilePage";
+  authorExpression?: string;
+  publishedTimeExpression?: string;
+  modifiedTimeExpression?: string;
+  robots?: string;
+  emitDescription?: boolean;
+}
+
+const {
+  titleExpression = "${site.title}",
+  titleFallback = "Akari",
+  descriptionExpression = "${site.seo.description}",
+  descriptionFallback = "A warm personal blog",
+  canonicalExpression,
+  canonicalFallback = "https://example.com",
+  imageExpression = "${not #strings.isEmpty(site.logo) ? site.logo : site.url + #theme.assets('/images/akari-cover-journal.jpg')}",
+  imageFallback = "https://example.com/cover.jpg",
+  type = "website",
+  schemaType = "WebPage",
+  authorExpression,
+  publishedTimeExpression,
+  modifiedTimeExpression,
+  robots = "index, follow, max-image-preview:large",
+  emitDescription = true,
+} = Astro.props;
+
+const inlineValue = (expression: string, fallback: string) =>
+  `/*[[${expression}]]*/ ${JSON.stringify(fallback)}`;
+
+const structuredData =
+  schemaType === "BlogPosting"
+    ? `{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": ${inlineValue(titleExpression, titleFallback)},
+  "description": ${inlineValue(descriptionExpression, descriptionFallback)},
+  "url": ${inlineValue(canonicalExpression ?? "${site.url}", canonicalFallback)},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": ${inlineValue(canonicalExpression ?? "${site.url}", canonicalFallback)}
+  },
+  "image": ${inlineValue(imageExpression, imageFallback)},
+  "author": {
+    "@type": "Person",
+    "name": ${inlineValue(authorExpression ?? "${site.title}", titleFallback)}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": ${inlineValue("${site.title}", "Akari")},
+    "logo": {
+      "@type": "ImageObject",
+      "url": ${inlineValue(imageExpression, imageFallback)}
+    }
+  }${publishedTimeExpression ? `,\n  "datePublished": ${inlineValue(publishedTimeExpression, "2026-01-01T00:00:00Z")}` : ""}${modifiedTimeExpression ? `,\n  "dateModified": ${inlineValue(modifiedTimeExpression, "2026-01-01T00:00:00Z")}` : ""}
+}`
+    : `{
+  "@context": "https://schema.org",
+  "@type": ${JSON.stringify(schemaType)},
+  "name": ${inlineValue(titleExpression, titleFallback)},
+  "description": ${inlineValue(descriptionExpression, descriptionFallback)},
+  "url": ${inlineValue(canonicalExpression ?? "${site.url}", canonicalFallback)},
+  "image": ${inlineValue(imageExpression, imageFallback)},
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": ${inlineValue("${site.title}", "Akari")},
+    "url": ${inlineValue("${site.url}", "https://example.com")}
+  }
+}`;
+---
+
+{
+  emitDescription && (
+    <meta name="description" th:content={descriptionExpression} />
+  )
+}
+<meta name="robots" content={robots} />
+{canonicalExpression && <link rel="canonical" th:href={canonicalExpression} />}
+<meta property="og:site_name" th:content="${site.title}" />
+<meta property="og:locale" th:content="${#locale.toLanguageTag()}" />
+<meta property="og:title" th:content={titleExpression} />
+<meta property="og:description" th:content={descriptionExpression} />
+<meta property="og:type" content={type} />
+{
+  canonicalExpression && (
+    <meta property="og:url" th:content={canonicalExpression} />
+  )
+}
+<meta property="og:image" th:content={imageExpression} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" th:content={titleExpression} />
+<meta name="twitter:description" th:content={descriptionExpression} />
+<meta name="twitter:image" th:content={imageExpression} />
+{
+  publishedTimeExpression && (
+    <meta
+      property="article:published_time"
+      th:content={publishedTimeExpression}
+    />
+  )
+}
+{
+  modifiedTimeExpression && (
+    <meta
+      property="article:modified_time"
+      th:content={modifiedTimeExpression}
+    />
+  )
+}
+<script
+  is:inline
+  type="application/ld+json"
+  th:inline="javascript"
+  set:html={structuredData}
+/>

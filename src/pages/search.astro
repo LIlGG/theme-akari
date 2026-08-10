@@ -1,0 +1,87 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/listings.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${#messages.msg('nav.search')}",
+    titleFallback: "Search",
+    descriptionExpression: "${#messages.msg('search.placeholder')}",
+    canonicalExpression: "${site.url + '/search'}",
+    schemaType: "WebPage",
+    robots: "noindex, follow",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|#{nav.search} · ${site.title}|">Search</title>
+  </Fragment>
+
+  <section class="page-view inner-view is-visible" data-page="search">
+    <div class="inner-shell narrow-shell">
+      <header class="page-intro" data-hero-copy>
+        <p class="eyebrow">
+          <span>SEARCH THE ROOM</span> · <akari-halo-tag-th-block
+            th:text="#{nav.search}">搜索</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="#{nav.search}">搜索</h1>
+        <p th:text="#{search.placeholder}">寻找一篇手记、一个地方或一种心情…</p>
+      </header>
+      <form
+        class="ak-search-form search-page-form"
+        method="get"
+        action="/search"
+        role="search"
+      >
+        <span class="i-lucide-search"></span>
+        <input
+          type="search"
+          name="keyword"
+          th:value="${searchResult.keyword}"
+          th:placeholder="#{search.placeholder}"
+          required
+          autofocus
+        />
+        <input type="hidden" name="limit" value="20" />
+        <button class="primary-button" type="submit" th:text="#{nav.search}"
+          >Search</button
+        >
+      </form>
+      <p
+        class="search-summary"
+        th:unless="${#strings.isEmpty(searchResult.keyword)}"
+      >
+        <span th:text="|“${searchResult.keyword}” · |"></span>
+        <span th:text="#{search.results(${searchResult.total})}">0 results</span
+        >
+      </p>
+      <div
+        class="archive-years search-results"
+        th:if="${searchResult.total > 0}"
+      >
+        <a
+          class="archive-entry"
+          th:each="hit : ${searchResult.hits}"
+          th:href="${hit.permalink}"
+          data-reveal
+        >
+          <span class="i-lucide-book-open-text"></span>
+          <span
+            ><strong th:utext="${hit.title}">Title</strong><small
+              th:utext="${hit.description}">Description</small
+            ></span
+          >
+          <time th:text="${#dates.format(hit.creationTimestamp,'yyyy.MM.dd')}"
+            >Date</time
+          >
+        </a>
+      </div>
+      <div class="empty-state" th:if="${searchResult.total == 0}">
+        <span class="i-lucide-search-x"></span><p th:text="#{list.empty}">
+          Empty
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

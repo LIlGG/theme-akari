@@ -1,0 +1,286 @@
+/* Akari style layer: taxonomy. Generated once from the visual baseline, then maintained by hand. */
+.category-board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 310px;
+  gap: 16px;
+}
+
+.category-card {
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  color: white;
+  background: #3c3036;
+  border: 0;
+  border-radius: 24px;
+  box-shadow: 0 10px 28px rgba(56, 39, 52, 0.08);
+  text-align: left;
+  transition: box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.category-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.76;
+  transform: scale(1.012);
+  transition:
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.category-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(35, 25, 31, 0.15),
+    rgba(35, 25, 31, 0.82)
+  );
+  opacity: 1;
+  transition: opacity 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .category-card:hover,
+  .category-card:focus-visible {
+    box-shadow: 0 18px 42px rgba(56, 39, 52, 0.15);
+  }
+
+  .category-card:hover img,
+  .category-card:focus-visible img {
+    opacity: 0.8;
+    transform: scale(1.026) translateY(-0.18%);
+  }
+
+  .category-card:hover::after,
+  .category-card:focus-visible::after {
+    opacity: 0.94;
+  }
+}
+
+html[data-motion="quiet"] .category-card,
+html[data-motion="quiet"] .category-card img,
+html[data-motion="quiet"] .category-card::after {
+  transition: none;
+}
+
+html[data-motion="quiet"] .category-card:hover,
+html[data-motion="quiet"] .category-card:focus-visible {
+  box-shadow: 0 10px 28px rgba(56, 39, 52, 0.08);
+}
+
+html[data-motion="quiet"] .category-card:hover img,
+html[data-motion="quiet"] .category-card:focus-visible img {
+  opacity: 0.76;
+  transform: scale(1.012);
+}
+
+html[data-motion="quiet"] .category-card:hover::after,
+html[data-motion="quiet"] .category-card:focus-visible::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-card,
+  .category-card img,
+  .category-card::after {
+    transition: none;
+  }
+
+  .category-card:hover,
+  .category-card:focus-visible {
+    box-shadow: 0 10px 28px rgba(56, 39, 52, 0.08);
+  }
+
+  .category-card:hover img,
+  .category-card:focus-visible img {
+    opacity: 0.76;
+    transform: scale(1.012);
+  }
+
+  .category-card:hover::after,
+  .category-card:focus-visible::after {
+    opacity: 1;
+  }
+}
+
+.category-card > span {
+  position: absolute;
+  z-index: 1;
+  inset: auto 26px 24px;
+}
+
+.category-card > span > svg {
+  width: 27px;
+  height: 27px;
+  margin-bottom: 18px;
+}
+
+.category-card small,
+.category-card strong,
+.category-card em {
+  display: block;
+}
+
+.category-card small {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.category-card strong {
+  margin: 1px 0 4px;
+  font:
+    700 34px/1.2 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.category-card em {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  font-style: normal;
+}
+
+.category-life img,
+.category-collection img {
+  object-position: center 40%;
+}
+
+.tag-drawer {
+  margin: 88px 0 36px;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag-cloud button {
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px 14px 14px 5px;
+  background: var(--surface);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tag-cloud button:hover,
+.tag-cloud button.is-active {
+  color: var(--coral);
+  background: var(--surface-soft);
+  border-color: color-mix(in srgb, var(--coral) 45%, var(--border));
+}
+
+.tag-cloud span {
+  font-weight: 700;
+}
+
+.tag-cloud small {
+  color: var(--ink-3);
+  font-size: 10px;
+}
+
+.tag-result {
+  min-height: 74px;
+  margin-top: 20px;
+  padding: 16px 18px;
+  color: var(--mint);
+  background: var(--surface-mint);
+  border: 1px solid color-mix(in srgb, var(--mint) 26%, transparent);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tag-result svg {
+  width: 20px;
+}
+
+.spinning-disc {
+  width: 112px;
+  height: 112px;
+  position: relative;
+  background: radial-gradient(
+    circle,
+    var(--sun) 0 8%,
+    #55424e 9% 13%,
+    #291f28 14% 24%,
+    #4b3947 25% 27%,
+    #291f28 28% 44%,
+    #4b3947 45% 47%,
+    #291f28 48%
+  );
+  border-radius: 50%;
+  box-shadow: 0 18px 40px rgba(56, 39, 52, 0.18);
+  animation: disc-spin 12s linear infinite;
+}
+
+.spinning-disc span {
+  position: absolute;
+  inset: 40%;
+  background: var(--sun);
+  border-radius: 50%;
+}
+
+@media (max-width: 767px) {
+  .category-board {
+    grid-auto-rows: 250px;
+  }
+
+  .category-card > span {
+    inset: auto 20px 20px;
+  }
+
+  .tag-drawer {
+    margin-top: 62px;
+  }
+
+  .tag-cloud {
+    gap: 8px;
+  }
+
+  .tag-cloud button {
+    min-height: 42px;
+    padding: 0 11px;
+  }
+
+  .spinning-disc {
+    position: absolute;
+    top: 64px;
+    right: 12px;
+    width: 68px;
+    height: 68px;
+    opacity: 0.66;
+  }
+}
+
+.category-card > span > [class*="i-lucide-"] {
+  width: 27px;
+  height: 27px;
+  margin-bottom: 18px;
+}
+
+.tag-cloud a {
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px 14px 14px 5px;
+  background: var(--surface);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tag-cloud a:hover {
+  color: var(--coral);
+  background: var(--surface-soft);
+  border-color: color-mix(in srgb, var(--coral) 45%, var(--border));
+}

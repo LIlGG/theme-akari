@@ -1,0 +1,59 @@
+<div
+  id="global-player"
+  class="global-player"
+  data-global-player
+  th:aria-label="#{player.current}"
+>
+  <audio data-persistent-audio preload="metadata"></audio>
+  <button
+    class="round-play"
+    type="button"
+    data-player-toggle
+    disabled
+    th:aria-label="#{player.play}"
+  >
+    <span class="i-lucide-play" data-player-icon aria-hidden="true"></span>
+  </button>
+  <div class="player-copy">
+    <strong data-player-title th:text="#{player.untitled}">未命名音频</strong>
+    <span data-player-time>00:00 / 00:00</span>
+  </div>
+  <label class="progress-track" th:aria-label="#{player.progress}">
+    <input type="range" min="0" max="100" value="0" disabled />
+    <span style="width: 0%"></span>
+  </label>
+  <button
+    id="player-expand"
+    class="icon-button"
+    type="button"
+    data-player-expand
+    disabled
+    aria-expanded="false"
+    th:aria-label="#{player.expand}"
+  >
+    <span class="i-lucide-list-music" data-player-expand-icon aria-hidden="true"
+    ></span>
+  </button>
+  <button
+    id="player-close"
+    class="icon-button"
+    type="button"
+    data-player-close
+    disabled
+    th:aria-label="#{player.close}"
+  >
+    <span class="i-lucide-x" aria-hidden="true"></span>
+  </button>
+  <div class="player-expanded" data-player-expanded hidden>
+    <div class="equalizer" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <div>
+      <span data-player-list-label th:text="#{player.current}">当前播放</span>
+      <strong data-player-list-title th:text="#{player.untitled}"
+        >未命名音频</strong
+      >
+      <small data-player-list-time>00:00</small>
+    </div>
+  </div>
+</div>

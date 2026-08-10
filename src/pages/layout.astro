@@ -1,0 +1,72 @@
+---
+import { ClientRouter } from "astro:transitions";
+import themeBootstrap from "../js/inline/theme-bootstrap.js?raw";
+import "../styles/tokens.css";
+import "../styles/foundation/base.css";
+import "../styles/shared/shell.css";
+import "../styles/entries/fallback.css";
+import PersistentShell from "../components/shell/PersistentShell.astro";
+import SiteFooter from "../components/shell/SiteFooter.astro";
+import SiteHeader from "../components/shell/SiteHeader.astro";
+---
+
+<!doctype html>
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  th:lang="${#locale.toLanguageTag()}"
+  th:fragment="html (head, content)"
+  th:with="
+    akariPages=${singlePageFinder.list(1,1000).items},
+    akariPostsPage=${akariPages.^[spec.template == 'page_posts.html']},
+    akariGuestbookPage=${akariPages.^[spec.template == 'page_guestbook.html']},
+    akariLinksPage=${akariPages.^[spec.template == 'page_links.html']},
+    akariMediaPage=${akariPages.^[spec.template == 'page_media.html']},
+    akariCollectionsPage=${akariPages.^[spec.template == 'page_collections.html']},
+    akariPostsUrl=${akariPostsPage != null ? akariPostsPage.status.permalink : site.routes.archivesUri},
+    akariGuestbookUrl=${akariGuestbookPage != null ? akariGuestbookPage.status.permalink : ''}
+  "
+  th:attr="
+    data-default-theme=${theme.config.appearance.color_scheme},
+    data-image-error-label=#{media.unavailable},
+    data-audio-error-label=#{media.error},
+    data-table-scroll-label=#{post.tableScroll},
+    data-template-id='layout'
+  "
+  th:style="|--accent:${theme.config.appearance.accent_color ?: '#b94363'};--coral:${theme.config.appearance.accent_color ?: '#b94363'}|"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      content="#fff8f0"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#211a22"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta name="generator" content="Halo" />
+    <link
+      th:if="${not #strings.isEmpty(site.favicon)}"
+      rel="icon"
+      th:href="${site.favicon}"
+    />
+    <meta th:if="${head != null}" th:replace="${head}" />
+    <ClientRouter fallback="animate" />
+    <script is:inline set:html={themeBootstrap} />
+    <script src="../js/app.ts"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content" th:text="#{site.skip}">Skip</a>
+    <SiteHeader />
+    <main id="main-content" tabindex="-1">
+      <akari-halo-tag-th-block th:replace="${content}"
+      ></akari-halo-tag-th-block>
+    </main>
+    <SiteFooter />
+    <PersistentShell />
+  </body>
+</html>

@@ -1,0 +1,43 @@
+/* Akari style layer: fallback. Generated once from the visual baseline, then maintained by hand. */
+/* Routes without a dedicated MVP screen still inherit the exact Akari system. */
+.ak-shell {
+  width: min(1200px, calc(100% - 40px)) !important;
+}
+
+.ak-page-intro {
+  width: min(1200px, calc(100% - 40px)) !important;
+  max-width: none;
+  margin: 0 auto 42px;
+  padding: 72px 0 0;
+}
+
+.ak-page-intro .ak-title {
+  margin-top: 6px !important;
+  font-family: Georgia, "Songti SC", "STSong", serif;
+  font-size: clamp(42px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.ak-page-intro > p:last-child {
+  max-width: 640px;
+  margin-top: 16px !important;
+  color: var(--ink-2) !important;
+  font-size: 17px !important;
+}
+
+.ak-kicker {
+  color: var(--coral) !important;
+}
+
+@media (max-width: 767px) {
+  .ak-shell,
+  .ak-page-intro {
+    width: min(100% - 24px, 1200px) !important;
+  }
+
+  .ak-page-intro {
+    padding-top: 48px;
+  }
+}

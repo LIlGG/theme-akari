@@ -1,0 +1,326 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/media.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${singlePage.spec.title}",
+    titleFallback: "Media room",
+    descriptionExpression:
+      "${not #strings.isEmpty(singlePage.status.excerpt) ? singlePage.status.excerpt : site.seo.description}",
+    canonicalExpression: "${site.url + singlePage.status.permalink}",
+    schemaType: "CollectionPage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${singlePage.spec.title} · ${site.title}|">Media</title>
+  </Fragment>
+
+  <section
+    class="page-view inner-view is-visible"
+    data-page="media"
+    th:with="
+      listening=${#strings.isEmpty(theme.config.content.listening_category) ? null : postFinder.list({page:1,size:12,categoryName:theme.config.content.listening_category,sort:{'spec.publishTime,desc'}})},
+      watching=${#strings.isEmpty(theme.config.content.watching_category) ? null : postFinder.list({page:1,size:12,categoryName:theme.config.content.watching_category,sort:{'spec.publishTime,desc'}})},
+      reading=${#strings.isEmpty(theme.config.content.reading_category) ? null : postFinder.list({page:1,size:12,categoryName:theme.config.content.reading_category,sort:{'spec.publishTime,desc'}})},
+      configuredMedia=${#strings.isEmpty(theme.config.content.media_post) ? null : postFinder.getByName(theme.config.content.media_post)},
+      configuredMediaType=${configuredMedia != null ? #annotations.getOrDefault(configuredMedia,'akari.theme.halo.run/media-type','none') : 'none'},
+      listeningFeature=${configuredMedia != null and configuredMediaType == 'listening' ? configuredMedia : (listening != null and listening.total > 0 ? listening.items[0] : null)},
+      listeningAvailable=${listeningFeature != null or listening != null},
+      watchingAvailable=${watching != null},
+      readingAvailable=${reading != null},
+      defaultMediaType=${listeningAvailable ? 'listening' : (watchingAvailable ? 'watching' : (readingAvailable ? 'reading' : 'none'))}
+    "
+  >
+    <div class="inner-shell">
+      <header class="page-intro media-intro" data-reveal>
+        <div>
+          <p class="eyebrow">
+            <span>MEDIA ROOM</span> · <akari-halo-tag-th-block
+              th:text="#{media.eyebrow}">书影音架</akari-halo-tag-th-block
+            >
+          </p>
+          <h1 th:text="${singlePage.spec.title}">此刻陪伴我的。</h1>
+          <p
+            th:text="${singlePage.status.excerpt ?: #messages.msg('media.subtitle')}"
+          >
+            不只给评分，也保存遇见它的时刻和正在发生的感受。
+          </p>
+        </div>
+        <div class="spinning-disc" aria-hidden="true"><span></span></div>
+      </header>
+      <div
+        class="media-tabs"
+        role="tablist"
+        th:if="${defaultMediaType != 'none'}"
+        th:aria-label="#{media.filter}"
+      >
+        <button
+          th:if="${listeningAvailable}"
+          th:classappend="${defaultMediaType == 'listening' ? ' is-active' : ''}"
+          type="button"
+          role="tab"
+          th:aria-selected="${defaultMediaType == 'listening'}"
+          data-media-tab="listening"
+          ><span class="i-lucide-headphones"></span><span
+            th:text="#{media.listening}">在听</span
+          ></button
+        >
+        <button
+          th:if="${watchingAvailable}"
+          th:classappend="${defaultMediaType == 'watching' ? ' is-active' : ''}"
+          type="button"
+          role="tab"
+          th:aria-selected="${defaultMediaType == 'watching'}"
+          data-media-tab="watching"
+          ><span class="i-lucide-clapperboard"></span><span
+            th:text="#{media.watching}">在看</span
+          ></button
+        >
+        <button
+          th:if="${readingAvailable}"
+          th:classappend="${defaultMediaType == 'reading' ? ' is-active' : ''}"
+          type="button"
+          role="tab"
+          th:aria-selected="${defaultMediaType == 'reading'}"
+          data-media-tab="reading"
+          ><span class="i-lucide-book-open"></span><span
+            th:text="#{media.reading}">在读</span
+          ></button
+        >
+      </div>
+
+      <section
+        class="media-panel"
+        th:if="${listeningAvailable}"
+        th:classappend="${defaultMediaType == 'listening' ? ' is-active' : ''}"
+        data-media-panel="listening"
+        th:data-source-category="${theme.config.content.listening_category}"
+        th:hidden="${defaultMediaType != 'listening'}"
+      >
+        <article
+          class="media-feature"
+          th:if="${listeningFeature != null}"
+          th:with="
+            post=${listeningFeature},
+            mediaUrl=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-url','')},
+            mediaProgress=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-progress','')},
+            mediaSubtitle=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-subtitle','')},
+            mediaMeta=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-meta','')}
+          "
+        >
+          <div class="media-cover media-cover-audio">
+            <img
+              th:src="${#strings.isEmpty(post.spec.cover) ? #theme.assets('/images/akari-cover-listening.jpg') : thumbnail.gen(post.spec.cover,'l')}"
+              th:data-fallback-src="${#theme.assets('/images/akari-cover-listening.jpg')}"
+              th:alt="${post.spec.title}"
+            />
+            <span class="vinyl-badge"
+              ><span class="i-lucide-audio-lines"></span></span
+            >
+          </div>
+          <div class="media-feature-copy">
+            <p class="kicker">LOOPING TONIGHT</p><h2
+              th:text="${post.spec.title}"
+            >
+              媒体札记
+            </h2>
+            <p
+              th:text="${#strings.isEmpty(mediaSubtitle) ? post.status.excerpt : mediaSubtitle}"
+            >
+              适合在写完最后一段之后播放。
+            </p>
+            <div
+              class="media-rating"
+              th:if="${not #strings.isEmpty(mediaMeta)}"
+            >
+              <span th:text="#{media.mood}">MOOD</span><strong
+                th:text="${mediaMeta}">黄昏 / 安静 / 有一点旧</strong
+              >
+            </div>
+            <div class="media-feature-actions">
+              <button
+                class="primary-button audio-toggle"
+                th:if="${not #strings.isEmpty(mediaUrl)}"
+                type="button"
+                data-audio-toggle
+                th:data-audio-id="|post:${post.metadata.name}|"
+                th:data-audio-src="${mediaUrl}"
+                th:data-audio-title="${post.spec.title}"
+                th:data-audio-artist="${post.owner != null ? post.owner.displayName : site.title}"
+                th:data-audio-artwork="${#strings.isEmpty(post.spec.cover) ? #theme.assets('/images/akari-cover-listening.jpg') : thumbnail.gen(post.spec.cover,'m')}"
+                th:aria-label="#{media.play(${post.spec.title})}"
+                th:data-play-label="#{media.play(${post.spec.title})}"
+                th:data-pause-label="#{media.pause(${post.spec.title})}"
+                th:data-play-text="#{media.listen}"
+                th:data-pause-text="#{media.pauseAction}"
+              >
+                <span class="i-lucide-play" data-audio-icon></span><span
+                  data-audio-label
+                  th:text="#{media.listen}">立即播放</span
+                >
+              </button>
+              <a class="secondary-button" th:href="${post.status.permalink}">
+                <span th:text="#{media.open}">打开札记</span><span
+                  class="i-lucide-arrow-up-right"></span>
+              </a>
+            </div>
+
+            <p
+              class="media-progress-label"
+              th:if="${not #strings.isEmpty(mediaUrl) or not #strings.isEmpty(mediaProgress)}"
+            >
+              <span
+                th:if="${not #strings.isEmpty(mediaUrl)}"
+                data-media-duration
+                th:data-audio-src="${mediaUrl}">--:--</span
+              >
+              <span
+                th:if="${#strings.isEmpty(mediaUrl) and not #strings.isEmpty(mediaProgress)}"
+                th:text="${mediaProgress}">01:05</span
+              >
+            </p>
+          </div>
+        </article>
+        <div class="empty-state" th:if="${listeningFeature == null}">
+          <span class="i-lucide-headphones"></span><p th:text="#{list.empty}">
+            这里还没有收进内容。
+          </p>
+        </div>
+        <div
+          class="media-shelf"
+          th:if="${listening != null and listening.total > 1}"
+        >
+          <a
+            th:each="post,stat : ${listening.items}"
+            th:if="${stat.index > 0}"
+            th:href="${post.status.permalink}"
+          >
+            <span
+              class="shelf-index"
+              th:text="${#numbers.formatInteger(stat.count,2)}">02</span
+            >
+            <div>
+              <strong th:text="${post.spec.title}">海街日记原声集</strong><small
+                th:text="${post.status.excerpt}">适合整理旅行照片</small
+              >
+            </div>
+            <span th:text="${#dates.format(post.spec.publishTime,'MM.dd')}"
+              >07.21</span
+            >
+          </a>
+        </div>
+      </section>
+
+      <section
+        class="media-panel"
+        th:if="${watchingAvailable}"
+        th:classappend="${defaultMediaType == 'watching' ? ' is-active' : ''}"
+        data-media-panel="watching"
+        th:data-source-category="${theme.config.content.watching_category}"
+        th:hidden="${defaultMediaType != 'watching'}"
+      >
+        <div
+          class="media-poster-grid"
+          th:if="${watching != null and watching.total > 0}"
+        >
+          <article
+            th:each="post : ${watching.items}"
+            th:with="mediaSubtitle=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-subtitle','')},mediaProgress=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-progress','')}"
+          >
+            <img
+              th:src="${#strings.isEmpty(post.spec.cover) ? #theme.assets('/images/akari-cover-cinema.jpg') : thumbnail.gen(post.spec.cover,'m')}"
+              th:data-fallback-src="${#theme.assets('/images/akari-cover-cinema.jpg')}"
+              th:alt="${post.spec.title}"
+            />
+            <div>
+              <span>WATCHING</span><h2>
+                <a
+                  th:href="${post.status.permalink}"
+                  th:text="${post.spec.title}">春日短篇放映室</a
+                >
+              </h2><p
+                th:text="${#strings.isEmpty(mediaSubtitle) ? post.status.excerpt : mediaSubtitle}"
+              >
+                温柔故事。
+              </p><small
+                th:unless="${#strings.isEmpty(mediaProgress)}"
+                th:text="${mediaProgress}">9.0</small
+              >
+            </div>
+          </article>
+        </div>
+        <div
+          class="empty-state"
+          th:if="${watching == null or watching.total == 0}"
+        >
+          <span class="i-lucide-clapperboard"></span><p th:text="#{list.empty}">
+            这里还没有收进内容。
+          </p>
+        </div>
+      </section>
+
+      <section
+        class="media-panel"
+        th:if="${readingAvailable}"
+        th:classappend="${defaultMediaType == 'reading' ? ' is-active' : ''}"
+        data-media-panel="reading"
+        th:data-source-category="${theme.config.content.reading_category}"
+        th:hidden="${defaultMediaType != 'reading'}"
+      >
+        <div
+          class="reading-shelf"
+          th:if="${reading != null and reading.total > 0}"
+        >
+          <article
+            th:each="post,stat : ${reading.items}"
+            th:with="mediaSubtitle=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-subtitle','')},mediaProgress=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-progress','')}"
+          >
+            <div
+              class="book-spine"
+              th:classappend="${stat.even ? ' book-mint' : ' book-coral'}"
+              th:text="${#numbers.formatInteger(stat.count,2)}"
+            >
+              17
+            </div>
+            <div>
+              <p class="meta">READING</p><h2>
+                <a
+                  th:href="${post.status.permalink}"
+                  th:text="${post.spec.title}">海边小城的生活练习</a
+                >
+              </h2><p
+                th:text="${#strings.isEmpty(mediaSubtitle) ? post.status.excerpt : mediaSubtitle}"
+              >
+                阅读札记。
+              </p><small
+                th:unless="${#strings.isEmpty(mediaProgress)}"
+                th:text="${mediaProgress}">读到 46%</small
+              >
+            </div>
+          </article>
+        </div>
+        <div
+          class="empty-state"
+          th:if="${reading == null or reading.total == 0}"
+        >
+          <span class="i-lucide-book-open"></span><p th:text="#{list.empty}">
+            这里还没有收进内容。
+          </p>
+        </div>
+      </section>
+      <div class="empty-state" th:if="${defaultMediaType == 'none'}">
+        <span class="i-lucide-disc-3"></span><p th:text="#{list.empty}">
+          这里还没有收进内容。
+        </p>
+      </div>
+      <div
+        class="article-body media-room-prose"
+        th:if="${not #strings.isEmpty(singlePage.content.content)}"
+        th:utext="${singlePage.content.content}"
+      >
+      </div>
+    </div>
+  </section>
+</BaseLayout>

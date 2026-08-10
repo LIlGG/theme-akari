@@ -1,0 +1,76 @@
+/* Akari style layer: error. Generated once from the visual baseline, then maintained by hand. */
+.notfound-view {
+  min-height: calc(100vh - var(--header-height));
+  padding: 50px 20px 100px;
+}
+
+.notfound-card {
+  width: min(1040px, 100%);
+  min-height: 570px;
+  margin: 0 auto;
+  padding: 50px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 34px;
+  display: grid;
+  grid-template-columns: minmax(380px, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 60px;
+}
+
+.notfound-scene {
+  height: 460px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(145deg, var(--surface-mint), var(--sun));
+  border-radius: 28px 28px 28px 9px;
+}
+
+.notfound-scene img {
+  position: absolute;
+  width: 82%;
+  left: 9%;
+  bottom: -24%;
+}
+
+.notfound-scene span {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  color: color-mix(in srgb, var(--ink) 17%, transparent);
+  font:
+    700 96px/1 Georgia,
+    serif;
+}
+
+.notfound-card h1 {
+  margin: 16px 0;
+  font:
+    700 clamp(42px, 5vw, 64px)/1.16 Georgia,
+    "Songti SC",
+    serif;
+  letter-spacing: -0.045em;
+}
+
+@media (max-width: 767px) {
+  .notfound-view {
+    padding: 14px 12px 76px;
+  }
+
+  .notfound-card {
+    min-height: 0;
+    padding: 18px;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    border-radius: 24px;
+  }
+
+  .notfound-scene {
+    height: 340px;
+    grid-row: 2;
+  }
+
+  .notfound-card h1 {
+    font-size: 41px;
+  }
+}

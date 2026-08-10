@@ -1,0 +1,141 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/gallery.css";
+import Pagination from "../components/content/Pagination.astro";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${title ?: #messages.msg('photos.title')}",
+    titleFallback: "Photos",
+    descriptionExpression: "${#messages.msg('photos.subtitle')}",
+    canonicalExpression: "${site.url + '/photos'}",
+    schemaType: "ImageGallery",
+  }}
+>
+  <Fragment slot="head">
+    <title
+      th:text="|${title ?: #messages.msg('photos.title')} · ${site.title}|"
+    >
+      Photos
+    </title>
+  </Fragment>
+
+  <section class="page-view inner-view is-visible" data-page="photos">
+    <div class="inner-shell">
+      <header class="page-intro" data-reveal>
+        <p class="eyebrow">
+          <span>PHOTO ALBUM</span> · <akari-halo-tag-th-block
+            th:text="#{photos.eyebrow}">生活切片</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="${title ?: #messages.msg('photos.title')}">
+          夜樱与回家路
+        </h1>
+        <p th:text="#{photos.subtitle}">
+          不按统一比例裁掉故事。点开照片后，可用方向键继续翻看。
+        </p>
+      </header>
+      <div class="album-toolbar">
+        <nav
+          class="filter-row"
+          data-photo-filters
+          th:aria-label="#{photos.filter}"
+        >
+          <a
+            class="filter-chip"
+            th:classappend="${#strings.isEmpty(param.group) ? ' is-active' : ''}"
+            th:href="${photoUrl.list()}"
+            th:text="|#{photos.all} ${photos.total}|">全部</a
+          >
+          <a
+            class="filter-chip"
+            th:each="photoGroup : ${groups}"
+            th:classappend="${#strings.equals(param.group, photoGroup.metadata.name) ? ' is-active' : ''}"
+            th:href="${photoUrl.list(photoGroup.metadata.name)}"
+            th:text="|${photoGroup.spec.displayName} ${photoGroup.status.photoCount}|"
+            >街道</a
+          >
+        </nav>
+      </div>
+      <section class="photo-results" data-photo-results aria-live="polite">
+        <div class="gallery-grid" th:if="${photos.total > 0}" data-gallery-grid>
+          <button
+            class="gallery-item"
+            th:each="photo,photoStat : ${photos.items}"
+            th:aria-label="${photo.spec.displayName}"
+            type="button"
+            data-lightbox-trigger
+            th:attr="data-lightbox-src=${photo.spec.url},data-lightbox-caption=${photo.spec.displayName}"
+          >
+            <img
+              th:src="${thumbnail.gen(photo.spec.url, 'm')}"
+              th:srcset="|${thumbnail.gen(photo.spec.url, 's')} 400w, ${thumbnail.gen(photo.spec.url, 'm')} 800w, ${thumbnail.gen(photo.spec.url, 'l')} 1200w|"
+              sizes="(max-width: 720px) 50vw, 400px"
+              th:alt="${photo.spec.displayName}"
+              th:attr="loading=${photoStat.index < 4 ? 'eager' : 'lazy'},fetchpriority=${photoStat.index == 0 ? 'high' : 'auto'}"
+              decoding="async"
+            />
+            <span th:text="${photo.spec.displayName}">夜樱散步</span>
+          </button>
+        </div>
+        <div class="empty-state" th:if="${photos.total == 0}">
+          <span class="i-lucide-camera"></span><p th:text="#{list.empty}">
+            这里还没有收进内容。
+          </p>
+        </div>
+        <div
+          class="gallery-continuation"
+          th:if="${photos.total > 0}"
+          data-photo-continuation
+          th:data-total="${photos.total}"
+        >
+          <p class="gallery-continuation-count">
+            <span
+              data-visible-photo-count
+              th:text="${#lists.size(photos.items)}">20</span
+            >
+            <span aria-hidden="true"> / </span>
+            <span th:text="${photos.total}">39</span>
+            <span th:text="#{photos.countSuffix}">张照片</span>
+          </p>
+          <a
+            class="gallery-continuation-action"
+            th:if="${photos.hasNext()}"
+            th:href="${photos.nextUrl}"
+            data-load-more-photos
+            data-no-page-transition
+            th:data-loading-label="#{photos.loading}"
+            th:data-error-label="#{photos.loadError}"
+          >
+            <span class="gallery-continuation-icon" aria-hidden="true">
+              <span class="i-lucide-images" data-photo-load-icon></span>
+            </span>
+            <span class="gallery-continuation-copy">
+              <small th:text="#{photos.loadMoreEyebrow}">NEXT FRAME</small>
+              <strong data-photo-load-label th:text="#{photos.loadMore}"
+                >再展开一卷</strong
+              >
+            </span>
+            <span
+              class="i-lucide-arrow-down gallery-continuation-arrow"
+              aria-hidden="true"></span>
+          </a>
+          <p
+            class="gallery-continuation-end"
+            data-photo-load-end
+            th:hidden="${photos.hasNext()}"
+          >
+            <span class="i-lucide-flower-2" aria-hidden="true"></span>
+            <span th:text="#{photos.end}">这一卷已经看到最后。</span>
+          </p>
+        </div>
+        <noscript
+          ><akari-halo-tag-th-block th:with="result=${photos}"
+            ><Pagination /></akari-halo-tag-th-block
+          ></noscript
+        >
+      </section>
+    </div>
+  </section>
+</BaseLayout>

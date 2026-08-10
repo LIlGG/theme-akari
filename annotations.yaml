@@ -1,0 +1,158 @@
+apiVersion: v1alpha1
+kind: AnnotationSetting
+metadata:
+  name: theme-akari-post-media-7f4c2
+spec:
+  targetRef:
+    group: content.halo.run
+    kind: Post
+  formSchema:
+    - $formkit: select
+      id: akari_media_type
+      name: "akari.theme.halo.run/media-type"
+      label: 媒体类型
+      value: none
+      options:
+        - label: 普通文章
+          value: none
+        - label: 在听
+          value: listening
+        - label: 在看
+          value: watching
+        - label: 在读
+          value: reading
+    - $formkit: text
+      key: akari-media-subtitle
+      name: "akari.theme.halo.run/media-subtitle"
+      label: 媒体副标题
+      if: "$get(akari_media_type).value !== 'none'"
+    - $formkit: text
+      key: akari-media-progress
+      name: "akari.theme.halo.run/media-progress"
+      label: 进度或评分
+      if: "$get(akari_media_type).value === 'watching' || $get(akari_media_type).value === 'reading'"
+      help: 例如 07 / 12、读到 46% 或 9.0。
+    - $formkit: attachment
+      key: akari-media-url
+      name: "akari.theme.halo.run/media-url"
+      label: 主音视频附件
+      if: "$get(akari_media_type).value === 'listening' || $get(akari_media_type).value === 'watching'"
+      accepts:
+        - audio/*
+        - video/*
+      help: 用于首页和媒体室卡片。随文章节需要多个音视频时，请直接在 Halo 编辑器正文中插入任意数量的音频或视频节点。
+    - $formkit: text
+      key: akari-media-meta
+      name: "akari.theme.halo.run/media-meta"
+      label: 补充信息
+      if: "$get(akari_media_type).value !== 'none'"
+      help: 例如作者、年份、导演或心情。
+    - $formkit: text
+      name: "akari.theme.halo.run/shelf-label"
+      label: 书架角标
+      help: 用于首页书架卡片，例如 VOL.03、春季在读或 9.0。
+    - $formkit: text
+      name: "akari.theme.halo.run/reading-minutes"
+      label: 预计阅读分钟数
+      validation: "number|min:1|max:999"
+      help: 可覆盖自动计算结果；留空时主题会根据正文长度计算，不使用伪造的固定时长。
+---
+apiVersion: v1alpha1
+kind: AnnotationSetting
+metadata:
+  name: theme-akari-menu-icon-49ad1
+spec:
+  targetRef:
+    group: ""
+    kind: MenuItem
+  formSchema:
+    - $formkit: iconify
+      name: "akari.theme.halo.run/icon"
+      label: 菜单图标
+      format: svg
+      value-only: true
+      help: 使用 Iconify 选择图标；主题会直接保存 SVG，不产生额外的前台网络请求。
+    - $formkit: select
+      name: "akari.theme.halo.run/menu-placement"
+      label: 导航位置
+      value: primary
+      options:
+        - label: 主导航
+          value: primary
+        - label: 收纳进“更多”
+          value: more
+    - $formkit: text
+      name: "akari.theme.halo.run/menu-description"
+      label: 菜单补充说明
+      help: 仅在“更多”面板中显示，例如“按时间翻阅所有手记”。
+---
+apiVersion: v1alpha1
+kind: AnnotationSetting
+metadata:
+  name: theme-akari-page-about-3c8e1
+spec:
+  targetRef:
+    group: content.halo.run
+    kind: SinglePage
+  formSchema:
+    - $formkit: text
+      key: akari-page-about-spirit-label
+      name: "akari.theme.halo.run/about-spirit-label"
+      label: 关于页角色题签
+      if: "$formData.spec.template === 'page_about.html'"
+      help: 仅用于“关于小屋”模板；留空时显示 ORIGINAL SPIRIT。
+    - $formkit: text
+      key: akari-page-about-current
+      name: "akari.theme.halo.run/about-current"
+      label: 关于页“正在做”
+      if: "$formData.spec.template === 'page_about.html'"
+      help: 仅用于“关于小屋”模板；留空时使用最新文章标题。
+    - $formkit: text
+      key: akari-page-about-favorite
+      name: "akari.theme.halo.run/about-favorite"
+      label: 关于页“最近在看”
+      if: "$formData.spec.template === 'page_about.html'"
+      help: 仅用于“关于小屋”模板；留空时使用页面摘要或站点描述。
+---
+apiVersion: v1alpha1
+kind: AnnotationSetting
+metadata:
+  name: theme-akari-page-links-61b7e
+spec:
+  targetRef:
+    group: content.halo.run
+    kind: SinglePage
+  formSchema:
+    - $formkit: text
+      key: akari-page-links-eyebrow
+      name: "akari.theme.halo.run/links-eyebrow"
+      label: 友链页眉题
+      if: "$formData.spec.template === 'page_links.html'"
+      help: 显示在 NEIGHBORHOOD 后方；留空时使用当前语言的“友邻门牌”。
+    - $formkit: textarea
+      key: akari-page-links-title
+      name: "akari.theme.halo.run/links-title"
+      label: 友链页标题
+      if: "$formData.spec.template === 'page_links.html'"
+      rows: 2
+      help: 页面首屏的视觉标题；留空时使用当前语言默认文案，不影响页面自身标题。
+    - $formkit: textarea
+      key: akari-page-links-subtitle
+      name: "akari.theme.halo.run/links-subtitle"
+      label: 友链页副标题
+      if: "$formData.spec.template === 'page_links.html'"
+      rows: 3
+      help: 位于页面标题下方；留空时使用主题内置的国际化文案。
+    - $formkit: text
+      key: akari-page-links-policy-title
+      name: "akari.theme.halo.run/links-policy-title"
+      label: 展示原则标题
+      if: "$formData.spec.template === 'page_links.html'"
+      help: 页面底部说明卡片的标题；留空时显示“关于这些门牌”。
+    - $formkit: textarea
+      key: akari-page-links-policy
+      name: "akari.theme.halo.run/links-policy"
+      label: 友链展示原则
+      if: "$formData.spec.template === 'page_links.html'"
+      rows: 4
+      help: 页面底部说明卡片的正文；留空时使用主题内置的国际化文案。

@@ -1,0 +1,223 @@
+/* Akari style layer: base. Generated once from the visual baseline, then maintained by hand. */
+:root {
+  --canvas: #fff8f0;
+  --surface: #ffffff;
+  --surface-soft: #f8e9e1;
+  --surface-mint: #dcece7;
+  --ink: #3b2f37;
+  --ink-2: #6b5b63;
+  --ink-3: #75646c;
+  --coral: var(--akari-accent-source);
+  --coral-hover: var(--akari-accent-hover);
+  --berry: #8a4b73;
+  --mint: #3e6b68;
+  --peach: #f6d8c8;
+  --sun: #f7e4a8;
+  --border: #e3cdc5;
+  --border-strong: #b899a1;
+  --focus: #2668b2;
+  --shadow-low: 0 2px 10px rgba(77, 49, 60, 0.06);
+  --shadow-high: 0 20px 60px rgba(77, 49, 60, 0.16);
+  --radius-control: 10px;
+  --radius-media: 16px;
+  --radius-feature: 24px;
+  --radius-hero: 32px;
+  --header-height: 72px;
+}
+
+html[data-theme="dark"] {
+  --canvas: #211a22;
+  --surface: #2c232d;
+  --surface-soft: #392733;
+  --surface-mint: #253b3a;
+  --ink: #fff5f0;
+  --ink-2: #d9c5cc;
+  --ink-3: #bea7b0;
+  --coral: var(--accent);
+  --coral-hover: var(--akari-accent-hover);
+  --berry: #d79cc4;
+  --mint: #8bc8be;
+  --peach: #5a3541;
+  --sun: #594d2f;
+  --border: #513b48;
+  --border-strong: #7d596a;
+  --focus: #9ac7ff;
+  --shadow-low: 0 2px 10px rgba(0, 0, 0, 0.18);
+  --shadow-high: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--canvas);
+  text-rendering: optimizeLegibility;
+}
+
+html.has-article-toc {
+  /* Tocbot owns the easing here; native smooth scrolling would run a second
+     animation and leave the heading below the intended sticky-header offset. */
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  color: var(--ink);
+  background:
+    radial-gradient(
+        circle at 12px 12px,
+        color-mix(in srgb, var(--coral) 10%, transparent) 1.25px,
+        transparent 1.5px
+      )
+      0 0 / 24px 24px,
+    var(--canvas);
+  font-family:
+    "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC",
+    system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  min-width: 320px;
+  transition:
+    background-color 180ms ease-out,
+    color 180ms ease-out;
+}
+
+html.akari-page-enter-pending
+  [data-page]
+  :where(
+    .page-intro,
+    .article-hero-copy,
+    .hero-copy,
+    .notfound-card > div:last-child,
+    .hero-scene,
+    .article-hero > img,
+    .archive-stats,
+    .spinning-disc,
+    .door-sign,
+    .notfound-scene,
+    .filter-chip,
+    .year-button,
+    .media-tabs button,
+    .category-card,
+    .friend-card,
+    .gallery-item,
+    .post-list article:not([hidden])
+  ) {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+::selection {
+  background: var(--selection);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+.has-media-fallback {
+  position: relative;
+}
+
+.is-media-unavailable {
+  opacity: 0;
+}
+
+.ak-image-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  color: var(--ink-muted);
+  background:
+    radial-gradient(circle at 28% 22%, var(--accent-pale), transparent 52%),
+    var(--surface-soft);
+  font-size: clamp(1.5rem, 8vw, 3.5rem);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+main:focus {
+  outline: 0;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@supports (view-transition-name: none) {
+  @view-transition {
+    /* Automatic cross-document snapshots render the two routes at different
+       scroll offsets. Route motion is coordinated in main.ts instead. */
+    navigation: none;
+  }
+
+  ::view-transition-old(root) {
+    animation: 150ms ease-in both akari-fade-out;
+  }
+
+  ::view-transition-new(root) {
+    animation: 280ms cubic-bezier(0.2, 0.75, 0.2, 1) both akari-fade-in;
+  }
+
+  ::view-transition-group(akari-header),
+  ::view-transition-group(akari-brand) {
+    animation-duration: 220ms;
+  }
+}
+
+@keyframes akari-fade-out {
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes akari-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}

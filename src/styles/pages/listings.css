@@ -1,0 +1,176 @@
+/* Akari style layer: listings. Generated once from the visual baseline, then maintained by hand. */
+.author-intro {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+}
+
+.author-intro-avatar {
+  width: 108px;
+  height: 108px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: 34px 34px 34px 10px;
+  box-shadow: var(--shadow-low);
+}
+
+.inner-view {
+  min-height: 72vh;
+}
+
+.narrow-shell {
+  max-width: 760px;
+}
+
+@keyframes post-filter-progress {
+  from {
+    background-position-x: -22%;
+  }
+  to {
+    background-position-x: 122%;
+  }
+}
+
+.filter-chip {
+  min-height: 40px;
+  padding: 0 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  line-height: 1;
+  text-align: center;
+}
+
+.filter-chip:hover,
+.filter-chip.is-active {
+  color: white;
+  background: var(--coral);
+  border-color: var(--coral);
+}
+
+.post-list {
+  border-top: 1px solid var(--border);
+}
+
+.post-list article {
+  padding: 28px 0;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  align-items: center;
+  gap: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-list article > div {
+  min-width: 0;
+}
+
+.post-list article > div > p:last-child {
+  overflow-wrap: anywhere;
+}
+
+.post-list article[hidden] {
+  display: none;
+}
+
+.post-list img {
+  width: 100%;
+  height: 172px;
+  object-fit: cover;
+  border-radius: var(--radius-media);
+}
+
+.post-list article:nth-child(2) img {
+  object-position: center 42%;
+}
+
+.post-list h2 {
+  margin: 7px 0 8px;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 26px;
+}
+
+.post-list article p:last-child {
+  margin: 0;
+  color: var(--ink-2);
+}
+
+.search-page-form {
+  margin-bottom: 18px;
+}
+
+.search-summary {
+  margin: 0 0 28px;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+@media (max-width: 767px) {
+  .author-intro {
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .author-intro-avatar {
+    width: 76px;
+    height: 76px;
+    border-radius: 24px 24px 24px 8px;
+  }
+
+  .filter-chip {
+    flex: 0 0 auto;
+  }
+
+  .post-list article {
+    grid-template-columns: 110px 1fr;
+    gap: 16px;
+  }
+
+  .post-list img {
+    height: 122px;
+  }
+
+  .post-list h2 {
+    font-size: 20px;
+    line-height: 1.45;
+  }
+
+  .post-list article p:last-child {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 13px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+.ak-search-form {
+  display: grid;
+  max-width: 880px;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 10px 10px 10px 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.ak-search-form > span {
+  color: var(--accent);
+  font-size: 20px;
+}
+
+.ak-search-form input {
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: var(--ink);
+  background: transparent;
+}

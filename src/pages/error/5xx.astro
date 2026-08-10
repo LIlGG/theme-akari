@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/entries/error.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${status + ' · ' + site.title}",
+    titleFallback: "Server error",
+    descriptionExpression: "${site.seo.description}",
+    schemaType: "WebPage",
+    robots: "noindex, nofollow",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${status} · ${site.title}|">Server error</title>
+  </Fragment>
+
+  <section class="page-view notfound-view is-visible" data-page="error">
+    <div class="notfound-card" data-hero-copy>
+      <div class="notfound-scene">
+        <img
+          th:src="${#theme.assets('/images/akari-character.png')}"
+          alt=""
+        /><span th:text="${status}">500</span>
+      </div>
+      <div>
+        <p class="eyebrow">
+          <span>LIGHTS OUT</span> · <akari-halo-tag-th-block
+            th:text="#{error.eyebrow}">Lost</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="#{error.5xx.title}">The light went out for a moment</h1>
+        <p th:text="#{error.5xx.subtitle}">Please try again later.</p>
+        <div class="hero-actions">
+          <a class="primary-button" th:href="@{/}"
+            ><span class="i-lucide-refresh-cw"></span><span
+              th:text="#{error.backHome}">Home</span
+            ></a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

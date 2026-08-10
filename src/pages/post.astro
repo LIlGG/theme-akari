@@ -1,0 +1,206 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/article.css";
+import ArticleComments from "../components/content/ArticleComments.astro";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${post.spec.title}",
+    titleFallback: "Post",
+    descriptionExpression: "${post.status.excerpt}",
+    canonicalExpression: "${site.url + post.status.permalink}",
+    imageExpression:
+      "${#strings.isEmpty(post.spec.cover) ? site.url + #theme.assets('/images/akari-cover-journey.jpg') : (#strings.startsWith(post.spec.cover, 'http') ? post.spec.cover : site.url + post.spec.cover)}",
+    type: "article",
+    schemaType: "BlogPosting",
+    authorExpression: "${post.owner.displayName}",
+    publishedTimeExpression: "${post.spec.publishTime}",
+    modifiedTimeExpression: "${post.status.lastModifyTime}",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${post.spec.title} · ${site.title}|">Post</title>
+  </Fragment>
+
+  <article
+    class="page-view article-view is-visible"
+    data-page="post"
+    th:with="
+      mediaType=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-type','none')},
+      mediaUrl=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-url','')}
+    "
+  >
+    <header class="article-hero">
+      <div class="article-hero-copy" data-hero-copy>
+        <a class="back-link" th:href="${akariPostsUrl}">
+          <span class="i-lucide-arrow-left"></span><span th:text="#{post.back}"
+            >返回手记</span
+          >
+        </a>
+        <p class="eyebrow">
+          <span
+            th:text="${not #lists.isEmpty(post.categories) ? post.categories[0].spec.displayName : 'STORY'}"
+            >TRAVEL NOTE</span
+          >
+          · <akari-halo-tag-th-block th:text="#{nav.posts}"
+            >旅行手记</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="${post.spec.title}">沿海电车的第七站</h1>
+        <p th:text="${post.status.excerpt}">
+          把黄昏留在车窗里，也把没有按下快门的那一秒写下来。
+        </p>
+        <div class="article-meta">
+          <span
+            ><span class="i-lucide-calendar-days"></span><time
+              th:text="${#dates.format(post.spec.publishTime,'yyyy.MM.dd')}"
+              >2026.07.28</time
+            ></span
+          >
+          <span
+            data-reading-time
+            th:data-reading-template="#{post.readingTimeValue('AKARI_MINUTES')}"
+          >
+            <span class="i-lucide-clock-3"></span><span
+              data-reading-time-value
+              th:text="#{post.readingTimeValue(1)}">1 分钟</span
+            >
+          </span>
+          <span
+            ><span class="i-lucide-message-circle"></span><span
+              th:text="#{post.commentCount(${post.stats.comment})}"
+              >0 条回应</span
+            ></span
+          >
+        </div>
+      </div>
+      <img
+        th:src="${#strings.isEmpty(post.spec.cover) ? #theme.assets('/images/akari-cover-journey.jpg') : thumbnail.gen(post.spec.cover,'xl')}"
+        th:data-fallback-src="${#theme.assets('/images/akari-cover-journey.jpg')}"
+        th:alt="${post.spec.title}"
+        fetchpriority="high"
+        width="1400"
+        height="1050"
+        data-hero-scene
+      />
+    </header>
+
+    <div class="article-layout">
+      <div class="article-body" data-prose>
+        <akari-halo-tag-th-block th:utext="${post.content.content}"
+        ></akari-halo-tag-th-block>
+        <div class="tag-row">
+          <a
+            th:each="tag : ${post.tags}"
+            th:href="${tag.status.permalink}"
+            th:text="|# ${tag.spec.displayName}|"># 镰仓</a
+          >
+        </div>
+      </div>
+      <aside class="article-toc" data-toc-aside th:aria-label="#{post.toc}">
+        <span data-toc-title th:text="#{post.toc}">本篇目录</span>
+        <nav data-toc></nav>
+        <section
+          class="article-media-index"
+          data-article-media-index
+          hidden
+          th:data-primary-audio-src="${mediaType == 'listening' ? mediaUrl : ''}"
+          th:data-article-title="${post.spec.title}"
+          th:data-article-artist="${post.owner != null ? post.owner.displayName : site.title}"
+          th:data-article-artwork="${#strings.isEmpty(post.spec.cover) ? '' : thumbnail.gen(post.spec.cover,'m')}"
+          th:data-media-heading="#{post.audioIndex}"
+          th:data-play-label="#{post.audio.play}"
+          th:data-pause-label="#{post.audio.pause}"
+          th:data-untitled-label="#{post.audio.untitled}"
+        >
+          <span data-article-media-title th:text="#{post.audioIndex}"
+            >随文音频</span
+          >
+          <div data-article-media-list></div>
+        </section>
+      </aside>
+    </div>
+
+    <section class="article-afterword">
+      <div class="author-card">
+        <div class="author-portrait">
+          <img
+            th:src="${post.owner != null and not #strings.isEmpty(post.owner.avatar)
+              ? post.owner.avatar
+              : (not #strings.isEmpty(site.logo) ? site.logo : #theme.assets('/images/akari-character.png'))}"
+            th:data-fallback-src="${#theme.assets('/images/akari-character.png')}"
+            th:alt="${post.owner != null ? post.owner.displayName : site.title}"
+          />
+        </div>
+        <div>
+          <p
+            class="kicker"
+            th:text="|WRITTEN BY ${post.owner != null ? post.owner.displayName : site.title}|"
+          >
+            WRITTEN BY AUTHOR
+          </p>
+          <h2 th:text="#{post.thanks}">谢谢你读到这里。</h2>
+          <p
+            th:text="${post.owner != null and not #strings.isEmpty(post.owner.bio)
+              ? post.owner.bio
+              : theme.config.footer.slogan}"
+          >
+            如果你也有相似的记忆，欢迎留一张小纸条。
+          </p>
+          <button
+            class="secondary-button"
+            th:if="${haloCommentEnabled}"
+            type="button"
+            data-article-comment-jump
+          >
+            <span class="i-lucide-heart"></span><span
+              th:text="#{post.commentWrite}">写下回应</span
+            >
+          </button>
+          <a
+            class="secondary-button"
+            th:if="${not haloCommentEnabled and akariGuestbookPage != null}"
+            th:href="${akariGuestbookUrl}"
+            ><span class="i-lucide-heart"></span><span
+              th:text="#{nav.guestbook}">去留言簿</span
+            ></a
+          >
+        </div>
+      </div>
+
+      <nav
+        class="article-navigation"
+        th:with="cursor=${postFinder.cursor(post.metadata.name)}"
+      >
+        <a
+          class="is-previous"
+          th:if="${cursor.hasPrevious()}"
+          th:href="${cursor.previous.status.permalink}"
+        >
+          <small
+            ><span class="i-lucide-arrow-left"></span><span
+              th:text="#{post.previous}">上一篇</span
+            ></small
+          >
+          <strong th:text="${cursor.previous.spec.title}"
+            >雨天只做一件小事</strong
+          >
+        </a>
+        <a
+          class="is-next"
+          th:if="${cursor.hasNext()}"
+          th:href="${cursor.next.status.permalink}"
+        >
+          <small
+            ><span th:text="#{post.next}">下一篇</span><span
+              class="i-lucide-arrow-right"></span></small
+          >
+          <strong th:text="${cursor.next.spec.title}">晚风吹进房间之后</strong>
+        </a>
+      </nav>
+
+      <ArticleComments />
+    </section>
+  </article>
+</BaseLayout>

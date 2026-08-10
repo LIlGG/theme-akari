@@ -1,0 +1,210 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/listings.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${singlePage.spec.title}",
+    titleFallback: "Stories",
+    descriptionExpression:
+      "${not #strings.isEmpty(singlePage.status.excerpt) ? singlePage.status.excerpt : site.seo.description}",
+    canonicalExpression: "${site.url + singlePage.status.permalink}",
+    schemaType: "CollectionPage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${singlePage.spec.title} · ${site.title}|">Stories</title>
+  </Fragment>
+
+  <section
+    class="page-view inner-view is-visible"
+    data-page="posts"
+    th:with="recent=${postFinder.list({page:1,size:12})},categories=${categoryFinder.listAll()}"
+  >
+    <div class="inner-shell">
+      <header
+        class="page-intro"
+        data-posts-intro
+        th:data-archive-url="${site.routes.archivesUri}"
+        th:data-post-count="${recent.total}"
+        th:data-summary-template="${#messages.msg('posts.dynamicSummary','__CATEGORIES__','__POSTS__','__YEAR__')}"
+        th:data-summary-without-year-template="${#messages.msg('posts.dynamicSummaryWithoutYear','__CATEGORIES__','__POSTS__')}"
+        th:data-empty-categories="#{posts.emptyCategories}"
+        data-reveal
+      >
+        <p class="eyebrow">
+          <span>NOTEBOOK</span> · <akari-halo-tag-th-block
+            th:text="#{posts.eyebrow}">慢慢写</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="${singlePage.spec.title}">屋主的手记</h1>
+        <p
+          data-posts-summary
+          th:data-summary-source="${not #strings.isEmpty(singlePage.status.excerpt) ? 'page' : 'dynamic'}"
+          th:text="${not #strings.isEmpty(singlePage.status.excerpt) ? singlePage.status.excerpt : #messages.msg('posts.loadingSummary',recent.total)}"
+        >
+          正在整理文章与季节。
+        </p>
+        <span
+          th:each="category : ${categories}"
+          data-posts-category
+          th:data-category-name="${category.spec.displayName}"
+          th:data-category-count="${category.postCount}"
+          hidden></span>
+      </header>
+
+      <nav
+        class="filter-row"
+        data-post-filters
+        data-post-filter-mode="category"
+        th:data-posts-url="${akariPostsUrl}"
+        th:aria-label="#{posts.filter}"
+      >
+        <a
+          class="filter-chip is-active"
+          th:href="${akariPostsUrl}"
+          th:text="#{photos.all}">全部</a
+        >
+        <a
+          class="filter-chip"
+          th:each="category,stat : ${categories}"
+          th:if="${stat.index < 5}"
+          th:href="${category.status.permalink}"
+          th:text="${category.spec.displayName}">旅行</a
+        >
+      </nav>
+
+      <nav
+        class="filter-row"
+        data-post-filters
+        data-post-filter-mode="tag"
+        th:data-posts-url="${akariPostsUrl}"
+        th:aria-label="#{posts.filter}"
+      >
+        <a
+          class="filter-chip is-active"
+          th:href="|${akariPostsUrl}?filter=tags|"
+          th:text="#{photos.all}">全部</a
+        >
+        <a
+          class="filter-chip"
+          th:each="tag,stat : ${tagFinder.listAll()}"
+          th:if="${stat.index < 5}"
+          th:href="${tag.status.permalink}"
+          th:text="${tag.spec.displayName}">标签</a
+        >
+      </nav>
+
+      <section class="posts-results" data-post-results aria-live="polite">
+        <div
+          class="post-list"
+          th:if="${recent.total > 0}"
+          data-post-list
+          th:data-post-api="@{/apis/api.content.halo.run/v1alpha1/posts}"
+          th:data-fallback-cover="${#theme.assets('/images/akari-cover-journal.jpg')}"
+          th:data-fallback-cover-journey="${#theme.assets('/images/akari-cover-journey.jpg')}"
+          th:data-fallback-cover-reading="${#theme.assets('/images/akari-cover-reading.jpg')}"
+          th:data-fallback-cover-cinema="${#theme.assets('/images/akari-cover-cinema.jpg')}"
+          th:data-total="${recent.total}"
+        >
+          <article
+            th:each="post,stat : ${recent.items}"
+            th:with="fallbackCover=${stat.index % 4 == 0
+              ? #theme.assets('/images/akari-cover-journal.jpg')
+              : (stat.index % 4 == 1
+                ? #theme.assets('/images/akari-cover-journey.jpg')
+                : (stat.index % 4 == 2
+                  ? #theme.assets('/images/akari-cover-reading.jpg')
+                  : #theme.assets('/images/akari-cover-cinema.jpg')))}"
+            th:hidden="${stat.index >= 4}"
+            data-post-item
+            th:data-post-name="${post.metadata.name}"
+            data-reveal
+          >
+            <a th:href="${post.status.permalink}">
+              <img
+                th:if="${not #strings.isEmpty(post.spec.cover)}"
+                th:src="${thumbnail.gen(post.spec.cover, 'm')}"
+                th:data-fallback-src="${fallbackCover}"
+                th:alt="${post.spec.title}"
+                loading="lazy"
+              />
+              <img
+                th:unless="${not #strings.isEmpty(post.spec.cover)}"
+                th:src="${fallbackCover}"
+                th:alt="${post.spec.title}"
+                loading="lazy"
+              />
+            </a>
+            <div>
+              <p class="meta">
+                <span
+                  th:if="${not #lists.isEmpty(post.categories)}"
+                  th:text="${post.categories[0].spec.displayName}">日常</span
+                >
+                <span th:if="${not #lists.isEmpty(post.categories)}"> · </span>
+                <time
+                  th:text="${#dates.format(post.spec.publishTime,'yyyy.MM.dd')}"
+                  >2026.07.28</time
+                >
+              </p>
+              <h2>
+                <a
+                  class="title-link"
+                  th:href="${post.status.permalink}"
+                  th:text="${post.spec.title}">沿海电车的第七站</a
+                >
+              </h2>
+              <p th:text="${post.status.excerpt}">
+                把黄昏留在车窗里，也把没有按下快门的那一秒写下来。
+              </p>
+            </div>
+          </article>
+        </div>
+        <div class="empty-state" th:if="${recent.total == 0}">
+          <span class="i-lucide-book-open-text"></span><p
+            th:text="#{list.empty}"
+          >
+            这里还没有收进内容。
+          </p>
+        </div>
+
+        <div class="list-footer" th:if="${recent.total > 0}">
+          <p>
+            <span
+              data-visible-post-count
+              th:text="${recent.total > 4 ? 4 : recent.total}">4</span
+            >
+            <span aria-hidden="true"> / </span>
+            <span data-total-post-count th:text="${recent.total}">42</span>
+            <span th:text="#{posts.count.suffix}">篇手记</span>
+          </p>
+          <button
+            class="secondary-button"
+            th:if="${recent.total > 4}"
+            type="button"
+            data-load-more-posts
+            data-step="2"
+            th:data-loading-label="#{posts.loading}"
+            th:data-error-label="#{posts.loadError}"
+          >
+            <span class="i-lucide-plus" aria-hidden="true"></span>
+            <span th:text="#{posts.loadMore}">再展开两篇</span>
+          </button>
+          <a
+            class="secondary-button"
+            th:classappend="${recent.total > 4 ? 'is-load-more-end' : ''}"
+            th:hidden="${recent.total > 4}"
+            data-load-more-end
+            th:href="${site.routes.archivesUri}"
+          >
+            <span class="i-lucide-archive"></span><span
+              th:text="#{nav.archives}">查看归档</span
+            >
+          </a>
+        </div>
+      </section>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,57 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/taxonomy.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${#messages.msg('tags.title')}",
+    titleFallback: "Tags",
+    descriptionExpression: "${#messages.msg('tags.subtitle')}",
+    canonicalExpression: "${site.url + '/tags'}",
+    schemaType: "CollectionPage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|#{tags.title} · ${site.title}|">Tags</title>
+  </Fragment>
+
+  <section class="page-view inner-view is-visible" data-page="tags">
+    <div class="inner-shell">
+      <header class="page-intro" data-hero-copy>
+        <p class="eyebrow">
+          <span>MEMORY LABELS</span> · <akari-halo-tag-th-block
+            th:text="#{tags.title}">标签</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="#{tags.title}">标签</h1>
+        <p th:text="#{tags.subtitle}">系在记忆边缘的小标签。</p>
+      </header>
+      <section
+        class="tag-drawer"
+        th:if="${not #lists.isEmpty(tags)}"
+        data-reveal
+      >
+        <div class="tag-cloud">
+          <a
+            th:each="tag : ${tags}"
+            th:href="${tag.status.permalink}"
+            th:style="|--tag-color:${tag.spec.color ?: '#d96872'}|"
+          >
+            <span th:text="|# ${tag.spec.displayName}|"># tag</span><small
+              th:text="${tag.postCount}">0</small
+            >
+          </a>
+        </div>
+        <div class="tag-result">
+          <span class="i-lucide-sparkles"></span><span th:text="#{tags.hint}"
+            >Choose a tag</span
+          >
+        </div>
+      </section>
+      <div class="empty-state" th:if="${#lists.isEmpty(tags)}">
+        <span class="i-lucide-tags"></span><p th:text="#{list.empty}">Empty</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

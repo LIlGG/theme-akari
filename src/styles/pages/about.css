@@ -1,0 +1,87 @@
+/* Akari style layer: about. Generated once from the visual baseline, then maintained by hand. */
+.about-layout {
+  min-height: 620px;
+  display: grid;
+  grid-template-columns: minmax(380px, 0.82fr) minmax(0, 1.18fr);
+  align-items: center;
+  gap: 64px;
+}
+
+.about-character {
+  min-height: 560px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(145deg, var(--sun), var(--peach));
+  border: 1px solid var(--border);
+  border-radius: 40px 40px 40px 12px;
+}
+
+.about-character img {
+  position: absolute;
+  width: 86%;
+  height: auto;
+  left: 8%;
+  bottom: -24%;
+}
+
+.about-character span {
+  position: absolute;
+  left: 20px;
+  bottom: 16px;
+  padding: 6px 9px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.about-copy .large-copy {
+  max-width: 660px;
+  margin: 20px 0 30px;
+  color: var(--ink-2);
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 20px;
+  line-height: 1.85;
+}
+
+.about-facts {
+  margin-bottom: 30px;
+  border-top: 1px solid var(--border);
+}
+
+.about-facts div {
+  min-height: 58px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.about-facts span {
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.about-facts strong {
+  font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  .about-layout {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .about-character {
+    min-height: 440px;
+  }
+
+  .about-copy .large-copy {
+    font-size: 18px;
+  }
+}

@@ -1,0 +1,405 @@
+/* Akari style layer: media. Generated once from the visual baseline, then maintained by hand. */
+@keyframes disc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.media-tabs {
+  margin-bottom: 26px;
+  padding: 5px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.media-tabs button {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.media-tabs button svg {
+  width: 18px;
+}
+
+.media-tabs button.is-active {
+  color: var(--coral);
+  background: var(--surface);
+  box-shadow: var(--shadow-low);
+}
+
+.media-feature {
+  min-height: 440px;
+  padding: 32px;
+  background: linear-gradient(120deg, #342833, #51404f);
+  border-radius: 28px;
+  display: grid;
+  grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 52px;
+  color: #fff8f3;
+}
+
+.media-cover {
+  position: relative;
+}
+
+.media-cover img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 26px 56px rgba(0, 0, 0, 0.3);
+}
+
+.vinyl-badge {
+  position: absolute;
+  right: -18px;
+  bottom: 26px;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  color: #3b2f37;
+  background: var(--sun);
+  border: 5px solid #51404f;
+  border-radius: 50%;
+}
+
+.vinyl-badge svg {
+  width: 24px;
+}
+
+.media-feature .kicker {
+  color: #f2a5b6;
+}
+
+.media-feature h2 {
+  margin: 8px 0 16px;
+  font:
+    700 clamp(34px, 4vw, 48px)/1.18 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.media-feature-copy > p:not(.kicker) {
+  color: rgba(255, 248, 243, 0.72);
+}
+
+.media-feature-actions {
+  margin-top: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.media-feature .media-progress-label {
+  margin-top: 14px;
+  color: rgba(255, 248, 243, 0.58);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.media-rating {
+  margin: 24px 0;
+  padding: 14px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.media-rating span {
+  color: #f2a5b6;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.media-rating strong {
+  font-size: 12px;
+}
+
+.media-shelf {
+  margin: 18px 0 30px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+}
+
+.media-shelf article,
+.media-shelf > a {
+  min-height: 86px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.media-shelf article:last-child,
+.media-shelf > a:last-child {
+  border-bottom: 0;
+}
+
+.shelf-index {
+  color: var(--coral);
+  font:
+    700 17px/1 Georgia,
+    serif;
+}
+
+.media-shelf strong,
+.media-shelf small {
+  display: block;
+}
+
+.media-shelf small,
+.media-shelf article > span:last-child,
+.media-shelf > a > span:last-child {
+  color: var(--ink-3);
+  font-size: 10px;
+}
+
+.media-poster-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.media-poster-grid article {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.media-poster-grid img {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+}
+
+.media-poster-grid article:nth-child(2) img {
+  object-position: center;
+}
+
+.media-poster-grid div {
+  padding: 20px;
+}
+
+.media-poster-grid span {
+  color: var(--coral);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.media-poster-grid h2 {
+  margin: 5px 0 6px;
+  font:
+    700 21px/1.35 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.media-poster-grid p {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.reading-shelf {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.reading-shelf article {
+  min-height: 310px;
+  padding: 26px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  align-items: center;
+  gap: 24px;
+}
+
+.book-spine {
+  width: 92px;
+  height: 250px;
+  padding-top: 22px;
+  position: relative;
+  color: #fff;
+  border-radius: 8px 18px 18px 8px;
+  box-shadow: 8px 10px 0 color-mix(in srgb, var(--border) 76%, transparent);
+  font:
+    700 30px/1 Georgia,
+    serif;
+  text-align: center;
+}
+
+.book-spine::after {
+  content: "AKARI LIBRARY";
+  position: absolute;
+  right: 9px;
+  bottom: 18px;
+  font: 700 8px/1 sans-serif;
+  letter-spacing: 0.14em;
+  writing-mode: vertical-rl;
+}
+
+.book-coral {
+  background: var(--coral);
+}
+.book-mint {
+  background: var(--mint);
+}
+
+.reading-shelf h2 {
+  margin: 5px 0 10px;
+  font:
+    700 24px/1.4 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.reading-progress {
+  height: 5px;
+  margin: 22px 0 8px;
+  overflow: hidden;
+  background: var(--border);
+  border-radius: 999px;
+  display: block;
+}
+
+.reading-progress i {
+  height: 100%;
+  display: block;
+  background: var(--coral);
+}
+
+.reading-shelf small {
+  color: var(--ink-3);
+  font-size: 10px;
+}
+
+@media (max-width: 1023px) {
+  .media-feature {
+    gap: 32px;
+  }
+
+  .reading-shelf article {
+    grid-template-columns: 72px 1fr;
+    gap: 18px;
+  }
+
+  .book-spine {
+    width: 72px;
+  }
+}
+
+@media (max-width: 767px) {
+  .media-intro {
+    position: relative;
+    padding-right: 50px;
+  }
+
+  .media-tabs {
+    width: 100%;
+  }
+
+  .media-tabs button {
+    min-width: 0;
+    padding: 0 11px;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .media-feature {
+    min-height: 0;
+    padding: 18px;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    border-radius: 22px;
+  }
+
+  .media-cover {
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  .media-feature h2 {
+    font-size: 34px;
+  }
+
+  .media-poster-grid {
+    margin-right: -12px;
+    padding-right: 12px;
+    overflow-x: auto;
+    grid-template-columns: repeat(3, 78vw);
+    scroll-snap-type: x mandatory;
+  }
+
+  .media-poster-grid article {
+    scroll-snap-align: start;
+  }
+
+  .media-poster-grid img {
+    height: 310px;
+  }
+
+  .reading-shelf article {
+    min-height: 280px;
+    padding: 20px;
+    grid-template-columns: 72px 1fr;
+  }
+
+  .book-spine {
+    width: 72px;
+    height: 220px;
+  }
+}
+
+.media-tabs [class*="i-lucide-"] {
+  width: 18px;
+  height: 18px;
+}
+
+.vinyl-badge [class*="i-lucide-"] {
+  width: 24px;
+  height: 24px;
+}
+
+.media-shelf a {
+  min-height: 86px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.media-shelf a:last-child {
+  border-bottom: 0;
+}
+
+.media-shelf a > span:last-child,
+.media-shelf a small {
+  color: var(--ink-3);
+  font-size: 10px;
+}

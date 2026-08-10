@@ -1,0 +1,112 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/moments.css";
+import MomentComments from "../components/content/MomentComments.astro";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${title}",
+    titleFallback: "Moment",
+    descriptionExpression: "${#messages.msg('moments.subtitle')}",
+    canonicalExpression: "${site.url + '/moments/' + moment.metadata.name}",
+    schemaType: "WebPage",
+    authorExpression: "${moment.owner.displayName}",
+    publishedTimeExpression: "${moment.spec.releaseTime}",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${title} · ${site.title}|">Moment</title>
+  </Fragment>
+
+  <article class="page-view inner-view is-visible" data-page="moment">
+    <div class="inner-shell narrow-shell">
+      <header class="page-intro" data-hero-copy>
+        <p class="eyebrow">
+          <span>MOMENT</span> · <time
+            th:text="${#dates.format(moment.spec.releaseTime,'yyyy.MM.dd')}"
+            >Date</time
+          >
+        </p>
+        <h1 th:text="${moment.owner.displayName}">Owner</h1>
+        <p th:text="#{moments.subtitle}">Moment</p>
+      </header>
+      <div class="timeline moment-detail-timeline">
+        <article data-reveal>
+          <div class="moment-detail-owner">
+            <img
+              th:if="${not #strings.isEmpty(moment.owner.avatar)}"
+              th:src="${moment.owner.avatar}"
+              th:alt="${moment.owner.displayName}"
+            />
+            <span
+              th:unless="${not #strings.isEmpty(moment.owner.avatar)}"
+              th:text="${#strings.substring(moment.owner.displayName,0,1)}"
+              >A</span
+            >
+            <div>
+              <strong th:text="${moment.owner.displayName}">Owner</strong><time
+                th:text="${#dates.format(moment.spec.releaseTime,'yyyy.MM.dd · HH:mm')}"
+                >Date</time
+              >
+            </div>
+          </div>
+          <div
+            class="moment-rich-content"
+            th:utext="${moment.spec.content.html}"
+          >
+          </div>
+          <div
+            class="moment-media"
+            th:if="${not #lists.isEmpty(moment.spec.content.medium)}"
+          >
+            <akari-halo-tag-th-block
+              th:each="media,mediaStat : ${moment.spec.content.medium}"
+            >
+              <button
+                th:if="${media.type.name == 'PHOTO'}"
+                type="button"
+                data-lightbox-trigger
+                th:attr="data-lightbox-src=${media.url}"
+                th:aria-label="#{moments.image.open}"
+              >
+                <img
+                  th:src="${thumbnail.gen(media.url,'l')}"
+                  alt=""
+                  loading="lazy"
+                />
+              </button>
+              <video
+                th:if="${media.type.name == 'VIDEO'}"
+                th:src="${media.url}"
+                controls
+                preload="metadata"></video>
+              <div class="moment-audio" th:if="${media.type.name == 'AUDIO'}">
+                <button
+                  class="secondary-button audio-toggle"
+                  type="button"
+                  data-audio-toggle
+                  th:data-audio-id="|moment:${moment.metadata.name}:${mediaStat.index}|"
+                  th:data-audio-src="${media.url}"
+                  th:data-audio-title="${moment.owner != null ? moment.owner.displayName : site.title}"
+                  th:data-audio-artist="${moment.owner != null ? moment.owner.displayName : site.title}"
+                  th:aria-label="#{moments.audio.play}"
+                  th:data-play-label="#{moments.audio.play}"
+                  th:data-pause-label="#{moments.audio.pause}"
+                  th:data-play-text="#{moments.audio.play}"
+                  th:data-pause-text="#{moments.audio.pause}"
+                >
+                  <span class="i-lucide-play" data-audio-icon></span><span
+                    data-audio-label
+                    th:text="#{moments.audio.play}">播放声音</span
+                  >
+                </button>
+              </div>
+            </akari-halo-tag-th-block>
+          </div>
+        </article>
+      </div>
+      <MomentComments />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,41 @@
+apiVersion: theme.halo.run/v1alpha1
+kind: Theme
+metadata:
+  name: theme-akari
+spec:
+  displayName: 晚灯小屋 Akari
+  author:
+    name: Akari Contributors
+  description: 温馨、富媒体、具有二次元色彩的 Halo 个人博客主题。
+  logo: /themes/theme-akari/assets/images/akari-logo.svg
+  settingName: theme-akari-setting
+  configMapName: theme-akari-configMap
+  customTemplates:
+    post:
+      - name: 媒体札记
+        description: 用于音乐、影视与阅读记录的沉浸式文章模板。
+        file: post_media.html
+    page:
+      - name: 手记总览
+        description: 文章筛选与列表入口。
+        file: page_posts.html
+      - name: 关于小屋
+        description: 个人介绍与站点时间线。
+        file: page_about.html
+      - name: 分类与标签
+        description: 分类和标签的统一收藏页。
+        file: page_collections.html
+      - name: 媒体室
+        description: 按在听、在看、在读展示动态文章。
+        file: page_media.html
+      - name: 留言簿
+        description: 使用评论插件承载访客留言。
+        file: page_guestbook.html
+      - name: 友邻门牌
+        description: 使用链接管理插件展示动态友链，并配置友链页专属文案。
+        file: page_links.html
+  version: 0.1.0
+  requires: ">=2.25.0"
+  license:
+    - name: GPL-3.0
+      url: https://www.gnu.org/licenses/gpl-3.0.html

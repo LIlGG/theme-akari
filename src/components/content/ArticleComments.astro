@@ -1,0 +1,175 @@
+<section
+  class="article-comments"
+  id="article-comments"
+  th:if="${haloCommentEnabled}"
+  data-akari-article-comments
+  data-comment-group="content.halo.run"
+  data-comment-version="v1alpha1"
+  data-comment-kind="Post"
+  th:data-comment-name="${post.metadata.name}"
+  th:data-comment-enabled="${haloCommentEnabled}"
+  th:data-comment-plugin="${pluginFinder.available('PluginCommentWidget')}"
+  th:data-message-limit="${theme.config.content.article_comment_limit ?: 800}"
+  th:data-label-write="#{post.commentWrite}"
+  th:data-label-close-composer="#{post.commentCloseComposer}"
+  th:data-label-empty="#{post.commentEmpty}"
+  th:data-label-upvote="#{post.commentUpvote}"
+  th:data-label-reply="#{post.commentReply}"
+  th:data-label-close-reply="#{post.commentCloseReply}"
+  th:data-label-replies="#{post.commentReplies}"
+  th:data-label-submit-reply="#{post.commentSubmitReply}"
+  th:data-label-reply-placeholder="#{post.commentReplyPlaceholder}"
+  th:data-label-load-error="#{post.commentLoadError}"
+  th:data-label-submit-success="#{post.commentSubmitSuccess}"
+  th:data-label-submit-pending="#{post.commentSubmitPending}"
+  th:data-label-submit-error="#{post.commentSubmitError}"
+  th:data-label-name-required="#{post.commentNameRequired}"
+  th:data-label-message-required="#{post.commentMessageRequired}"
+  th:data-label-reviewing="#{post.commentReviewing}"
+  th:data-label-pinned="#{post.commentPinned}"
+  th:data-label-no-replies="#{post.commentNoReplies}"
+  th:data-label-captcha-required="#{post.commentCaptchaRequired}"
+  th:data-label-login-required="#{post.commentLoginRequired}"
+>
+  <div class="section-heading article-comments-heading">
+    <div>
+      <p class="kicker">
+        <span data-article-comment-total th:text="${post.stats.comment}">0</span
+        > RESPONSES
+      </p>
+      <h2 th:text="#{post.comments}">读者回应</h2>
+      <p class="article-comments-subtitle" th:text="#{post.commentSubtitle}">
+        把读完后的余温，留在这篇文章下面。
+      </p>
+    </div>
+    <button
+      class="text-button article-comment-compose-toggle"
+      type="button"
+      data-article-comment-compose-toggle
+      aria-controls="article-comment-composer"
+      aria-expanded="false"
+    >
+      <span class="i-lucide-pen-line"></span>
+      <span data-compose-toggle-label th:text="#{post.commentWrite}"
+        >写下回应</span
+      >
+      <span class="i-lucide-arrow-down article-compose-chevron"></span>
+    </button>
+  </div>
+
+  <form
+    class="article-comment-composer"
+    id="article-comment-composer"
+    data-article-comment-form
+    novalidate
+    hidden
+  >
+    <div class="article-comment-composer-mark" aria-hidden="true">
+      <span class="i-lucide-message-circle-heart"></span>
+    </div>
+    <div class="article-comment-composer-copy">
+      <div class="article-comment-composer-title">
+        <div>
+          <strong th:text="#{post.commentComposerTitle}">留一封短笺</strong>
+          <small th:text="#{post.commentComposerHint}"
+            >回应会留在本篇文章下，并遵循本站的审核规则。</small
+          >
+        </div>
+        <span class="article-comment-stamp" th:text="#{post.commentStamp}"
+          >AKARI POST</span
+        >
+      </div>
+
+      <label class="article-comment-name-field">
+        <span th:text="#{guestbook.displayName}">你的称呼</span>
+        <input
+          type="text"
+          maxlength="48"
+          autocomplete="nickname"
+          data-article-comment-name
+          th:placeholder="#{post.commentNamePlaceholder}"
+          required
+        />
+      </label>
+
+      <label class="article-comment-message-field">
+        <span th:text="#{post.commentMessage}">读完后想说的话</span>
+        <textarea
+          rows="5"
+          th:maxlength="${theme.config.content.article_comment_limit ?: 800}"
+          data-article-comment-message
+          th:placeholder="#{post.commentMessagePlaceholder}"
+          required></textarea>
+        <small data-article-comment-counter>0 / 800</small>
+      </label>
+
+      <div class="article-comment-captcha" data-article-comment-captcha hidden>
+        <button
+          type="button"
+          data-article-captcha-refresh
+          th:aria-label="#{guestbook.refreshCaptcha}"
+        >
+          <img data-article-captcha-image alt="" />
+        </button>
+        <label>
+          <span th:text="#{guestbook.captcha}">验证码</span>
+          <input type="text" autocomplete="off" data-article-captcha-code />
+        </label>
+      </div>
+
+      <div class="article-comment-composer-footer">
+        <p>
+          <span class="i-lucide-shield-check"></span><span
+            th:text="#{post.commentPrivacy}"
+            >只保存回应所需信息，不公开额外资料。</span
+          >
+        </p>
+        <button
+          class="primary-button"
+          type="submit"
+          data-article-comment-submit
+        >
+          <span class="i-lucide-send"></span><span
+            th:text="#{post.commentSubmit}">寄出回应</span
+          >
+        </button>
+      </div>
+      <div
+        class="article-comment-state"
+        data-article-comment-state
+        aria-live="polite"
+      >
+      </div>
+    </div>
+  </form>
+
+  <div
+    class="article-response-grid"
+    data-article-comment-list
+    aria-live="polite"
+    aria-busy="true"
+  >
+    <div class="article-response-skeleton" aria-hidden="true"></div>
+    <div class="article-response-skeleton" aria-hidden="true"></div>
+  </div>
+
+  <button
+    class="article-comment-load-more"
+    type="button"
+    data-article-comment-load-more
+    hidden
+  >
+    <span class="i-lucide-mail-plus"></span>
+    <span th:text="#{post.commentLoadMore}">再读几封回应</span>
+    <span class="i-lucide-arrow-down"></span>
+  </button>
+
+  <div
+    class="article-comment-toast"
+    data-article-comment-toast
+    role="status"
+    aria-live="polite"
+    hidden
+  >
+  </div>
+</section>

@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/taxonomy.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${#messages.msg('categories.title')}",
+    titleFallback: "Categories",
+    descriptionExpression: "${#messages.msg('categories.subtitle')}",
+    canonicalExpression: "${site.url + '/categories'}",
+    schemaType: "CollectionPage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|#{categories.title} · ${site.title}|">Categories</title>
+  </Fragment>
+
+  <section class="page-view inner-view is-visible" data-page="categories">
+    <div class="inner-shell">
+      <header class="page-intro" data-hero-copy>
+        <p class="eyebrow">
+          <span>COLLECTION ROOMS</span> · <akari-halo-tag-th-block
+            th:text="#{nav.collections}">分类与标签</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="#{categories.title}">分类</h1>
+        <p th:text="#{categories.subtitle}">给反复喜欢的事情，各留一间房。</p>
+      </header>
+      <div class="category-board" th:if="${not #lists.isEmpty(categories)}">
+        <a
+          class="category-card"
+          th:each="category,stat : ${categories}"
+          th:classappend="${stat.index % 4 == 0 ? ' category-travel' : (stat.index % 4 == 1 ? ' category-life' : (stat.index % 4 == 2 ? ' category-collection' : ' category-create'))}"
+          th:with="fallbackCover=${stat.index % 4 == 0
+            ? #theme.assets('/images/akari-cover-journey.jpg')
+            : (stat.index % 4 == 1
+              ? #theme.assets('/images/akari-hero-evening.jpg')
+              : (stat.index % 4 == 2
+                ? #theme.assets('/images/akari-cover-reading.jpg')
+                : #theme.assets('/images/akari-cover-journal.jpg')))}"
+          th:href="${category.status.permalink}"
+          data-reveal
+        >
+          <img
+            th:src="${not #strings.isEmpty(category.spec.cover) ? thumbnail.gen(category.spec.cover,'m') : fallbackCover}"
+            th:data-fallback-src="${fallbackCover}"
+            th:alt="${category.spec.displayName}"
+            loading="lazy"
+          />
+          <span>
+            <span class="i-lucide-folder-heart"></span>
+            <small th:text="|${category.postCount} STORIES|">0 STORIES</small>
+            <strong th:text="${category.spec.displayName}">Category</strong>
+            <em th:text="${category.spec.description}">Description</em>
+          </span>
+        </a>
+      </div>
+      <div class="empty-state" th:if="${#lists.isEmpty(categories)}">
+        <span class="i-lucide-folder-heart"></span><p th:text="#{list.empty}">
+          Empty
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

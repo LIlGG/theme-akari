@@ -1,0 +1,27 @@
+<nav
+  class="mt-12 flex items-center justify-between gap-4"
+  th:if="${result.hasPrevious() or result.hasNext()}"
+  th:aria-label="#{pagination.label}"
+>
+  <a
+    class="ak-button border border-[var(--line)] bg-[var(--surface)]"
+    th:if="${result.hasPrevious()}"
+    th:href="${result.prevUrl}"
+  >
+    <span class="i-lucide-arrow-left"></span><span
+      th:text="#{pagination.previous}">Previous</span
+    >
+  </a>
+  <span
+    class="mx-auto text-sm tabular-nums text-[var(--ink-muted)]"
+    th:text="|${result.page} / ${result.totalPages}|">1 / 1</span
+  >
+  <a
+    class="ak-button border border-[var(--line)] bg-[var(--surface)]"
+    th:if="${result.hasNext()}"
+    th:href="${result.nextUrl}"
+  >
+    <span th:text="#{pagination.next}">Next</span><span
+      class="i-lucide-arrow-right"></span>
+  </a>
+</nav>

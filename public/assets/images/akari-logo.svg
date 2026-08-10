@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="akari-logo-title akari-logo-description">
+  <title id="akari-logo-title">Akari 晚灯小屋</title>
+  <desc id="akari-logo-description">以手写灯字为灵感的晚灯印记</desc>
+
+  <path
+    fill="#c84f6a"
+    d="M118 24h276c52 0 94 42 94 94v276c0 52-42 94-94 94H104c-44 0-80-36-80-80V118c0-52 42-94 94-94Z"
+  />
+
+  <g fill="none" stroke="#fff8ed" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-width="25" d="M150 166c-6 26-17 51-34 72"/>
+    <path stroke-width="24" d="M201 161c9 23 14 46 14 69"/>
+    <path stroke-width="31" d="M181 215c-5 57-26 108-67 151"/>
+    <path stroke-width="29" d="M184 233c17 51 39 91 69 119"/>
+    <path stroke-width="30" d="M259 177c45-3 90-2 135 2"/>
+    <path stroke-width="31" d="M339 184v148c0 25-10 35-34 35h-20"/>
+  </g>
+  <circle cx="151" cy="165" r="9" fill="#f6c66f"/>
+</svg>

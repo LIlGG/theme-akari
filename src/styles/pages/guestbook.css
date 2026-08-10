@@ -1,0 +1,917 @@
+/* Akari style layer: guestbook. Generated once from the visual baseline, then maintained by hand. */
+.guestbook-shell {
+  max-width: 1080px;
+}
+
+.guestbook-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.82fr) minmax(0, 1.18fr);
+  align-items: start;
+  gap: 52px;
+}
+
+.message-form {
+  min-height: 587px;
+  position: sticky;
+  top: 100px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: var(--shadow-low);
+  display: flex;
+  flex-direction: column;
+}
+
+.form-heading {
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-heading strong,
+.form-heading small {
+  display: block;
+}
+
+.form-heading small {
+  color: var(--ink-3);
+  font-size: 10px;
+}
+
+.message-form > label {
+  margin-bottom: 18px;
+  display: block;
+}
+
+.message-form > label > span:first-child,
+.message-form legend {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.message-form input[type="text"],
+.message-form input:not([type]),
+.message-form textarea {
+  width: 100%;
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+
+.message-form input[type="text"],
+.message-form input:not([type]) {
+  min-height: 46px;
+  padding: 0 12px;
+}
+
+.message-form textarea {
+  min-height: 132px;
+  padding: 11px 12px;
+  resize: vertical;
+}
+
+.message-form label > small {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink-3);
+  font-size: 10px;
+  text-align: right;
+}
+
+.message-form fieldset {
+  margin: 0 0 22px;
+  padding: 0;
+  border: 0;
+}
+
+.message-form fieldset label {
+  display: inline-block;
+}
+
+.message-form fieldset input {
+  position: absolute;
+  opacity: 0;
+}
+
+.message-form fieldset label > span {
+  min-height: 40px;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.message-form fieldset svg {
+  width: 15px;
+}
+
+.message-form fieldset input:checked + span {
+  color: var(--coral);
+  background: var(--surface-soft);
+  border-color: color-mix(in srgb, var(--coral) 45%, var(--border));
+}
+
+.form-note {
+  margin: 12px 0 0;
+  color: var(--ink-3);
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 10px;
+}
+
+.form-note svg {
+  width: 14px;
+  flex: 0 0 auto;
+}
+
+.message-wall-heading {
+  min-height: 72px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.message-wall-heading h2 {
+  margin: 2px 0 0;
+  font:
+    700 30px/1.25 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.message-wall-heading > span {
+  color: var(--ink-3);
+  font-size: 11px;
+}
+
+.paper-note {
+  margin-bottom: 14px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 18px 18px 18px 6px;
+  box-shadow: var(--shadow-low);
+}
+
+.note-sun {
+  background: color-mix(in srgb, var(--sun) 48%, var(--surface));
+}
+.note-tea {
+  background: color-mix(in srgb, var(--surface-mint) 62%, var(--surface));
+}
+.note-star {
+  background: color-mix(in srgb, var(--peach) 55%, var(--surface));
+}
+
+.paper-note header {
+  display: grid;
+  grid-template-columns: 42px 1fr 22px;
+  align-items: center;
+  gap: 11px;
+}
+
+.paper-note header strong,
+.paper-note header time {
+  display: block;
+}
+
+.paper-note header time {
+  color: var(--ink-3);
+  font-size: 9px;
+}
+
+.paper-note header > svg {
+  width: 20px;
+  color: var(--coral);
+}
+
+.paper-note > p {
+  margin: 17px 0;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.paper-note footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.paper-note footer button {
+  min-height: 38px;
+  padding: 0;
+  border: 0;
+  color: var(--ink-3);
+  background: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+}
+
+.paper-note footer button svg {
+  width: 15px;
+}
+
+.paper-note footer button.is-liked {
+  color: var(--coral);
+}
+
+@media (max-width: 767px) {
+  .message-form {
+    min-height: 0;
+    position: static;
+  }
+
+  .comment-paper {
+    min-height: 360px;
+  }
+}
+
+.comment-paper {
+  min-height: 499px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Guestbook: Akari-native Halo comment client. */
+.message-form {
+  overflow: hidden;
+}
+
+.message-form input,
+.message-form textarea,
+.guestbook-reply-form input,
+.guestbook-reply-form textarea,
+.guestbook-inline-captcha input {
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.message-form input:focus,
+.message-form textarea:focus,
+.guestbook-reply-form input:focus,
+.guestbook-reply-form textarea:focus,
+.guestbook-inline-captcha input:focus {
+  border-color: color-mix(in srgb, var(--coral) 62%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--coral) 12%, transparent);
+}
+
+.message-form input.is-current-user {
+  color: var(--ink-2);
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--mint) 11%, transparent),
+      transparent 62%
+    ),
+    var(--canvas);
+}
+
+.guestbook-moods {
+  margin-top: 2px !important;
+  margin-bottom: 24px !important;
+}
+
+.guestbook-moods legend {
+  margin-bottom: 10px !important;
+}
+
+.guestbook-mood-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.message-form .guestbook-mood-options label {
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.message-form .guestbook-mood-options label > span {
+  min-width: 70px;
+  justify-content: center;
+  user-select: none;
+}
+
+.message-form .guestbook-mood-options [class*="i-lucide-"] {
+  width: 15px;
+  height: 15px;
+}
+
+.guestbook-submit {
+  min-height: 48px;
+}
+
+.guestbook-submit > [class*="i-lucide-"] {
+  width: 17px;
+  height: 17px;
+}
+
+.guestbook-submit.is-loading > [class*="i-lucide-"] {
+  animation: akari-send-pulse 900ms ease-in-out infinite;
+}
+
+@keyframes akari-send-pulse {
+  50% {
+    transform: translate(2px, -2px) scale(0.92);
+    opacity: 0.65;
+  }
+}
+
+.guestbook-captcha {
+  margin: -8px 0 20px;
+  padding: 12px;
+  border: 1px dashed color-mix(in srgb, var(--coral) 28%, var(--border));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-soft) 64%, transparent);
+  display: grid;
+  grid-template-columns: 116px 1fr;
+  align-items: end;
+  gap: 12px;
+}
+
+.guestbook-captcha[hidden] {
+  display: none;
+}
+
+.guestbook-captcha > button {
+  min-height: 46px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.guestbook-captcha img {
+  width: 100%;
+  height: 46px;
+  object-fit: cover;
+  display: block;
+}
+
+.guestbook-captcha label > span {
+  margin-bottom: 6px;
+  display: block;
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.guestbook-captcha input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 12px;
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--canvas);
+}
+
+.guestbook-form-state {
+  min-height: 17px;
+  margin-top: 8px;
+  color: var(--ink-3);
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.guestbook-form-state:empty {
+  min-height: 0;
+  margin: 0;
+}
+
+.guestbook-form-state[data-tone="error"] {
+  color: var(--coral);
+}
+.guestbook-form-state[data-tone="success"] {
+  color: color-mix(in srgb, var(--mint) 72%, var(--ink));
+}
+
+.paper-note {
+  position: relative;
+  overflow: visible;
+  transform-origin: 50% 90%;
+  transition:
+    border-color 180ms ease,
+    box-shadow 220ms ease;
+}
+
+.paper-note:hover {
+  border-color: color-mix(in srgb, var(--coral) 24%, var(--border));
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.paper-note-avatar {
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  color: var(--coral);
+  background: color-mix(in srgb, var(--surface) 68%, var(--peach));
+  border-radius: 50% 50% 50% 14px;
+  display: grid;
+  place-items: center;
+  font:
+    700 16px/1.7 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.paper-note-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.note-sun .paper-note-avatar {
+  color: #71551f;
+  background: #efcd77;
+}
+
+.note-tea .paper-note-avatar {
+  color: var(--surface);
+  background: var(--mint);
+}
+
+.note-star .paper-note-avatar {
+  color: var(--surface);
+  background: var(--berry);
+}
+
+.paper-note-meta {
+  min-width: 0;
+}
+
+.paper-note-meta strong,
+.paper-note-meta time {
+  display: block;
+}
+
+.paper-note-meta strong {
+  line-height: 1.7;
+}
+
+.paper-note-meta time {
+  color: var(--ink-3);
+  font-size: 9px;
+  line-height: 1.7;
+}
+
+.paper-note-mood {
+  width: 20px;
+  height: 20px;
+  color: var(--coral);
+}
+
+.paper-note-content {
+  margin: 17px 0;
+  overflow-wrap: anywhere;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.paper-note-content > :first-child {
+  margin-top: 0;
+}
+.paper-note-content > :last-child {
+  margin-bottom: 0;
+}
+.paper-note-content p {
+  margin: 0 0 0.65em;
+}
+.paper-note-content a {
+  color: var(--coral);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.paper-note-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.paper-note-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.paper-note-footer button {
+  min-height: 38px;
+  padding: 0;
+  border: 0;
+  color: var(--ink-3);
+  background: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+.paper-note-footer button:hover,
+.paper-note-footer button.is-open,
+.paper-note-footer button.is-liked {
+  color: var(--coral);
+}
+
+.paper-note-footer button.is-liked [class*="i-lucide-heart"] {
+  fill: currentColor;
+}
+
+.paper-note-footer button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.paper-note-footer button [class*="i-lucide-"] {
+  width: 15px;
+  height: 15px;
+}
+
+.paper-note-reviewing {
+  margin-left: auto;
+  padding: 4px 8px;
+  color: var(--ink-3);
+  border: 1px dashed var(--border);
+  border-radius: 999px;
+  font-size: 9px;
+}
+
+.paper-note-replies {
+  margin-top: 15px;
+  padding-top: 14px;
+  border-top: 1px dashed color-mix(in srgb, var(--ink-3) 28%, transparent);
+}
+
+.paper-note-replies[hidden] {
+  display: none;
+}
+
+.guestbook-reply-list {
+  display: grid;
+  gap: 12px;
+}
+
+.guestbook-reply-item {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: start;
+  gap: 9px;
+}
+
+.guestbook-reply-avatar {
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  color: var(--coral);
+  background: color-mix(in srgb, var(--surface) 72%, var(--peach));
+  border-radius: 50% 50% 50% 9px;
+  display: grid;
+  place-items: center;
+  font:
+    700 10px/1 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.guestbook-reply-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.guestbook-reply-item header {
+  min-height: 22px;
+  display: flex;
+  grid-template-columns: none;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.guestbook-reply-item header strong {
+  font-size: 11px;
+}
+.guestbook-reply-item header time {
+  color: var(--ink-3);
+  font-size: 9px;
+}
+
+.guestbook-reply-content {
+  margin-top: 3px;
+  color: var(--ink-2);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.guestbook-reply-content p {
+  margin: 0;
+}
+.guestbook-no-replies {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 11px;
+}
+
+.guestbook-reply-loading {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.guestbook-reply-loading span {
+  width: 5px;
+  height: 5px;
+  background: var(--coral);
+  border-radius: 50%;
+  animation: akari-reply-dot 900ms ease-in-out infinite alternate;
+}
+
+.guestbook-reply-loading span:nth-child(2) {
+  animation-delay: 120ms;
+}
+.guestbook-reply-loading span:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+@keyframes akari-reply-dot {
+  to {
+    transform: translateY(-4px);
+    opacity: 0.45;
+  }
+}
+
+.guestbook-reply-form {
+  margin-top: 14px;
+  padding: 14px;
+  background: color-mix(in srgb, var(--surface) 74%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
+  border-radius: 13px;
+  display: grid;
+  gap: 9px;
+}
+
+.guestbook-reply-form input,
+.guestbook-reply-form textarea,
+.guestbook-inline-captcha input {
+  width: 100%;
+  padding: 9px 10px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--canvas) 78%, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  font: inherit;
+  font-size: 11px;
+}
+
+.guestbook-reply-form textarea {
+  min-height: 76px;
+  resize: vertical;
+}
+
+.guestbook-reply-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.guestbook-reply-actions button {
+  min-height: 34px;
+  padding: 0 12px;
+  color: white;
+  background: var(--coral);
+  border: 0;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.guestbook-reply-actions button [class*="i-lucide-"] {
+  width: 13px;
+  height: 13px;
+}
+
+.guestbook-inline-captcha {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  gap: 8px;
+}
+
+.guestbook-inline-captcha > button {
+  padding: 0;
+  overflow: hidden;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.guestbook-inline-captcha img {
+  width: 100%;
+  height: 38px;
+  object-fit: cover;
+  display: block;
+}
+
+.guestbook-skeleton {
+  height: 189px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  opacity: 0;
+  background: color-mix(in srgb, var(--sun) 30%, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: 18px 18px 18px 6px;
+  position: relative;
+  animation: akari-skeleton-arrive 180ms 140ms ease-out forwards;
+}
+
+.guestbook-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 25%,
+    color-mix(in srgb, white 56%, transparent) 45%,
+    transparent 65%
+  );
+  transform: translateX(-100%);
+  animation: akari-paper-shimmer 1.5s ease-in-out infinite;
+}
+
+.guestbook-skeleton:nth-child(2) {
+  background: color-mix(in srgb, var(--surface-mint) 42%, var(--surface));
+}
+.guestbook-skeleton:nth-child(3) {
+  background: color-mix(in srgb, var(--peach) 36%, var(--surface));
+}
+
+@keyframes akari-paper-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes akari-skeleton-arrive {
+  to {
+    opacity: 1;
+  }
+}
+
+.guestbook-empty-note,
+.guestbook-error-note {
+  min-height: 189px;
+  padding: 24px;
+  color: var(--ink-3);
+  background: color-mix(in srgb, var(--sun) 26%, var(--surface));
+  border: 1px dashed color-mix(in srgb, var(--coral) 26%, var(--border));
+  border-radius: 18px 18px 18px 6px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  text-align: center;
+  position: relative;
+}
+
+.guestbook-empty-note > [class*="i-lucide-"],
+.guestbook-error-note > [class*="i-lucide-"] {
+  width: 28px;
+  height: 28px;
+  color: var(--coral);
+}
+
+.guestbook-empty-note p,
+.guestbook-error-note p {
+  margin: 0;
+  font:
+    14px/1.7 Georgia,
+    "Songti SC",
+    serif;
+}
+
+.guestbook-empty-pin {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--coral);
+  border-radius: 50%;
+  box-shadow: 0 2px 5px color-mix(in srgb, var(--ink) 20%, transparent);
+}
+
+.guestbook-load-more {
+  min-height: 44px;
+  margin: 18px auto 0;
+  padding: 0 16px;
+  color: var(--coral);
+  background: color-mix(in srgb, var(--surface) 86%, var(--peach));
+  border: 1px solid color-mix(in srgb, var(--coral) 22%, var(--border));
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-low);
+}
+
+.guestbook-load-more[hidden] {
+  display: none;
+}
+.guestbook-load-more:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.guestbook-load-more [class*="i-lucide-"] {
+  width: 14px;
+  height: 14px;
+}
+
+.guestbook-toast {
+  position: fixed;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: max(24px, env(safe-area-inset-bottom));
+  z-index: 80;
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 13px 16px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 13px 13px 13px 5px;
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 16%, transparent);
+  backdrop-filter: blur(16px);
+  font-size: 12px;
+}
+
+.guestbook-toast[data-tone="success"] {
+  border-color: color-mix(in srgb, var(--mint) 48%, var(--border));
+}
+.guestbook-toast[data-tone="error"] {
+  color: var(--coral);
+  border-color: color-mix(in srgb, var(--coral) 44%, var(--border));
+}
+
+@media (max-width: 767px) {
+  .message-form {
+    padding: 20px;
+  }
+  .guestbook-captcha,
+  .guestbook-inline-captcha {
+    grid-template-columns: 1fr;
+  }
+  .guestbook-captcha > button,
+  .guestbook-inline-captcha > button {
+    width: 122px;
+  }
+  .paper-note {
+    padding: 18px;
+  }
+  .paper-note-content {
+    font-size: 15px;
+  }
+  .guestbook-toast {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guestbook-skeleton::after,
+  .guestbook-reply-loading span,
+  .guestbook-submit.is-loading > [class*="i-lucide-"] {
+    animation: none;
+  }
+
+  .guestbook-skeleton {
+    opacity: 1;
+    animation: none;
+  }
+}

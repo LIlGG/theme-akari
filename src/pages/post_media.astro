@@ -1,0 +1,187 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/media-article.css";
+import ArticleComments from "../components/content/ArticleComments.astro";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${post.spec.title}",
+    titleFallback: "Media note",
+    descriptionExpression: "${post.status.excerpt}",
+    canonicalExpression: "${site.url + post.status.permalink}",
+    imageExpression:
+      "${not #strings.isEmpty(post.spec.cover) ? (#strings.startsWith(post.spec.cover, 'http') ? post.spec.cover : site.url + post.spec.cover) : site.url + #theme.assets('/images/akari-cover-listening.jpg')}",
+    type: "article",
+    schemaType: "BlogPosting",
+    authorExpression: "${post.owner.displayName}",
+    publishedTimeExpression: "${post.spec.publishTime}",
+    modifiedTimeExpression: "${post.status.lastModifyTime}",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${post.spec.title} · ${site.title}|">Media note</title>
+  </Fragment>
+
+  <article
+    class="page-view article-view is-visible"
+    data-page="media-post"
+    th:with="
+      mediaType=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-type','none')},
+      mediaSubtitle=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-subtitle',post.status.excerpt)},
+      mediaProgress=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-progress','')},
+      mediaUrl=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-url','')},
+      mediaMeta=${#annotations.getOrDefault(post,'akari.theme.halo.run/media-meta','')},
+      mediaPage=${akariMediaPage}
+    "
+  >
+    <header class="article-hero media-article-hero">
+      <div class="article-hero-copy" data-hero-copy>
+        <a
+          class="back-link"
+          th:href="${mediaPage != null ? mediaPage.status.permalink : '/'}"
+        >
+          <span class="i-lucide-arrow-left"></span><span th:text="#{media.back}"
+            >返回媒体室</span
+          >
+        </a>
+        <p class="eyebrow">
+          <span
+            th:text="${mediaType == 'listening' ? #messages.msg('media.listening') : (mediaType == 'watching' ? #messages.msg('media.watching') : #messages.msg('media.reading'))}"
+            >MEDIA</span
+          >
+          <span
+            th:if="${(mediaType == 'listening' and not #strings.isEmpty(mediaUrl)) or not #strings.isEmpty(mediaProgress)}"
+          >
+            ·
+          </span>
+          <span
+            th:if="${mediaType == 'listening' and not #strings.isEmpty(mediaUrl)}"
+            data-media-duration
+            th:data-audio-src="${mediaUrl}">--:--</span
+          >
+          <span
+            th:if="${mediaType != 'listening' and not #strings.isEmpty(mediaProgress)}"
+            th:text="${mediaProgress}">9.0</span
+          >
+        </p>
+        <h1 th:text="${post.spec.title}">Media title</h1>
+        <p th:text="${mediaSubtitle}">Media subtitle</p>
+        <p
+          class="media-meta-line"
+          th:unless="${#strings.isEmpty(mediaMeta)}"
+          th:text="${mediaMeta}"
+        >
+          Media metadata
+        </p>
+        <div class="media-feature-actions">
+          <button
+            class="primary-button audio-toggle"
+            th:if="${mediaType == 'listening' and not #strings.isEmpty(mediaUrl)}"
+            type="button"
+            data-audio-toggle
+            th:data-audio-id="|post:${post.metadata.name}|"
+            th:data-audio-src="${mediaUrl}"
+            th:data-audio-title="${post.spec.title}"
+            th:data-audio-artist="${post.owner != null ? post.owner.displayName : site.title}"
+            th:data-audio-artwork="${#strings.isEmpty(post.spec.cover) ? #theme.assets('/images/akari-cover-listening.jpg') : thumbnail.gen(post.spec.cover,'m')}"
+            th:aria-label="#{media.play(${post.spec.title})}"
+            th:data-play-label="#{media.play(${post.spec.title})}"
+            th:data-pause-label="#{media.pause(${post.spec.title})}"
+            th:data-play-text="#{media.listen}"
+            th:data-pause-text="#{media.pauseAction}"
+          >
+            <span class="i-lucide-play" data-audio-icon></span><span
+              data-audio-label
+              th:text="#{media.listen}">立即播放</span
+            >
+          </button>
+        </div>
+
+        <video
+          class="media-hero-video"
+          th:if="${mediaType == 'watching' and not #strings.isEmpty(mediaUrl)}"
+          th:src="${mediaUrl}"
+          controls
+          preload="metadata"></video>
+      </div>
+      <img
+        th:src="${#strings.isEmpty(post.spec.cover)
+          ? (mediaType == 'listening' ? #theme.assets('/images/akari-cover-listening.jpg') : (mediaType == 'watching' ? #theme.assets('/images/akari-cover-cinema.jpg') : #theme.assets('/images/akari-cover-reading.jpg')))
+          : thumbnail.gen(post.spec.cover,'xl')}"
+        th:data-fallback-src="${mediaType == 'listening' ? #theme.assets('/images/akari-cover-listening.jpg') : (mediaType == 'watching' ? #theme.assets('/images/akari-cover-cinema.jpg') : #theme.assets('/images/akari-cover-reading.jpg'))}"
+        th:alt="${post.spec.title}"
+        fetchpriority="high"
+        data-hero-scene
+      />
+    </header>
+
+    <div class="article-layout">
+      <div class="article-body" data-prose>
+        <akari-halo-tag-th-block th:utext="${post.content.content}"
+        ></akari-halo-tag-th-block>
+        <div class="tag-row">
+          <a
+            th:each="tag : ${post.tags}"
+            th:href="${tag.status.permalink}"
+            th:text="|# ${tag.spec.displayName}|"># media</a
+          >
+        </div>
+      </div>
+      <aside class="article-toc" data-toc-aside th:aria-label="#{post.toc}">
+        <span data-toc-title th:text="#{post.toc}">本文目录</span>
+        <nav data-toc></nav>
+        <section
+          class="article-media-index"
+          data-article-media-index
+          hidden
+          th:data-primary-audio-src="${mediaType == 'listening' ? mediaUrl : ''}"
+          th:data-article-title="${post.spec.title}"
+          th:data-article-artist="${post.owner != null ? post.owner.displayName : site.title}"
+          th:data-article-artwork="${#strings.isEmpty(post.spec.cover) ? '' : thumbnail.gen(post.spec.cover,'m')}"
+          th:data-media-heading="#{post.audioIndex}"
+          th:data-play-label="#{post.audio.play}"
+          th:data-pause-label="#{post.audio.pause}"
+          th:data-untitled-label="#{post.audio.untitled}"
+        >
+          <span data-article-media-title th:text="#{post.audioIndex}"
+            >随文音频</span
+          >
+          <div data-article-media-list></div>
+        </section>
+      </aside>
+    </div>
+
+    <section class="article-afterword">
+      <nav
+        class="article-navigation"
+        th:with="cursor=${postFinder.cursor(post.metadata.name)}"
+      >
+        <a
+          class="is-previous"
+          th:if="${cursor.hasPrevious()}"
+          th:href="${cursor.previous.status.permalink}"
+        >
+          <small
+            ><span class="i-lucide-arrow-left"></span><span
+              th:text="#{post.previous}">上一篇</span
+            ></small
+          >
+          <strong th:text="${cursor.previous.spec.title}">Previous</strong>
+        </a>
+        <a
+          class="is-next"
+          th:if="${cursor.hasNext()}"
+          th:href="${cursor.next.status.permalink}"
+        >
+          <small
+            ><span th:text="#{post.next}">下一篇</span><span
+              class="i-lucide-arrow-right"></span></small
+          >
+          <strong th:text="${cursor.next.spec.title}">Next</strong>
+        </a>
+      </nav>
+      <ArticleComments />
+    </section>
+  </article>
+</BaseLayout>

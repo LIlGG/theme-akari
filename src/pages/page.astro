@@ -1,0 +1,57 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/page.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${singlePage.spec.title}",
+    titleFallback: "Page",
+    descriptionExpression:
+      "${not #strings.isEmpty(singlePage.status.excerpt) ? singlePage.status.excerpt : site.seo.description}",
+    canonicalExpression: "${site.url + singlePage.status.permalink}",
+    schemaType: "WebPage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${singlePage.spec.title} · ${site.title}|">Page</title>
+  </Fragment>
+
+  <article class="page-view inner-view is-visible" data-page="page">
+    <div class="inner-shell">
+      <header class="page-intro" data-hero-copy>
+        <p class="eyebrow">
+          <span>SINGLE PAGE</span> · <akari-halo-tag-th-block
+            th:text="${site.title}">Site</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="${singlePage.spec.title}">Page title</h1>
+        <p th:text="${singlePage.status.excerpt}">Excerpt</p>
+      </header>
+      <div class="article-layout page-article-layout">
+        <div class="article-body" data-prose>
+          <akari-halo-tag-th-block th:utext="${singlePage.content.content}"
+          ></akari-halo-tag-th-block>
+        </div>
+        <aside class="article-toc" data-toc-aside th:aria-label="#{post.toc}">
+          <span th:text="#{post.toc}">本文目录</span>
+          <nav data-toc></nav>
+        </aside>
+      </div>
+      <section class="comment-preview" th:if="${haloCommentEnabled}">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">RESPONSES</p><h2 th:text="#{post.comments}">
+              回应
+            </h2>
+          </div>
+        </div>
+        <akari-halo-tag-halo-comment
+          group="content.halo.run"
+          kind="SinglePage"
+          th:attr="name=${singlePage.metadata.name}"
+        ></akari-halo-tag-halo-comment>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

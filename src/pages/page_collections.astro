@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/taxonomy.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${singlePage.spec.title}",
+    titleFallback: "Collections",
+    descriptionExpression:
+      "${not #strings.isEmpty(singlePage.status.excerpt) ? singlePage.status.excerpt : site.seo.description}",
+    canonicalExpression: "${site.url + singlePage.status.permalink}",
+    schemaType: "CollectionPage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${singlePage.spec.title} · ${site.title}|">
+      Collections
+    </title>
+  </Fragment>
+
+  <section class="page-view inner-view is-visible" data-page="collections">
+    <div class="inner-shell">
+      <header class="page-intro" data-reveal>
+        <p class="eyebrow">
+          <span>COLLECTIONS</span> · <akari-halo-tag-th-block
+            th:text="#{collections.eyebrow}">兴趣抽屉</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="${singlePage.spec.title}">按喜欢的事来找。</h1>
+        <p th:text="${singlePage.status.excerpt}">
+          分类回答“这篇是什么”，标签记录“它为什么值得被记住”。
+        </p>
+      </header>
+      <div class="category-board">
+        <a
+          class="category-card"
+          th:each="category,stat : ${categoryFinder.listAll()}"
+          th:classappend="${stat.index % 4 == 0 ? ' category-travel' : (stat.index % 4 == 1 ? ' category-life' : (stat.index % 4 == 2 ? ' category-collection' : ' category-create'))}"
+          th:with="fallbackCover=${stat.index % 4 == 0
+            ? #theme.assets('/images/akari-cover-journey.jpg')
+            : (stat.index % 4 == 1
+              ? #theme.assets('/images/akari-hero-evening.jpg')
+              : (stat.index % 4 == 2
+                ? #theme.assets('/images/akari-cover-reading.jpg')
+                : #theme.assets('/images/akari-cover-journal.jpg')))}"
+          th:href="${category.status.permalink}"
+        >
+          <img
+            th:src="${not #strings.isEmpty(category.spec.cover) ? thumbnail.gen(category.spec.cover,'m') : fallbackCover}"
+            th:data-fallback-src="${fallbackCover}"
+            th:alt="${category.spec.displayName}"
+            loading="lazy"
+          />
+          <span>
+            <span class="i-lucide-folder-heart"></span>
+            <small th:text="|${category.postCount} STORIES|">14 STORIES</small>
+            <strong th:text="${category.spec.displayName}">旅行</strong>
+            <em th:text="${category.spec.description}"
+              >沿海电车、旧街道与走错的路</em
+            >
+          </span>
+        </a>
+      </div>
+      <section
+        class="tag-drawer"
+        aria-labelledby="tag-drawer-title"
+        data-reveal
+        th:with="allTags=${tagFinder.listAll()},visibleTagCount=${#lists.size(allTags)}"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="kicker">TAG DRAWER</p><h2
+              id="tag-drawer-title"
+              th:text="#{collections.tags(${visibleTagCount})}"
+            >
+              十八枚常用标签
+            </h2>
+          </div>
+        </div>
+        <div class="tag-cloud">
+          <a th:each="tag : ${allTags}" th:href="${tag.status.permalink}">
+            <span th:text="|# ${tag.spec.displayName}|"># 镰仓</span><small
+              th:text="${tag.postCount}">8</small
+            >
+          </a>
+        </div>
+        <div class="tag-result">
+          <span class="i-lucide-sparkles"></span><span th:text="#{tags.hint}"
+            >选一枚标签，看看它会带你去哪里。</span
+          >
+        </div>
+      </section>
+    </div>
+  </section>
+</BaseLayout>
