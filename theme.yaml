@@ -2,12 +2,19 @@ apiVersion: theme.halo.run/v1alpha1
 kind: Theme
 metadata:
   name: theme-akari
+  annotations:
+    "store.halo.run/app-id": "app-8rojpuw1"
+    "store.halo.run/recommended-apps": '["app-YXyaD", "app-BmQJW", "app-SnwWD", "app-hfbQg", "app-DlacW"]'
 spec:
   displayName: 晚灯小屋 Akari
   author:
-    name: Akari Contributors
+    name: Takagi
+    website: https://github.com/LIlGG
   description: 温馨、富媒体、具有二次元色彩的 Halo 个人博客主题。
   logo: /themes/theme-akari/assets/images/akari-logo.svg
+  homepage: https://www.halo.run/store/apps/app-8rojpuw1
+  repo: https://github.com/LIlGG/theme-akari
+  issues: https://github.com/LIlGG/theme-akari/issues
   settingName: theme-akari-setting
   configMapName: theme-akari-configMap
   customTemplates:
@@ -38,4 +45,4 @@ spec:
   requires: ">=2.25.0"
   license:
     - name: GPL-3.0
-      url: https://www.gnu.org/licenses/gpl-3.0.html
+      url: https://github.com/LIlGG/theme-akari/blob/main/LICENSE

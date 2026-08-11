@@ -1,8 +1,8 @@
 # GitHub Release 与 Halo 应用市场发布
 
-Akari 使用 Halo 官方维护的可复用工作流发布主题。发布一个 GitHub Release 后，发布工作流会构建主题 ZIP、把 ZIP 添加到该 Release；配置应用市场凭据后，还会同步创建 Halo 应用市场版本。
+Akari 使用 Halo 官方维护的可复用工作流发布主题。发布一个 GitHub Release 后，发布工作流会构建主题 ZIP、把 ZIP 添加到该 Release，并同步创建 Halo 应用市场版本。
 
-> 当前仓库地址和 Halo 应用 ID 尚未最终配置时，只把本文作为发布准备清单，不要写入占位地址或虚构 ID。
+Akari 的应用市场 ID 为 `app-8rojpuw1`，已经同时固化在 `theme.yaml` 与发布工作流中。应用 ID 是公开标识，不作为 Secret 保存。该应用由 Halo 管理员维护，不设置首次审核等待阶段。
 
 ## 自动化边界
 
@@ -12,45 +12,38 @@ Akari 使用 Halo 官方维护的可复用工作流发布主题。发布一个 G
 - 检查安装包完整性，并阻止源码、原型和设计资料进入 ZIP；
 - 校验 GitHub Release 标签、`package.json` 和 `theme.yaml` 的版本一致；
 - 将主题 ZIP 上传为 GitHub Release 资产；
-- 将已经发布的 GitHub Release 同步为 Halo 应用市场的新版本。
+- 将 GitHub Release 同步为 Halo 应用市场的新版本。
 
 不能自动完成：
 
-- 首次申请 Halo 应用市场开发者资格；
-- 首次创建应用、填写商店资料和通过应用审核；
+- 创建和维护应用市场中的名称、Logo、截图、README 与外部链接；
 - 代替维护者决定版本号和撰写发行说明。
 
 ## 一次性配置
 
 ### 1. 创建应用市场应用
 
-先在 Halo 官网开发者中心创建主题应用，取得类似 `app-AbCdE` 的应用 ID。应用市场开发者中心目前并非对所有账号开放，需要先取得相应权限。
+Akari 已经在 Halo 应用市场创建主题应用，ID 为 `app-8rojpuw1`。发布前仍需确认应用名称、Logo、截图、README、外部链接和版本说明已经填写完整。
 
 ### 2. 创建个人令牌
 
-在 Halo 官网创建个人访问令牌，并授予“版本管理”权限。令牌只保存到 GitHub，不应写入仓库文件。
+在 Halo 官网创建个人访问令牌，并授予“应用市场开发者 → 版本管理”权限。令牌只保存到 GitHub，不应写入仓库文件。
 
 ### 3. 配置 GitHub Actions
 
 进入 GitHub 仓库的 **Settings → Secrets and variables → Actions**：
 
-| 类型                | 名称          | 内容                             |
-| ------------------- | ------------- | -------------------------------- |
-| Repository variable | `HALO_APP_ID` | Halo 应用市场中的应用 ID         |
-| Repository secret   | `HALO_PAT`    | 具有版本管理权限的 Halo 个人令牌 |
+| 类型              | 名称       | 内容                             |
+| ----------------- | ---------- | -------------------------------- |
+| Repository secret | `HALO_PAT` | 具有版本管理权限的 Halo 个人令牌 |
 
 也可以在已经关联远程仓库的本地目录中使用 GitHub CLI 配置：
 
 ```bash
-gh variable set HALO_APP_ID --body "app-AbCdE"
 gh secret set HALO_PAT
 ```
 
-第二条命令会安全地提示输入令牌，不要把令牌直接写进命令历史。
-
-如果未配置 `HALO_APP_ID`，工作流仍会构建 ZIP 并上传到 GitHub Release，只会跳过应用市场同步。
-
-取得应用 ID 后，还应在 `theme.yaml` 的 `metadata.annotations` 中加入应用市场标识，并补全 `spec.homepage`、`spec.repo` 与 `spec.issues`。这些字段必须使用真实地址，因此仓库中不预置占位值。
+命令会安全地提示输入令牌，不要把令牌直接写进命令历史、提交或聊天记录。未配置 `HALO_PAT` 时，发布工作流会在构建前明确失败，避免产生 GitHub Release 与应用市场版本不同步的半完成状态。
 
 ## 发布版本
 
@@ -75,7 +68,6 @@ gh release create v0.2.0 \
 
 - **版本不一致**：统一 Release 标签、`package.json` 和 `theme.yaml` 后重新发布。
 - **缺少 `HALO_PAT`**：检查 GitHub Actions Secret 名称及令牌的版本管理权限。
-- **只发布到 GitHub、不发布应用市场**：移除仓库变量 `HALO_APP_ID`，重新运行发布工作流。
 - **构建失败**：先在本地运行 `pnpm install --frozen-lockfile && pnpm build`，修复后再重新运行 Actions。
 
 不要把失败 Release 上的旧 ZIP 手工提交到应用市场。应修复对应提交并创建正确的新版本，确保 GitHub Release、源代码和应用市场产物可以相互追溯。

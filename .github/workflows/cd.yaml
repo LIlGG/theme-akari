@@ -38,12 +38,11 @@ jobs:
           fi
 
       - name: Check App Store credentials
-        if: ${{ vars.HALO_APP_ID != '' }}
         env:
           HALO_PAT: ${{ secrets.HALO_PAT }}
         run: |
           if [[ -z "$HALO_PAT" ]]; then
-            echo "::error::HALO_APP_ID is configured, but the HALO_PAT secret is missing."
+            echo "::error::The HALO_PAT secret is required to publish app-8rojpuw1."
             exit 1
           fi
 
@@ -56,7 +55,6 @@ jobs:
     secrets:
       halo-pat: ${{ secrets.HALO_PAT }}
     with:
-      app-id: ${{ vars.HALO_APP_ID || 'not-configured-app-id' }}
-      skip-appstore-release: ${{ vars.HALO_APP_ID == '' }}
+      app-id: app-8rojpuw1
       node-version: 24
       pnpm-version: ""

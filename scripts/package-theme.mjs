@@ -18,7 +18,6 @@ const packageEntries = [
   "docs/images",
   "README.md",
   "LICENSE",
-  "THIRD_PARTY_NOTICES.md",
   "theme.yaml",
   "settings.yaml",
   "annotations.yaml",

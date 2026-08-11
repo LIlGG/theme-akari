@@ -51,7 +51,7 @@ jobs:
           archive="${archives[0]}"
           unzip -t "$archive"
 
-          for required_file in theme.yaml settings.yaml annotations.yaml README.md templates/index.html; do
+          for required_file in theme.yaml settings.yaml annotations.yaml README.md LICENSE docs/USER_GUIDE.md templates/index.html; do
             if ! unzip -Z1 "$archive" | grep -Fxq "$required_file"; then
               echo "::error::Missing required package entry: $required_file"
               exit 1
