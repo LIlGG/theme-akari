@@ -36,7 +36,7 @@ import "../../styles/entries/error.css";
               th:text="#{error.backHome}">Home</span
             ></a
           >
-          <a class="text-button" th:href="${site.routes.archivesUri}"
+          <a class="text-button" th:href="@{${site.routes.archivesUri}}"
             ><span th:text="#{nav.archives}">Archives</span><span
               class="i-lucide-arrow-right"></span></a
           >

@@ -8,7 +8,7 @@ import "../styles/entries/taxonomy.css";
     titleExpression: "${#messages.msg('tags.title')}",
     titleFallback: "Tags",
     descriptionExpression: "${#messages.msg('tags.subtitle')}",
-    canonicalExpression: "${site.url + '/tags'}",
+    canonicalExpression: "${site.url + site.routes.tagsUri}",
     schemaType: "CollectionPage",
   }}
 >
@@ -35,7 +35,8 @@ import "../styles/entries/taxonomy.css";
         <div class="tag-cloud">
           <a
             th:each="tag : ${tags}"
-            th:href="${tag.status.permalink}"
+            th:if="${not #strings.isEmpty(tag.status.permalink)}"
+            th:href="@{${tag.status.permalink}}"
             th:style="|--tag-color:${tag.spec.color ?: '#d96872'}|"
           >
             <span th:text="|# ${tag.spec.displayName}|"># tag</span><small

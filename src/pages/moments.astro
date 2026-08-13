@@ -9,7 +9,7 @@ import Pagination from "../components/content/Pagination.astro";
     titleExpression: "${title ?: #messages.msg('moments.title')}",
     titleFallback: "Moments",
     descriptionExpression: "${#messages.msg('moments.subtitle')}",
-    canonicalExpression: "${site.url + '/moments'}",
+    canonicalExpression: "${site.url + akariMomentsPath}",
     schemaType: "CollectionPage",
   }}
 >
@@ -43,13 +43,13 @@ import Pagination from "../components/content/Pagination.astro";
       >
         <a
           class="filter-chip is-active"
-          th:href="@{/moments}"
+          th:href="@{${akariMomentsPath}}"
           th:text="#{photos.all}">全部</a
         >
         <a
           class="filter-chip"
           th:each="tag : ${tags}"
-          th:href="@{|/moments?tag=${tag.name}|}"
+          th:href="@{${akariMomentsPath}(tag=${tag.name})}"
           th:text="|# ${tag.name}|">标签</a
         >
       </nav>
@@ -119,7 +119,7 @@ import Pagination from "../components/content/Pagination.astro";
             </div>
             <a
               class="text-button"
-              th:href="@{|/moments/${moment.metadata.name}|}"
+              th:href="@{|${akariMomentsPath}/${moment.metadata.name}|}"
             >
               <span th:text="#{media.open}">打开札记</span><span
                 class="i-lucide-arrow-up-right"></span>
@@ -140,7 +140,7 @@ import Pagination from "../components/content/Pagination.astro";
           <a
             class="moment-continuation-action"
             th:if="${moments.hasNext()}"
-            th:href="${moments.nextUrl}"
+            th:href="@{${moments.nextUrl}}"
             data-load-more-moments
             data-no-page-transition
             th:data-loading-label="#{moments.loading}"

@@ -101,8 +101,14 @@ export function initPhotoGroupNavigation() {
   if (!filters) {
     return;
   }
+  const photosUrl = filters.dataset.photosUrl;
+  if (!photosUrl) {
+    return;
+  }
+  const photosDestination = new URL(photosUrl, window.location.href);
   const isDestination = (url: URL) =>
-    url.origin === window.location.origin && normalizePath(url) === "/photos";
+    url.origin === photosDestination.origin &&
+    normalizePath(url) === normalizePath(photosDestination);
 
   photoGroupLifecycle = initPartialFilterNavigation({
     filterLinkSelector: "[data-photo-filters] a[href]",

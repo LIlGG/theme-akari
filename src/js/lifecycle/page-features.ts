@@ -60,6 +60,11 @@ const features: PageFeatureDefinition[] = [
     load: () => import("../pages/archives"),
   },
   {
+    id: "links",
+    matches: pageIs("links"),
+    load: () => import("../pages/links"),
+  },
+  {
     id: "article",
     matches: pageIs("post", "media-post"),
     load: () => import("../pages/article"),

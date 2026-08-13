@@ -100,7 +100,7 @@ import "../styles/entries/about.css";
           <a
             class="primary-button"
             th:if="${akariGuestbookPage != null}"
-            th:href="${akariGuestbookUrl}"
+            th:href="@{${akariGuestbookUrl}}"
           >
             <span th:text="#{about.greet}">向屋主打个招呼</span><span
               class="i-lucide-send"></span>

@@ -81,14 +81,14 @@ import "../styles/entries/home.css";
             站点主人简介
           </p>
           <div class="hero-actions">
-            <a class="primary-button" th:href="${akariPostsUrl}">
+            <a class="primary-button" th:href="@{${akariPostsUrl}}">
               <span th:text="#{hero.posts}">读最近手记</span>
               <span class="i-lucide-arrow-up-right" aria-hidden="true"></span>
             </a>
             <a
               class="text-button"
               th:if="${pluginFinder.available('PluginPhotos')}"
-              th:href="@{/photos}"
+              th:href="@{${akariPhotosPath}}"
             >
               <span th:text="#{hero.photos}">去相册散步</span>
               <span class="i-lucide-arrow-right" aria-hidden="true"></span>
@@ -227,7 +227,7 @@ import "../styles/entries/home.css";
           <span th:text="#{home.today}">今天也在认真生活，最近更新了 </span>
           <a
             class="inline-link"
-            th:href="${latestPosts.items[0].status.permalink}"
+            th:href="@{${latestPosts.items[0].status.permalink}}"
             th:text="|《${latestPosts.items[0].spec.title}》|"
           >
             《沿海电车的第七站》
@@ -268,7 +268,7 @@ import "../styles/entries/home.css";
           >
             <a
               class="media-button"
-              th:href="${post.status.permalink}"
+              th:href="@{${post.status.permalink}}"
               th:aria-label="${post.spec.title}"
             >
               <img
@@ -298,7 +298,7 @@ import "../styles/entries/home.css";
               <p
                 class="meta"
                 data-home-reading-time
-                th:data-reading-url="${post.status.permalink}"
+                th:data-reading-url="@{${post.status.permalink}}"
                 th:data-reading-fallback="|${post.spec.title} ${post.status.excerpt}|"
                 th:data-reading-template="${#messages.msg('home.latest.reading','__MINUTES__')}"
               >
@@ -320,7 +320,7 @@ import "../styles/entries/home.css";
               <h3>
                 <a
                   class="title-link"
-                  th:href="${post.status.permalink}"
+                  th:href="@{${post.status.permalink}}"
                   th:text="${post.spec.title}">沿海电车的第七站</a
                 >
               </h3>
@@ -330,7 +330,8 @@ import "../styles/entries/home.css";
               <div class="tag-row">
                 <a
                   th:each="tag : ${post.tags}"
-                  th:href="${tag.status.permalink}"
+                  th:if="${not #strings.isEmpty(tag.status.permalink)}"
+                  th:href="@{${tag.status.permalink}}"
                   th:text="|# ${tag.spec.displayName}|"># 镰仓</a
                 >
               </div>
@@ -370,7 +371,7 @@ import "../styles/entries/home.css";
             </div>
             <a
               class="now-playing-cover"
-              th:href="${secondaryPost.status.permalink}"
+              th:href="@{${secondaryPost.status.permalink}}"
             >
               <img
                 th:src="${#strings.isEmpty(secondaryPost.spec.cover)
@@ -387,7 +388,7 @@ import "../styles/entries/home.css";
               <div>
                 <strong
                   ><a
-                    th:href="${secondaryPost.status.permalink}"
+                    th:href="@{${secondaryPost.status.permalink}}"
                     th:text="${secondaryPost.spec.title}">最近的媒体札记</a
                   ></strong
                 >
@@ -449,7 +450,7 @@ import "../styles/entries/home.css";
               </div>
               <a
                 class="text-button"
-                th:href="@{|/moments/${moment.metadata.name}|}"
+                th:href="@{|${akariMomentsPath}/${moment.metadata.name}|}"
               >
                 <span th:text="#{home.moreMoments}">继续看碎片</span><span
                   class="i-lucide-arrow-right"
@@ -482,7 +483,10 @@ import "../styles/entries/home.css";
                 <span class="i-lucide-sparkles" aria-hidden="true"></span>
               </div>
               <p th:text="${tertiaryPost.status.excerpt}">最近写下的片段。</p>
-              <a class="text-button" th:href="${tertiaryPost.status.permalink}">
+              <a
+                class="text-button"
+                th:href="@{${tertiaryPost.status.permalink}}"
+              >
                 <span th:text="#{media.open}">打开札记</span><span
                   class="i-lucide-arrow-right"
                   aria-hidden="true"></span>
@@ -516,7 +520,10 @@ import "../styles/entries/home.css";
               <span class="i-lucide-sparkles" aria-hidden="true"></span>
             </div>
             <p th:text="${tertiaryPost.status.excerpt}">最近写下的片段。</p>
-            <a class="text-button" th:href="${tertiaryPost.status.permalink}">
+            <a
+              class="text-button"
+              th:href="@{${tertiaryPost.status.permalink}}"
+            >
               <span th:text="#{media.open}">打开札记</span><span
                 class="i-lucide-arrow-right"
                 aria-hidden="true"></span>
@@ -540,7 +547,7 @@ import "../styles/entries/home.css";
               </p>
               <h3>
                 <a
-                  th:href="${shelfPost.status.permalink}"
+                  th:href="@{${shelfPost.status.permalink}}"
                   th:text="${shelfPost.spec.title}">最近收进书架的故事</a
                 >
               </h3>
@@ -548,7 +555,7 @@ import "../styles/entries/home.css";
                 书架不只展示评分，也保存当时为什么喜欢。
               </p>
             </div>
-            <a class="shelf-cover" th:href="${shelfPost.status.permalink}">
+            <a class="shelf-cover" th:href="@{${shelfPost.status.permalink}}">
               <img
                 th:src="${#strings.isEmpty(shelfPost.spec.cover) ? #theme.assets('/images/akari-cover-reading.jpg') : thumbnail.gen(shelfPost.spec.cover,'m')}"
                 th:data-fallback-src="${#theme.assets('/images/akari-cover-reading.jpg')}"
@@ -577,7 +584,7 @@ import "../styles/entries/home.css";
               最近写下的
             </h2>
           </div>
-          <a class="text-button" th:href="${akariPostsUrl}"
+          <a class="text-button" th:href="@{${akariPostsUrl}}"
             ><span th:text="#{home.allPosts}">全部手记</span><span
               class="i-lucide-arrow-right"></span></a
           >
@@ -602,7 +609,7 @@ import "../styles/entries/home.css";
                     : #theme.assets('/images/akari-cover-cinema.jpg')))}
             "
           >
-            <a class="post-image" th:href="${post.status.permalink}">
+            <a class="post-image" th:href="@{${post.status.permalink}}">
               <img
                 th:src="${not #strings.isEmpty(post.spec.cover) ? thumbnail.gen(post.spec.cover,'m') : fallbackCover}"
                 th:data-fallback-src="${fallbackCover}"
@@ -620,7 +627,7 @@ import "../styles/entries/home.css";
               <p
                 class="meta"
                 data-home-reading-time
-                th:data-reading-url="${post.status.permalink}"
+                th:data-reading-url="@{${post.status.permalink}}"
                 th:data-reading-fallback="|${post.spec.title} ${post.status.excerpt}|"
                 th:data-reading-template="${#messages.msg('home.latest.reading','__MINUTES__')}"
               >
@@ -639,7 +646,7 @@ import "../styles/entries/home.css";
               <h3>
                 <a
                   class="title-link"
-                  th:href="${post.status.permalink}"
+                  th:href="@{${post.status.permalink}}"
                   th:text="${post.spec.title}">晚风吹进房间之后</a
                 >
               </h3>
@@ -674,7 +681,7 @@ import "../styles/entries/home.css";
           <a
             class="media-link media-link-wide"
             th:if="${pluginFinder.available('PluginPhotos')}"
-            th:href="@{/photos}"
+            th:href="@{${akariPhotosPath}}"
           >
             <img
               th:src="${homePhotos != null and homePhotos.total > 0 ? thumbnail.gen(homePhotos.items[0].spec.url,'m') : (not #strings.isEmpty(theme.config.hero.background_image) ? thumbnail.gen(theme.config.hero.background_image,'m') : #theme.assets('/images/akari-hero-evening.jpg'))}"
@@ -695,7 +702,7 @@ import "../styles/entries/home.css";
           <a
             class="media-link"
             th:if="${pluginFinder.available('PluginMoments')}"
-            th:href="@{/moments}"
+            th:href="@{${akariMomentsPath}}"
           >
             <img
               th:src="${homeMomentPhoto != null ? thumbnail.gen(homeMomentPhoto.url,'m') : (secondaryPost != null and not #strings.isEmpty(secondaryPost.spec.cover) ? thumbnail.gen(secondaryPost.spec.cover,'m') : #theme.assets('/images/akari-cover-listening.jpg'))}"
@@ -712,7 +719,7 @@ import "../styles/entries/home.css";
           <a
             class="media-link"
             th:if="${mediaPage != null}"
-            th:href="${mediaPage.status.permalink}"
+            th:href="@{${mediaPage.status.permalink}}"
           >
             <img
               th:src="${shelfPost != null and not #strings.isEmpty(shelfPost.spec.cover) ? thumbnail.gen(shelfPost.spec.cover,'m') : #theme.assets('/images/akari-cover-reading.jpg')}"
@@ -751,14 +758,14 @@ import "../styles/entries/home.css";
         </div>
 
         <div class="house-map-grid">
-          <a class="room-card" th:href="${site.routes.archivesUri}">
+          <a class="room-card" th:href="@{${site.routes.archivesUri}}">
             <span class="room-icon room-icon-coral"
               ><span class="i-lucide-archive" aria-hidden="true"></span></span
             >
             <span>
               <small
                 data-home-archive-meta
-                th:data-archive-url="${site.routes.archivesUri}"
+                th:data-archive-url="@{${site.routes.archivesUri}}"
                 th:data-post-count="${latestPosts.total}"
                 th:data-count-template="${#messages.msg('home.directory.archives.meta','__POSTS__','__YEARS__')}"
                 th:text="${#messages.msg('home.directory.archives.meta',latestPosts.total,'…')}"
@@ -774,7 +781,7 @@ import "../styles/entries/home.css";
 
           <a
             class="room-card"
-            th:href="${collectionsPage != null ? collectionsPage.status.permalink : site.routes.categoriesUri}"
+            th:href="@{${collectionsPage != null ? collectionsPage.status.permalink : site.routes.categoriesUri}}"
           >
             <span class="room-icon room-icon-mint"
               ><span class="i-lucide-tags" aria-hidden="true"></span></span
@@ -795,7 +802,7 @@ import "../styles/entries/home.css";
           <a
             class="room-card"
             th:if="${pluginFinder.available('PluginLinks')}"
-            th:href="@{/links}"
+            th:href="@{${akariLinksPath}}"
           >
             <span class="room-icon room-icon-sun"
               ><span class="i-lucide-users-round" aria-hidden="true"
@@ -816,7 +823,7 @@ import "../styles/entries/home.css";
           <a
             class="room-card"
             th:if="${akariGuestbookPage != null}"
-            th:href="${akariGuestbookUrl}"
+            th:href="@{${akariGuestbookUrl}}"
           >
             <span class="room-icon room-icon-berry"
               ><span class="i-lucide-heart" aria-hidden="true"></span></span
@@ -824,7 +831,7 @@ import "../styles/entries/home.css";
             <span>
               <small
                 data-home-guestbook-meta
-                th:data-guestbook-url="${akariGuestbookUrl}"
+                th:data-guestbook-url="@{${akariGuestbookUrl}}"
                 th:data-count-template="${#messages.msg('home.directory.guestbook.meta','__COUNT__')}"
                 th:text="${#messages.msg('home.directory.guestbook.meta','…')}"
                 >… 张纸条</small

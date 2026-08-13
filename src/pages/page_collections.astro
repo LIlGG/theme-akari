@@ -36,6 +36,7 @@ import "../styles/entries/taxonomy.css";
         <a
           class="category-card"
           th:each="category,stat : ${categoryFinder.listAll()}"
+          th:if="${not #strings.isEmpty(category.status.permalink)}"
           th:classappend="${stat.index % 4 == 0 ? ' category-travel' : (stat.index % 4 == 1 ? ' category-life' : (stat.index % 4 == 2 ? ' category-collection' : ' category-create'))}"
           th:with="fallbackCover=${stat.index % 4 == 0
             ? #theme.assets('/images/akari-cover-journey.jpg')
@@ -44,7 +45,7 @@ import "../styles/entries/taxonomy.css";
               : (stat.index % 4 == 2
                 ? #theme.assets('/images/akari-cover-reading.jpg')
                 : #theme.assets('/images/akari-cover-journal.jpg')))}"
-          th:href="${category.status.permalink}"
+          th:href="@{${category.status.permalink}}"
         >
           <img
             th:src="${not #strings.isEmpty(category.spec.cover) ? thumbnail.gen(category.spec.cover,'m') : fallbackCover}"
@@ -79,7 +80,11 @@ import "../styles/entries/taxonomy.css";
           </div>
         </div>
         <div class="tag-cloud">
-          <a th:each="tag : ${allTags}" th:href="${tag.status.permalink}">
+          <a
+            th:each="tag : ${allTags}"
+            th:if="${not #strings.isEmpty(tag.status.permalink)}"
+            th:href="@{${tag.status.permalink}}"
+          >
             <span th:text="|# ${tag.spec.displayName}|"># 镰仓</span><small
               th:text="${tag.postCount}">8</small
             >

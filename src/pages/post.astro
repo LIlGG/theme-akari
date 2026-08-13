@@ -33,7 +33,7 @@ import ArticleComments from "../components/content/ArticleComments.astro";
   >
     <header class="article-hero">
       <div class="article-hero-copy" data-hero-copy>
-        <a class="back-link" th:href="${akariPostsUrl}">
+        <a class="back-link" th:href="@{${akariPostsUrl}}">
           <span class="i-lucide-arrow-left"></span><span th:text="#{post.back}"
             >返回手记</span
           >
@@ -93,7 +93,8 @@ import ArticleComments from "../components/content/ArticleComments.astro";
         <div class="tag-row">
           <a
             th:each="tag : ${post.tags}"
-            th:href="${tag.status.permalink}"
+            th:if="${not #strings.isEmpty(tag.status.permalink)}"
+            th:href="@{${tag.status.permalink}}"
             th:text="|# ${tag.spec.displayName}|"># 镰仓</a
           >
         </div>
@@ -161,7 +162,7 @@ import ArticleComments from "../components/content/ArticleComments.astro";
           <a
             class="secondary-button"
             th:if="${not haloCommentEnabled and akariGuestbookPage != null}"
-            th:href="${akariGuestbookUrl}"
+            th:href="@{${akariGuestbookUrl}}"
             ><span class="i-lucide-heart"></span><span
               th:text="#{nav.guestbook}">去留言簿</span
             ></a
@@ -176,7 +177,7 @@ import ArticleComments from "../components/content/ArticleComments.astro";
         <a
           class="is-previous"
           th:if="${cursor.hasPrevious()}"
-          th:href="${cursor.previous.status.permalink}"
+          th:href="@{${cursor.previous.status.permalink}}"
         >
           <small
             ><span class="i-lucide-arrow-left"></span><span
@@ -190,7 +191,7 @@ import ArticleComments from "../components/content/ArticleComments.astro";
         <a
           class="is-next"
           th:if="${cursor.hasNext()}"
-          th:href="${cursor.next.status.permalink}"
+          th:href="@{${cursor.next.status.permalink}}"
         >
           <small
             ><span th:text="#{post.next}">下一篇</span><span

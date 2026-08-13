@@ -26,7 +26,7 @@ import "../styles/entries/listings.css";
       <header
         class="page-intro"
         data-posts-intro
-        th:data-archive-url="${site.routes.archivesUri}"
+        th:data-archive-url="@{${site.routes.archivesUri}}"
         th:data-post-count="${recent.total}"
         th:data-summary-template="${#messages.msg('posts.dynamicSummary','__CATEGORIES__','__POSTS__','__YEAR__')}"
         th:data-summary-without-year-template="${#messages.msg('posts.dynamicSummaryWithoutYear','__CATEGORIES__','__POSTS__')}"
@@ -58,19 +58,19 @@ import "../styles/entries/listings.css";
         class="filter-row"
         data-post-filters
         data-post-filter-mode="category"
-        th:data-posts-url="${akariPostsUrl}"
+        th:data-posts-url="@{${akariPostsUrl}}"
         th:aria-label="#{posts.filter}"
       >
         <a
           class="filter-chip is-active"
-          th:href="${akariPostsUrl}"
+          th:href="@{${akariPostsUrl}}"
           th:text="#{photos.all}">全部</a
         >
         <a
           class="filter-chip"
-          th:each="category,stat : ${categories}"
+          th:each="category,stat : ${categories.?[not #strings.isEmpty(status.permalink)]}"
           th:if="${stat.index < 5}"
-          th:href="${category.status.permalink}"
+          th:href="@{${category.status.permalink}}"
           th:text="${category.spec.displayName}">旅行</a
         >
       </nav>
@@ -79,19 +79,19 @@ import "../styles/entries/listings.css";
         class="filter-row"
         data-post-filters
         data-post-filter-mode="tag"
-        th:data-posts-url="${akariPostsUrl}"
+        th:data-posts-url="@{${akariPostsUrl}}"
         th:aria-label="#{posts.filter}"
       >
         <a
           class="filter-chip is-active"
-          th:href="|${akariPostsUrl}?filter=tags|"
+          th:href="@{${akariPostsUrl}(filter='tags')}"
           th:text="#{photos.all}">全部</a
         >
         <a
           class="filter-chip"
-          th:each="tag,stat : ${tagFinder.listAll()}"
+          th:each="tag,stat : ${tagFinder.listAll().?[not #strings.isEmpty(status.permalink)]}"
           th:if="${stat.index < 5}"
-          th:href="${tag.status.permalink}"
+          th:href="@{${tag.status.permalink}}"
           th:text="${tag.spec.displayName}">标签</a
         >
       </nav>
@@ -122,7 +122,7 @@ import "../styles/entries/listings.css";
             th:data-post-name="${post.metadata.name}"
             data-reveal
           >
-            <a th:href="${post.status.permalink}">
+            <a th:href="@{${post.status.permalink}}">
               <img
                 th:if="${not #strings.isEmpty(post.spec.cover)}"
                 th:src="${thumbnail.gen(post.spec.cover, 'm')}"
@@ -152,7 +152,7 @@ import "../styles/entries/listings.css";
               <h2>
                 <a
                   class="title-link"
-                  th:href="${post.status.permalink}"
+                  th:href="@{${post.status.permalink}}"
                   th:text="${post.spec.title}">沿海电车的第七站</a
                 >
               </h2>
@@ -197,7 +197,7 @@ import "../styles/entries/listings.css";
             th:classappend="${recent.total > 4 ? 'is-load-more-end' : ''}"
             th:hidden="${recent.total > 4}"
             data-load-more-end
-            th:href="${site.routes.archivesUri}"
+            th:href="@{${site.routes.archivesUri}}"
           >
             <span class="i-lucide-archive"></span><span
               th:text="#{nav.archives}">查看归档</span

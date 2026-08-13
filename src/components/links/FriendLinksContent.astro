@@ -1,3 +1,7 @@
+---
+import LinkApplication from "./LinkApplication.astro";
+---
+
 <header class="page-intro friends-intro" data-reveal>
   <div>
     <p
@@ -48,7 +52,7 @@
     <a
       class="friend-card"
       th:each="link,stat : ${linkGroup.links}"
-      th:href="${link.spec.url}"
+      th:href="@{${link.spec.url}}"
       target="_blank"
       rel="noopener noreferrer"
       data-reveal
@@ -84,8 +88,11 @@
     </a>
     <a
       class="friend-card friend-invite"
-      th:if="${groupStat.last and guestbookPage != null}"
-      th:href="${guestbookPage.status.permalink}"
+      th:if="${groupStat.last and akariLinkApplicationAvailable}"
+      href="#link-application"
+      data-link-application-trigger
+      aria-controls="link-application"
+      aria-expanded="false"
       data-reveal
     >
       <span class="friend-avatar"><span class="i-lucide-plus"></span></span>
@@ -95,16 +102,39 @@
         </p>
         <small th:text="#{links.applyLabel}">欢迎认真生活的个人博客</small>
         <p th:text="#{links.applyDescription}">
-          请先来留言簿坐一会儿，再交换彼此的门牌。
+          把站点地址写在门牌上，等一盏新灯在街角亮起。
         </p>
         <span class="friend-visit"
-          ><span th:text="#{links.applyAction}">去写小纸条</span>
+          ><span th:text="#{links.applyAction}">递交门牌</span>
+          <span class="i-lucide-arrow-down-right"></span></span
+        >
+      </div>
+    </a>
+    <a
+      class="friend-card friend-invite"
+      th:if="${groupStat.last and not akariLinkApplicationAvailable and guestbookPage != null}"
+      th:href="@{${guestbookPage.status.permalink}}"
+      data-reveal
+    >
+      <span class="friend-avatar"
+        ><span class="i-lucide-message-circle-heart"></span></span
+      >
+      <div>
+        <p><strong th:text="#{links.applyClosedTitle}">先来坐一会儿</strong></p>
+        <small th:text="#{links.applyClosedLabel}">友链申请暂未开放</small>
+        <p th:text="#{links.applyClosedDescription}">
+          也欢迎在留言簿留下一声问候。
+        </p>
+        <span class="friend-visit"
+          ><span th:text="#{links.applyClosedAction}">去留言簿</span>
           <span class="i-lucide-arrow-right"></span></span
         >
       </div>
     </a>
   </div>
 </section>
+
+<LinkApplication />
 
 <aside
   class="friend-note"

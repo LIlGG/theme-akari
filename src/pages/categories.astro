@@ -8,7 +8,7 @@ import "../styles/entries/taxonomy.css";
     titleExpression: "${#messages.msg('categories.title')}",
     titleFallback: "Categories",
     descriptionExpression: "${#messages.msg('categories.subtitle')}",
-    canonicalExpression: "${site.url + '/categories'}",
+    canonicalExpression: "${site.url + site.routes.categoriesUri}",
     schemaType: "CollectionPage",
   }}
 >
@@ -31,6 +31,7 @@ import "../styles/entries/taxonomy.css";
         <a
           class="category-card"
           th:each="category,stat : ${categories}"
+          th:if="${not #strings.isEmpty(category.status.permalink)}"
           th:classappend="${stat.index % 4 == 0 ? ' category-travel' : (stat.index % 4 == 1 ? ' category-life' : (stat.index % 4 == 2 ? ' category-collection' : ' category-create'))}"
           th:with="fallbackCover=${stat.index % 4 == 0
             ? #theme.assets('/images/akari-cover-journey.jpg')
@@ -39,7 +40,7 @@ import "../styles/entries/taxonomy.css";
               : (stat.index % 4 == 2
                 ? #theme.assets('/images/akari-cover-reading.jpg')
                 : #theme.assets('/images/akari-cover-journal.jpg')))}"
-          th:href="${category.status.permalink}"
+          th:href="@{${category.status.permalink}}"
           data-reveal
         >
           <img

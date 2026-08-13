@@ -1,0 +1,302 @@
+<section
+  id="link-application"
+  class="link-application"
+  data-link-application
+  th:if="${akariLinkApplicationAvailable}"
+  th:hidden="${#lists.isEmpty(param.message)}"
+  hidden
+  th:data-captcha-url="@{/apis/api.link.halo.run/v1alpha1/link-applications/captcha}"
+  th:data-submit-url="@{/apis/api.link.halo.run/v1alpha1/link-applications}"
+  th:data-label-captcha-loading="#{links.applicationCaptchaLoading}"
+  th:data-label-captcha-unavailable="#{links.applicationCaptchaUnavailable}"
+  th:data-label-disabled="#{links.applicationDisabled}"
+  th:data-label-invalid="#{links.applicationInvalid}"
+  th:data-label-invalid-captcha="#{links.applicationInvalidCaptcha}"
+  th:data-label-duplicate="#{links.applicationDuplicate}"
+  th:data-label-capacity="#{links.applicationCapacity}"
+  th:data-label-rate-limited="#{links.applicationRateLimited}"
+  th:data-label-unavailable="#{links.applicationUnavailable}"
+  th:data-label-network-error="#{links.applicationNetworkError}"
+  th:data-label-retry-after="#{links.applicationRetryAfter}"
+  th:data-label-success="#{links.applicationSuccess}"
+  th:data-label-submit="#{links.applicationSubmit}"
+  th:data-label-submitting="#{links.applicationSubmitting}"
+>
+  <aside
+    class="link-application-guide"
+    aria-labelledby="link-application-title"
+  >
+    <div class="link-application-stamp" aria-hidden="true">
+      <span class="i-lucide-mail-plus"></span>
+    </div>
+    <p class="kicker">OPEN CALL · FRIEND LINK</p>
+    <h2 id="link-application-title" th:text="#{links.applicationTitle}">
+      把你的门牌，递到窗前。
+    </h2>
+    <p class="link-application-intro" th:text="#{links.applicationIntro}">
+      如果你也在认真记录生活，欢迎留下地址。每一张门牌都会由站长亲自读过。
+    </p>
+
+    <ol class="link-application-steps">
+      <li>
+        <span>01</span>
+        <div>
+          <strong th:text="#{links.applicationStepOneTitle}">写下门牌</strong><p
+            th:text="#{links.applicationStepOneText}"
+          >
+            告诉我怎样称呼你，以及从哪里来。
+          </p>
+        </div>
+      </li>
+      <li>
+        <span>02</span>
+        <div>
+          <strong th:text="#{links.applicationStepTwoTitle}">确认来访</strong><p
+            th:text="#{links.applicationStepTwoText}"
+          >
+            完成一次访客校验，让申请安全抵达。
+          </p>
+        </div>
+      </li>
+      <li>
+        <span>03</span>
+        <div>
+          <strong th:text="#{links.applicationStepThreeTitle}">等待亮灯</strong
+          ><p th:text="#{links.applicationStepThreeText}">
+            审核通过后，你的站点会出现在这条街上。
+          </p>
+        </div>
+      </li>
+    </ol>
+
+    <p class="link-application-privacy">
+      <span class="i-lucide-lock-keyhole" aria-hidden="true"></span>
+      <span th:text="#{links.applicationPrivacy}"
+        >邮箱仅用于确认申请，不会展示在友链卡片上。</span
+      >
+    </p>
+  </aside>
+
+  <div class="link-application-paper">
+    <div class="link-application-paper-head">
+      <div>
+        <p class="kicker">YOUR SIGNBOARD · 访客申请</p><h3
+          th:text="#{links.applicationFormTitle}"
+        >
+          留下一张新门牌
+        </h3>
+      </div>
+      <span class="link-application-seal" aria-hidden="true"
+        ><span class="i-lucide-flower-2"></span></span
+      >
+    </div>
+
+    <p
+      class="link-application-result"
+      data-link-application-result
+      role="status"
+      aria-live="polite"
+      th:classappend="${not #lists.isEmpty(param.applied) ? (param.applied[0] == 'true' ? ' is-success' : ' is-error') : ''}"
+      th:text="${not #lists.isEmpty(param.message) ? param.message[0] : ''}"
+      th:hidden="${#lists.isEmpty(param.message)}"
+      hidden
+    >
+    </p>
+
+    <form
+      class="link-application-form"
+      data-link-application-form
+      method="post"
+      th:action="@{/links/apply/submit}"
+    >
+      <div class="link-application-field-grid">
+        <label class="link-application-field">
+          <span
+            ><span class="i-lucide-link-2"></span><akari-halo-tag-th-block
+              th:text="#{links.applicationUrl}"
+              >站点地址</akari-halo-tag-th-block
+            ><em>*</em></span
+          >
+          <input
+            type="url"
+            name="url"
+            autocomplete="url"
+            inputmode="url"
+            placeholder="https://example.com"
+            required
+          />
+        </label>
+        <label class="link-application-field">
+          <span
+            ><span class="i-lucide-house-heart"></span><akari-halo-tag-th-block
+              th:text="#{links.applicationName}"
+              >站点名称</akari-halo-tag-th-block
+            ><em>*</em></span
+          >
+          <input
+            type="text"
+            name="displayName"
+            autocomplete="organization"
+            th:placeholder="#{links.applicationNamePlaceholder}"
+            required
+          />
+        </label>
+      </div>
+
+      <label class="link-application-field link-application-field-wide">
+        <span
+          ><span class="i-lucide-message-circle-heart"
+          ></span><akari-halo-tag-th-block
+            th:text="#{links.applicationDescription}"
+            >一句介绍</akari-halo-tag-th-block
+          ></span
+        >
+        <textarea
+          name="description"
+          rows="3"
+          th:placeholder="#{links.applicationDescriptionPlaceholder}"
+        ></textarea>
+      </label>
+
+      <div class="link-application-field-grid">
+        <label class="link-application-field">
+          <span
+            ><span class="i-lucide-image"></span><akari-halo-tag-th-block
+              th:text="#{links.applicationLogo}"
+              >头像或 Logo</akari-halo-tag-th-block
+            ></span
+          >
+          <input
+            type="url"
+            name="logo"
+            autocomplete="url"
+            inputmode="url"
+            placeholder="https://example.com/avatar.png"
+          />
+        </label>
+        <label class="link-application-field">
+          <span
+            ><span class="i-lucide-mail"></span><akari-halo-tag-th-block
+              th:text="#{links.applicationEmail}"
+              >联系邮箱</akari-halo-tag-th-block
+            ></span
+          >
+          <input
+            type="email"
+            name="email"
+            autocomplete="email"
+            placeholder="hello@example.com"
+          />
+        </label>
+      </div>
+
+      <details class="link-application-more">
+        <summary>
+          <span
+            ><span class="i-lucide-paperclip"></span><akari-halo-tag-th-block
+              th:text="#{links.applicationMore}"
+              >补充回链与订阅地址</akari-halo-tag-th-block
+            ></span
+          >
+          <span class="i-lucide-chevron-down" aria-hidden="true"></span>
+        </summary>
+        <div class="link-application-field-grid">
+          <label class="link-application-field">
+            <span
+              ><span class="i-lucide-corner-up-left"
+              ></span><akari-halo-tag-th-block
+                th:text="#{links.applicationBacklink}"
+                >本站回链</akari-halo-tag-th-block
+              ></span
+            >
+            <input
+              type="url"
+              name="backlink"
+              inputmode="url"
+              placeholder="https://example.com/links"
+            />
+          </label>
+          <label class="link-application-field">
+            <span
+              ><span class="i-lucide-rss"></span><akari-halo-tag-th-block
+                th:text="#{links.applicationFeeds}"
+                >订阅地址</akari-halo-tag-th-block
+              ></span
+            >
+            <textarea
+              name="feedUrls"
+              rows="2"
+              th:placeholder="#{links.applicationFeedsPlaceholder}"></textarea>
+          </label>
+        </div>
+      </details>
+
+      <fieldset class="link-application-captcha">
+        <legend
+          ><span class="i-lucide-scan-line" aria-hidden="true"></span><span
+            th:text="#{links.applicationCaptchaTitle}">访客校验</span
+          ></legend
+        >
+        <div class="link-captcha-visual" data-link-captcha-visual>
+          <button
+            type="button"
+            data-link-captcha-refresh
+            th:aria-label="#{links.applicationCaptchaRefresh}"
+          >
+            <img
+              data-link-captcha-image
+              data-runtime-image="true"
+              alt=""
+              hidden
+            />
+            <span class="link-captcha-placeholder"
+              ><span class="i-lucide-refresh-cw"></span><span
+                data-link-captcha-placeholder-text
+                th:text="#{links.applicationCaptchaLoading}"
+                >正在取一枚访客印章…</span
+              ></span
+            >
+          </button>
+          <noscript
+            ><img
+              th:src="@{/links/apply/captcha}"
+              th:alt="#{links.applicationCaptchaTitle}"
+            /></noscript
+          >
+        </div>
+        <label class="link-application-field">
+          <span th:text="#{links.applicationCaptchaCode}">印章上的字符</span>
+          <input
+            type="text"
+            name="captchaCode"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            maxlength="5"
+            th:placeholder="#{links.applicationCaptchaPlaceholder}"
+            required
+          />
+        </label>
+      </fieldset>
+
+      <div class="link-application-actions">
+        <p>
+          <span class="i-lucide-badge-check" aria-hidden="true"></span><span
+            th:text="#{links.applicationReviewHint}"
+            >送出后将进入审核，不会立刻公开。</span
+          >
+        </p>
+        <button
+          class="link-application-submit"
+          type="submit"
+          data-link-application-submit
+        >
+          <span
+            data-link-application-submit-label
+            th:text="#{links.applicationSubmit}">递交门牌</span
+          ><span class="i-lucide-send" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

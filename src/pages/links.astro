@@ -11,7 +11,7 @@ import FriendLinksContent from "../components/links/FriendLinksContent.astro";
     titleFallback: "Links",
     descriptionExpression:
       "${akariLinksPage != null and not #strings.isEmpty(akariLinksPage.status.excerpt) ? akariLinksPage.status.excerpt : site.seo.description}",
-    canonicalExpression: "${site.url + '/links'}",
+    canonicalExpression: "${site.url + akariLinksPath}",
     schemaType: "CollectionPage",
   }}
 >
@@ -27,7 +27,7 @@ import FriendLinksContent from "../components/links/FriendLinksContent.astro";
   <section
     class="page-view inner-view is-visible"
     data-page="links"
-    th:with="linksPage=${akariLinksPage},linkGroups=${groups},linkCount=${#aggregates.sum(linkGroups.![#lists.size(links)])},guestbookPage=${akariGuestbookPage}"
+    th:with="linksPage=${akariLinksPage},linkGroups=${groups},linkCount=${#aggregates.sum(linkGroups.![#lists.size(links)])},guestbookPage=${akariGuestbookPage},akariLinkApplicationAvailable=${linkApplicationEnabled == true}"
   >
     <div class="inner-shell">
       <FriendLinksContent />

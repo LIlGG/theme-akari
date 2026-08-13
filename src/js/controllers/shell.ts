@@ -274,8 +274,9 @@ export function prepareSearchWidget(
     return false;
   }
 
-  const existingModal =
-    targetDocument.querySelector<HTMLElement>(SEARCH_MODAL_SELECTOR);
+  const existingModal = targetDocument.querySelector<HTMLElement>(
+    SEARCH_MODAL_SELECTOR,
+  );
   if (!existingModal && !createPlaceholder) {
     return false;
   }
@@ -305,13 +306,16 @@ export function initSearch() {
       subtree: true,
     });
   }
-  document
-    .querySelector<HTMLButtonElement>("[data-search]")
-    ?.addEventListener("click", () => {
-      if (window.SearchWidget) {
-        window.SearchWidget.open();
-        return;
-      }
-      window.location.assign("/search");
-    });
+  const searchButton =
+    document.querySelector<HTMLButtonElement>("[data-search]");
+  searchButton?.addEventListener("click", () => {
+    if (window.SearchWidget) {
+      window.SearchWidget.open();
+      return;
+    }
+    const searchUrl = searchButton.dataset.searchUrl;
+    if (searchUrl) {
+      window.location.assign(searchUrl);
+    }
+  });
 }

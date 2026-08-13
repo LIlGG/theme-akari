@@ -39,7 +39,7 @@ import ArticleComments from "../components/content/ArticleComments.astro";
       <div class="article-hero-copy" data-hero-copy>
         <a
           class="back-link"
-          th:href="${mediaPage != null ? mediaPage.status.permalink : '/'}"
+          th:href="@{${mediaPage != null ? mediaPage.status.permalink : '/'}}"
         >
           <span class="i-lucide-arrow-left"></span><span th:text="#{media.back}"
             >返回媒体室</span
@@ -123,7 +123,8 @@ import ArticleComments from "../components/content/ArticleComments.astro";
         <div class="tag-row">
           <a
             th:each="tag : ${post.tags}"
-            th:href="${tag.status.permalink}"
+            th:if="${not #strings.isEmpty(tag.status.permalink)}"
+            th:href="@{${tag.status.permalink}}"
             th:text="|# ${tag.spec.displayName}|"># media</a
           >
         </div>
@@ -160,7 +161,7 @@ import ArticleComments from "../components/content/ArticleComments.astro";
         <a
           class="is-previous"
           th:if="${cursor.hasPrevious()}"
-          th:href="${cursor.previous.status.permalink}"
+          th:href="@{${cursor.previous.status.permalink}}"
         >
           <small
             ><span class="i-lucide-arrow-left"></span><span
@@ -172,7 +173,7 @@ import ArticleComments from "../components/content/ArticleComments.astro";
         <a
           class="is-next"
           th:if="${cursor.hasNext()}"
-          th:href="${cursor.next.status.permalink}"
+          th:href="@{${cursor.next.status.permalink}}"
         >
           <small
             ><span th:text="#{post.next}">下一篇</span><span

@@ -10,7 +10,8 @@ import Pagination from "../components/content/Pagination.astro";
     titleFallback: "Author",
     descriptionExpression:
       "${not #strings.isEmpty(author.spec.bio) ? author.spec.bio : site.seo.description}",
-    canonicalExpression: "${site.url + '/authors/' + author.metadata.name}",
+    canonicalExpression:
+      "${site.url + akariAuthorsPath + '/' + author.metadata.name}",
     imageExpression:
       "${not #strings.isEmpty(author.spec.avatar) ? author.spec.avatar : (not #strings.isEmpty(site.logo) ? site.logo : site.url + #theme.assets('/images/akari-cover-journal.jpg'))}",
     schemaType: "ProfilePage",
@@ -51,7 +52,7 @@ import Pagination from "../components/content/Pagination.astro";
                 : #theme.assets('/images/akari-cover-cinema.jpg')))}"
           data-reveal
         >
-          <a th:href="${post.status.permalink}">
+          <a th:href="@{${post.status.permalink}}">
             <img
               th:if="${not #strings.isEmpty(post.spec.cover)}"
               th:src="${thumbnail.gen(post.spec.cover, 'm')}"
@@ -76,7 +77,7 @@ import Pagination from "../components/content/Pagination.astro";
             <h2>
               <a
                 class="title-link"
-                th:href="${post.status.permalink}"
+                th:href="@{${post.status.permalink}}"
                 th:text="${post.spec.title}">沿海电车的第七站</a
               >
             </h2>

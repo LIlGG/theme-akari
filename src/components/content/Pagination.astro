@@ -6,7 +6,7 @@
   <a
     class="ak-button border border-[var(--line)] bg-[var(--surface)]"
     th:if="${result.hasPrevious()}"
-    th:href="${result.prevUrl}"
+    th:href="@{${result.prevUrl}}"
   >
     <span class="i-lucide-arrow-left"></span><span
       th:text="#{pagination.previous}">Previous</span
@@ -19,7 +19,7 @@
   <a
     class="ak-button border border-[var(--line)] bg-[var(--surface)]"
     th:if="${result.hasNext()}"
-    th:href="${result.nextUrl}"
+    th:href="@{${result.nextUrl}}"
   >
     <span th:text="#{pagination.next}">Next</span><span
       class="i-lucide-arrow-right"></span>

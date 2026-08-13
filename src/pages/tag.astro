@@ -36,21 +36,21 @@ import Pagination from "../components/content/Pagination.astro";
         class="filter-row"
         data-post-filters
         data-post-filter-mode="tag"
-        th:data-posts-url="${akariPostsUrl}"
+        th:data-posts-url="@{${akariPostsUrl}}"
         th:aria-label="#{posts.filter}"
       >
         <a
           class="filter-chip"
-          th:href="|${akariPostsUrl}?filter=tags|"
+          th:href="@{${akariPostsUrl}(filter='tags')}"
           th:text="#{photos.all}">全部</a
         >
         <a
           class="filter-chip"
-          th:each="item,stat : ${tagFinder.listAll()}"
+          th:each="item,stat : ${tagFinder.listAll().?[not #strings.isEmpty(status.permalink)]}"
           th:if="${stat.index < 5}"
           th:classappend="${item.metadata.name == tag.metadata.name ? ' is-active' : ''}"
           th:aria-current="${item.metadata.name == tag.metadata.name ? 'page' : null}"
-          th:href="${item.status.permalink}"
+          th:href="@{${item.status.permalink}}"
           th:text="${item.spec.displayName}">胶片</a
         >
       </nav>
@@ -68,7 +68,7 @@ import Pagination from "../components/content/Pagination.astro";
                   : #theme.assets('/images/akari-cover-cinema.jpg')))}"
             data-reveal
           >
-            <a th:href="${post.status.permalink}">
+            <a th:href="@{${post.status.permalink}}">
               <img
                 th:if="${not #strings.isEmpty(post.spec.cover)}"
                 th:src="${thumbnail.gen(post.spec.cover, 'm')}"
@@ -95,7 +95,7 @@ import Pagination from "../components/content/Pagination.astro";
               <h2>
                 <a
                   class="title-link"
-                  th:href="${post.status.permalink}"
+                  th:href="@{${post.status.permalink}}"
                   th:text="${post.spec.title}">沿海电车的第七站</a
                 >
               </h2>

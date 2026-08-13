@@ -49,7 +49,7 @@ import "../styles/entries/gallery.css";
         />
       </button>
       <nav class="article-navigation photo-navigation">
-        <a th:if="${prev != null}" th:href="${photoUrl.detail(prev)}">
+        <a th:if="${prev != null}" th:href="@{${photoUrl.detail(prev)}}">
           <small
             ><span class="i-lucide-arrow-left"></span><span
               th:text="#{post.previous}">Previous</span
@@ -57,7 +57,7 @@ import "../styles/entries/gallery.css";
           >
           <strong th:text="${prev.spec.displayName}">Photo</strong>
         </a>
-        <a th:if="${next != null}" th:href="${photoUrl.detail(next)}">
+        <a th:if="${next != null}" th:href="@{${photoUrl.detail(next)}}">
           <small
             ><span th:text="#{post.next}">Next</span><span
               class="i-lucide-arrow-right"></span></small
@@ -66,7 +66,7 @@ import "../styles/entries/gallery.css";
         </a>
       </nav>
       <div class="photo-back">
-        <a class="secondary-button" th:href="${backUrl}"
+        <a class="secondary-button" th:href="@{${backUrl}}"
           ><span class="i-lucide-images"></span><span th:text="#{photos.title}"
             >Photos</span
           ></a

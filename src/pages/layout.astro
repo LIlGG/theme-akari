@@ -23,7 +23,13 @@ import SiteHeader from "../components/shell/SiteHeader.astro";
     akariMediaPage=${akariPages.^[spec.template == 'page_media.html']},
     akariCollectionsPage=${akariPages.^[spec.template == 'page_collections.html']},
     akariPostsUrl=${akariPostsPage != null ? akariPostsPage.status.permalink : site.routes.archivesUri},
-    akariGuestbookUrl=${akariGuestbookPage != null ? akariGuestbookPage.status.permalink : ''}
+    akariGuestbookUrl=${akariGuestbookPage != null ? akariGuestbookPage.status.permalink : ''},
+    akariAuthorsPath='/authors',
+    akariFeedPath='/rss.xml',
+    akariLinksPath='/links',
+    akariMomentsPath='/moments',
+    akariPhotosPath='/photos',
+    akariSearchPath='/search'
   "
   th:attr="
     data-default-theme=${theme.config.appearance.color_scheme},
@@ -52,7 +58,7 @@ import SiteHeader from "../components/shell/SiteHeader.astro";
     <link
       th:if="${not #strings.isEmpty(site.favicon)}"
       rel="icon"
-      th:href="${site.favicon}"
+      th:href="@{${site.favicon}}"
     />
     <meta th:if="${head != null}" th:replace="${head}" />
     <ClientRouter fallback="animate" />

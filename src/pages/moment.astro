@@ -9,7 +9,8 @@ import MomentComments from "../components/content/MomentComments.astro";
     titleExpression: "${title}",
     titleFallback: "Moment",
     descriptionExpression: "${#messages.msg('moments.subtitle')}",
-    canonicalExpression: "${site.url + '/moments/' + moment.metadata.name}",
+    canonicalExpression:
+      "${site.url + akariMomentsPath + '/' + moment.metadata.name}",
     schemaType: "WebPage",
     authorExpression: "${moment.owner.displayName}",
     publishedTimeExpression: "${moment.spec.releaseTime}",

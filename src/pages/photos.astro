@@ -9,7 +9,7 @@ import Pagination from "../components/content/Pagination.astro";
     titleExpression: "${title ?: #messages.msg('photos.title')}",
     titleFallback: "Photos",
     descriptionExpression: "${#messages.msg('photos.subtitle')}",
-    canonicalExpression: "${site.url + '/photos'}",
+    canonicalExpression: "${site.url + akariPhotosPath}",
     schemaType: "ImageGallery",
   }}
 >
@@ -40,19 +40,20 @@ import Pagination from "../components/content/Pagination.astro";
         <nav
           class="filter-row"
           data-photo-filters
+          th:data-photos-url="@{${photoUrl.list()}}"
           th:aria-label="#{photos.filter}"
         >
           <a
             class="filter-chip"
             th:classappend="${#strings.isEmpty(param.group) ? ' is-active' : ''}"
-            th:href="${photoUrl.list()}"
+            th:href="@{${photoUrl.list()}}"
             th:text="|#{photos.all} ${photos.total}|">全部</a
           >
           <a
             class="filter-chip"
             th:each="photoGroup : ${groups}"
             th:classappend="${#strings.equals(param.group, photoGroup.metadata.name) ? ' is-active' : ''}"
-            th:href="${photoUrl.list(photoGroup.metadata.name)}"
+            th:href="@{${photoUrl.list(photoGroup.metadata.name)}}"
             th:text="|${photoGroup.spec.displayName} ${photoGroup.status.photoCount}|"
             >街道</a
           >
@@ -102,7 +103,7 @@ import Pagination from "../components/content/Pagination.astro";
           <a
             class="gallery-continuation-action"
             th:if="${photos.hasNext()}"
-            th:href="${photos.nextUrl}"
+            th:href="@{${photos.nextUrl}}"
             data-load-more-photos
             data-no-page-transition
             th:data-loading-label="#{photos.loading}"

@@ -95,8 +95,10 @@ function writeArchiveSnapshot(cacheKey: string, snapshot: ArchiveSnapshot) {
 }
 
 async function updatePhotoCount(photoCount: HTMLElement, signal?: AbortSignal) {
-  const photosUrl =
-    photoCount.closest<HTMLAnchorElement>("a[href]")?.href ?? "/photos";
+  const photosUrl = photoCount.closest<HTMLAnchorElement>("a[href]")?.href;
+  if (!photosUrl) {
+    return;
+  }
   const parsed = await requestHaloDocument(photosUrl, {
     signal,
   });
@@ -118,10 +120,11 @@ async function updateArchiveCount(
   archiveMeta: HTMLElement,
   signal?: AbortSignal,
 ) {
-  const snapshot = await fetchArchiveSnapshot(
-    archiveMeta.dataset.archiveUrl ?? "/archives",
-    signal,
-  );
+  const archiveUrl = archiveMeta.dataset.archiveUrl;
+  if (!archiveUrl) {
+    return;
+  }
+  const snapshot = await fetchArchiveSnapshot(archiveUrl, signal);
   const configuredPosts = Number.parseInt(
     archiveMeta.dataset.postCount ?? "0",
     10,
@@ -284,7 +287,11 @@ export function initPostsIntro(signal?: AbortSignal) {
   };
 
   update(withoutYear);
-  void fetchArchiveSnapshot(intro.dataset.archiveUrl ?? "/archives", signal)
+  const archiveUrl = intro.dataset.archiveUrl;
+  if (!archiveUrl) {
+    return;
+  }
+  void fetchArchiveSnapshot(archiveUrl, signal)
     .then((snapshot) => {
       if (!snapshot.earliestYear) {
         return;

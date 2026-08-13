@@ -30,23 +30,27 @@
   <nav th:aria-label="#{footer.nav}">
     <a
       class="inline-link"
-      th:href="${site.routes.archivesUri}"
+      th:href="@{${site.routes.archivesUri}}"
       th:text="#{nav.archives}">归档</a
     >
     <a
       class="inline-link"
       th:if="${pluginFinder.available('PluginLinks')}"
-      th:href="@{/links}"
+      th:href="@{${akariLinksPath}}"
       th:text="#{nav.links}">友邻</a
     >
     <a
       class="inline-link"
       th:if="${akariGuestbookPage != null}"
-      th:href="${akariGuestbookUrl}"
+      th:href="@{${akariGuestbookUrl}}"
       th:text="#{nav.guestbook}">留言</a
     >
-    <a class="inline-link" th:href="@{/rss.xml}" target="_blank" rel="alternate"
-      >RSS</a
+    <a
+      class="inline-link"
+      th:if="${pluginFinder.available('PluginFeed')}"
+      th:href="@{${akariFeedPath}}"
+      target="_blank"
+      rel="alternate">RSS</a
     >
   </nav>
   <p>

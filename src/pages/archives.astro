@@ -155,11 +155,11 @@ import Pagination from "../components/content/Pagination.astro";
                   class="archive-entry"
                   th:each="post : ${month.posts}"
                   th:with="readingMinutes=${#annotations.getOrDefault(post,'akari.theme.halo.run/reading-minutes','')}"
-                  th:href="${post.status.permalink}"
+                  th:href="@{${post.status.permalink}}"
                   data-archive-entry
                   data-archive-reading-time
                   th:data-post-name="${post.metadata.name}"
-                  th:data-reading-url="${post.status.permalink}"
+                  th:data-reading-url="@{${post.status.permalink}}"
                   th:data-reading-fallback="|${post.spec.title} ${post.status.excerpt}|"
                   th:data-reading-template="${#messages.msg('archive.readingTime','__MINUTES__')}"
                 >
@@ -201,7 +201,7 @@ import Pagination from "../components/content/Pagination.astro";
               <a
                 class="archive-continuation-action"
                 th:if="${archives.hasNext()}"
-                th:href="${archives.nextUrl}"
+                th:href="@{${archives.nextUrl}}"
                 data-load-more-archives
                 data-no-page-transition
                 th:data-loading-label="#{archive.loading}"

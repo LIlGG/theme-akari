@@ -24,7 +24,7 @@ import FriendLinksContent from "../components/links/FriendLinksContent.astro";
     class="page-view inner-view is-visible"
     data-page="links"
     th:if="${pluginFinder.available('PluginLinks')}"
-    th:with="linksPage=${singlePage},linkGroups=${linkFinder.groupBy()},linkCount=${#aggregates.sum(linkGroups.![#lists.size(links)])},guestbookPage=${akariGuestbookPage}"
+    th:with="linksPage=${singlePage},linkGroups=${linkFinder.groupBy()},linkCount=${#aggregates.sum(linkGroups.![#lists.size(links)])},guestbookPage=${akariGuestbookPage},akariLinkApplicationAvailable=${true}"
   >
     <div class="inner-shell">
       <FriendLinksContent />
