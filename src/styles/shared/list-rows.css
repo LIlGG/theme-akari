@@ -1,0 +1,45 @@
+/* Shared chronological result row used by archives and search. */
+.archive-entry {
+  width: 100%;
+  min-height: 74px;
+  padding: 12px 8px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  display: grid;
+  grid-template-columns: 60px minmax(0, 1fr) 24px;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+}
+
+.archive-entry time {
+  color: var(--ink-3);
+  font-size: 11px;
+}
+
+.archive-entry strong,
+.archive-entry small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.archive-entry > span:nth-child(2) {
+  min-width: 0;
+}
+
+.archive-entry strong {
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 17px;
+}
+
+.archive-entry small {
+  margin-top: 2px;
+  color: var(--ink-3);
+  font-size: 10px;
+}
+
+.archive-entry > svg {
+  width: 18px;
+  color: var(--ink-3);
+}

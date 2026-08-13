@@ -1,0 +1,146 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: theme-akari-setting
+spec:
+  forms:
+    - group: identity
+      label: 小屋身份
+      formSchema:
+        - $formkit: attachment
+          name: brand_logo
+          label: 页眉 Logo
+          accepts:
+            - image/*
+          help: 建议使用透明 PNG、WebP 或 SVG；留空时显示主题内置的“樱花晚灯”标志。
+        - $formkit: text
+          name: brand_name
+          label: 主题品牌名
+          value: Akari
+          help: 仅用于主题页眉品牌，不会覆盖 Halo 的站点标题与 SEO 标题。
+        - $formkit: text
+          name: brand_tagline
+          label: 品牌副标题
+          value: 晚灯小屋
+          help: 显示在品牌名下方；留空时使用 Halo 站点副标题。
+    - group: hero
+      label: 首页
+      formSchema:
+        - $formkit: text
+          name: eyebrow
+          label: 眉题
+          value: ただいま
+        - $formkit: text
+          name: title_line_1
+          label: 首页主标题第一行
+          value: 把喜欢的事，
+        - $formkit: text
+          name: title_line_2
+          label: 首页主标题第二行
+          value: 慢慢收进春日里。
+        - $formkit: text
+          name: note_label
+          label: 纸条标题
+          value: 今日小纸条
+        - $formkit: textarea
+          name: note
+          label: 今日纸条
+          rows: 2
+          value: 晚风很好，适合绕远路回家。
+        - $formkit: attachment
+          name: background_image
+          label: 主视觉背景
+          help: 建议 4:3、长边至少 1440 px，主体靠右且深浅层次明确；留空时使用主题内置的春夜河畔插画。
+        - $formkit: attachment
+          name: character_image
+          label: 角色立绘
+          help: 建议透明 PNG 或 WebP，长边至少 1800 px。
+        - $formkit: text
+          name: season_label
+          label: 季节标签
+          value: 樱色晚风
+    - group: content
+      label: 内容来源与规则
+      formSchema:
+        - $formkit: postSelect
+          name: media_post
+          label: 首页正在播放
+          help: 选择用于“正在播放”卡片和媒体室主卡的文章。主媒体附件与展示信息在该文章的 Akari 媒体字段中配置；留空时使用最新的第二篇文章。
+        - $formkit: postSelect
+          name: shelf_post
+          label: 首页书架推荐
+          help: 选择用于“我的书架”卡片的文章；留空时按最新文章自动补位。
+        - $formkit: attachment
+          name: latest_fallback_cover_1
+          label: 最近文章默认封面一
+          help: 仅当第一篇文章没有设置封面时使用；留空时使用主题内置的春日电车插画。
+        - $formkit: attachment
+          name: latest_fallback_cover_2
+          label: 最近文章默认封面二
+          help: 仅当第二篇文章没有设置封面时使用；留空时使用主题内置的晚灯书桌插画。
+        - $formkit: attachment
+          name: latest_fallback_cover_3
+          label: 最近文章默认封面三
+          help: 仅当第三篇文章没有设置封面时使用；留空时使用主题内置的春夜放映室插画。
+        - $formkit: categorySelect
+          name: listening_category
+          label: 在听分类
+        - $formkit: categorySelect
+          name: watching_category
+          label: 在看分类
+        - $formkit: categorySelect
+          name: reading_category
+          label: 在读分类
+        - $formkit: number
+          name: guestbook_message_limit
+          label: 单条留言字数上限
+          value: 140
+          min: 40
+          max: 500
+          step: 10
+        - $formkit: number
+          name: article_comment_limit
+          label: 单条文章回应字数上限
+          value: 800
+          min: 100
+          max: 2000
+          step: 50
+          help: 用于文章与媒体文章的定制回应编辑器；回复同样遵循此限制。
+        - $formkit: switch
+          name: show_weather
+          label: 显示首页天气
+          value: true
+          help: 按访客网络位置获取附近实时天气；会请求 ipwho.is 与 Open-Meteo，失败时使用 wttr.in。若浏览器已授予定位权限，会优先使用浏览器坐标。结果会短时缓存，不使用示例天气兜底。
+    - group: appearance
+      label: 外观与动效
+      formSchema:
+        - $formkit: select
+          name: color_scheme
+          label: 默认配色
+          value: system
+          options:
+            - label: 跟随系统
+              value: system
+            - label: 明亮
+              value: light
+            - label: 深色
+              value: dark
+        - $formkit: switch
+          name: allow_color_scheme
+          label: 允许访客切换配色
+          value: true
+        - $formkit: color
+          name: accent_color
+          label: 强调色
+          value: "#b94363"
+    - group: footer
+      label: 页脚
+      formSchema:
+        - $formkit: text
+          name: slogan
+          label: 页脚标语
+          value: 灯会一直亮到你回家。
+        - $formkit: text
+          name: copyright
+          label: 自定义版权
+          help: 留空时显示站点标题和当前年份。

@@ -1,0 +1,54 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 512 512"
+  role="img"
+  aria-labelledby="akari-logo-title akari-logo-description"
+>
+  <title id="akari-logo-title">Akari 晚灯小屋</title>
+  <desc id="akari-logo-description">屋檐下轻轻亮着的纸灯</desc>
+
+  <path
+    fill="#b94363"
+    d="M120 24h280c49 0 88 39 88 88v288c0 49-39 88-88 88H112c-49 0-88-39-88-88V120c0-53 43-96 96-96Z"
+  />
+
+  <path
+    fill="none"
+    stroke="#fff8ed"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="26"
+    d="M124 198c53-4 99-25 132-59 33 34 79 55 132 59"
+  />
+  <path
+    fill="none"
+    stroke="#fff8ed"
+    stroke-linecap="round"
+    stroke-width="18"
+    d="M256 153v80"
+  />
+
+  <path
+    fill="#fff8ed"
+    d="M209 216h94c13 0 23 10 23 23v8H186v-8c0-13 10-23 23-23Z"
+  />
+  <path
+    fill="#f6c66f"
+    stroke="#fff8ed"
+    stroke-linejoin="round"
+    stroke-width="18"
+    d="M203 247h106l12 46v52c0 24-19 43-43 43h-44c-24 0-43-19-43-43v-52l12-46Z"
+  />
+  <path
+    fill="none"
+    stroke="#b94363"
+    stroke-linecap="round"
+    stroke-width="12"
+    d="M199 295h114M198 338h116"
+  />
+
+  <path
+    fill="#f6c66f"
+    d="M386 124c2 12 10 20 22 22-12 2-20 10-22 22-2-12-10-20-22-22 12-2 20-10 22-22Z"
+  />
+</svg>

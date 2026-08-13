@@ -1,0 +1,178 @@
+<!doctype html>
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  th:lang="${#locale.toLanguageTag()}"
+  th:fragment="layout (title,head,body)"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta content="webkit" name="renderer" />
+    <meta
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="noindex,nofollow" name="robots" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f8f0e5" />
+    <title th:text="${title}"></title>
+    <link rel="preload" href="/images/wordmark.svg" as="image" type="image/svg+xml" />
+    <link rel="preload" href="/images/logo.png" as="image" type="image/png" />
+    <link th:unless="${#strings.isEmpty(site.favicon)}" rel="icon" th:href="${site.favicon}" />
+
+    <th:block th:replace="~{gateway_fragments/common::basicStaticResources}"></th:block>
+
+    <style>
+      .gateway-page {
+        background:
+          radial-gradient(circle at 12% 10%, rgba(217, 104, 114, 0.16), transparent 28rem),
+          radial-gradient(circle at 88% 84%, rgba(111, 143, 128, 0.12), transparent 30rem),
+          #f8f0e5;
+        color: #342d31;
+      }
+
+      .gateway-page::before,
+      .gateway-page::after {
+        position: fixed;
+        z-index: -1;
+        border: 1px solid rgba(76, 57, 63, 0.1);
+        content: "";
+        pointer-events: none;
+      }
+
+      .gateway-page::before {
+        top: -7rem;
+        right: -5rem;
+        width: 22rem;
+        height: 22rem;
+        border-radius: 44% 56% 62% 38%;
+        transform: rotate(18deg);
+      }
+
+      .gateway-page::after {
+        bottom: -9rem;
+        left: -6rem;
+        width: 25rem;
+        height: 25rem;
+        border-radius: 60% 40% 48% 52%;
+        transform: rotate(-12deg);
+      }
+
+      .gateway-wrapper {
+        --color-primary: #d96872;
+        --color-secondary: #40364f;
+        --color-link: #b94f5d;
+        --color-text: #4b4145;
+        --color-border: rgba(76, 57, 63, 0.2);
+        --rounded-base: 0.75em;
+        --rounded-lg: 1.5em;
+        display: grid;
+        min-height: 100%;
+        align-content: center;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        font-family:
+          "Hiragino Sans GB", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC",
+          system-ui, sans-serif;
+      }
+
+      .halo-form-wrapper {
+        border-color: rgba(76, 57, 63, 0.12);
+        border-radius: 2rem;
+        background: rgba(255, 252, 247, 0.92);
+        box-shadow: 0 24px 70px rgba(75, 53, 58, 0.12);
+        backdrop-filter: blur(18px);
+      }
+
+      .form-title {
+        color: #342d31;
+        font-family:
+          "Songti SC", "STSong", "Noto Serif CJK SC", "Yu Mincho",
+          "Hiragino Mincho ProN", serif;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+      }
+
+      .halo-form .form-input,
+      .halo-form .form-input-group button,
+      .pill-items li {
+        background: #fffcf7;
+      }
+
+      .halo-form .form-input {
+        min-height: 2.9em;
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+      }
+
+      .halo-form .form-input:focus-within {
+        border-color: #d96872;
+        box-shadow: 0 0 0 3px rgba(217, 104, 114, 0.14);
+      }
+
+      .halo-form button[type="submit"] {
+        min-height: 2.9em;
+        border-radius: 999px;
+        background: #d96872;
+        box-shadow: 0 10px 24px rgba(195, 83, 96, 0.22);
+        font-weight: 700;
+        transition: opacity 160ms ease, transform 160ms ease;
+      }
+
+      .halo-form button[type="submit"]:hover {
+        opacity: 1;
+        transform: translateY(-1px);
+      }
+
+      .halo-logo img {
+        opacity: 0.82;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .gateway-page {
+          color: #f8eee8;
+          background:
+            radial-gradient(circle at 12% 10%, rgba(239, 141, 146, 0.13), transparent 28rem),
+            radial-gradient(circle at 88% 84%, rgba(142, 180, 163, 0.09), transparent 30rem),
+            #201d25;
+        }
+
+        .gateway-wrapper {
+          --color-primary: #ef8d92;
+          --color-secondary: #ef8d92;
+          --color-link: #ef8d92;
+          --color-text: #d0c1c1;
+          --color-border: rgba(255, 240, 234, 0.18);
+        }
+
+        .halo-form-wrapper,
+        .halo-form .form-input,
+        .halo-form .form-input-group button,
+        .pill-items li {
+          border-color: rgba(255, 240, 234, 0.12);
+          color: #f8eee8;
+          background: #302b35;
+        }
+
+        .form-title {
+          color: #f8eee8;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+
+    <th:block th:if="${head != null}">
+      <th:block th:replace="${head}" />
+    </th:block>
+  </head>
+  <body class="gateway-page">
+    <th:block th:replace="${body}" />
+  </body>
+</html>

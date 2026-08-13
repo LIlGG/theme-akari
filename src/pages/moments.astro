@@ -1,0 +1,188 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/moments.css";
+import Pagination from "../components/content/Pagination.astro";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${title ?: #messages.msg('moments.title')}",
+    titleFallback: "Moments",
+    descriptionExpression: "${#messages.msg('moments.subtitle')}",
+    canonicalExpression: "${site.url + '/moments'}",
+    schemaType: "CollectionPage",
+  }}
+>
+  <Fragment slot="head">
+    <title
+      th:text="|${title ?: #messages.msg('moments.title')} · ${site.title}|"
+    >
+      Moments
+    </title>
+  </Fragment>
+
+  <section class="page-view inner-view is-visible" data-page="moments">
+    <div class="inner-shell narrow-shell">
+      <header class="page-intro" data-reveal>
+        <p class="eyebrow">
+          <span>MOMENTS</span> · <akari-halo-tag-th-block
+            th:text="#{moments.eyebrow}">生活碎片</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="${title ?: #messages.msg('moments.title')}">
+          今天发生的小事
+        </h1>
+        <p th:text="#{moments.subtitle}">
+          不值得写成长文，也舍不得让它们消失。
+        </p>
+      </header>
+      <nav
+        class="filter-row"
+        th:if="${not #lists.isEmpty(tags)}"
+        th:aria-label="#{moments.filter}"
+      >
+        <a
+          class="filter-chip is-active"
+          th:href="@{/moments}"
+          th:text="#{photos.all}">全部</a
+        >
+        <a
+          class="filter-chip"
+          th:each="tag : ${tags}"
+          th:href="@{|/moments?tag=${tag.name}|}"
+          th:text="|# ${tag.name}|">标签</a
+        >
+      </nav>
+      <section class="moment-results" data-moment-results aria-live="polite">
+        <div class="timeline" th:if="${moments.total > 0}" data-moment-list>
+          <article
+            th:each="moment : ${moments.items}"
+            data-moment-item
+            th:data-moment-name="${moment.metadata.name}"
+            data-reveal
+          >
+            <time
+              th:text="${#dates.format(moment.spec.releaseTime,#messages.msg('date.moment'))}"
+              >日期</time
+            >
+            <div
+              class="moment-rich-content"
+              th:utext="${moment.spec.content.html}"
+            >
+            </div>
+            <div
+              class="moment-media"
+              th:if="${not #lists.isEmpty(moment.spec.content.medium)}"
+            >
+              <akari-halo-tag-th-block
+                th:each="media,mediaStat : ${moment.spec.content.medium}"
+              >
+                <button
+                  th:if="${media.type.name == 'PHOTO'}"
+                  type="button"
+                  data-lightbox-trigger
+                  th:aria-label="#{moments.image.open}"
+                  th:attr="data-lightbox-src=${media.url}"
+                  ><img
+                    th:src="${thumbnail.gen(media.url,'m')}"
+                    alt=""
+                    loading="lazy"
+                  /></button
+                >
+                <video
+                  th:if="${media.type.name == 'VIDEO'}"
+                  th:src="${media.url}"
+                  controls
+                  preload="metadata"></video>
+                <button
+                  class="secondary-button audio-toggle"
+                  th:if="${media.type.name == 'AUDIO'}"
+                  type="button"
+                  data-audio-toggle
+                  th:data-audio-id="|moment:${moment.metadata.name}:${mediaStat.index}|"
+                  th:data-audio-src="${media.url}"
+                  th:data-audio-title="${moment.owner != null ? moment.owner.displayName : site.title}"
+                  th:data-audio-artist="${moment.owner != null ? moment.owner.displayName : site.title}"
+                  th:aria-label="#{moments.audio.play}"
+                  th:data-play-label="#{moments.audio.play}"
+                  th:data-pause-label="#{moments.audio.pause}"
+                  th:data-play-text="#{moments.audio.play}"
+                  th:data-pause-text="#{moments.audio.pause}"
+                >
+                  <span class="i-lucide-play" data-audio-icon aria-hidden="true"
+                  ></span>
+                  <span data-audio-label th:text="#{moments.audio.play}"
+                    >播放音频</span
+                  >
+                </button>
+              </akari-halo-tag-th-block>
+            </div>
+            <a
+              class="text-button"
+              th:href="@{|/moments/${moment.metadata.name}|}"
+            >
+              <span th:text="#{media.open}">打开札记</span><span
+                class="i-lucide-arrow-up-right"></span>
+            </a>
+          </article>
+        </div>
+        <div class="empty-state" th:if="${moments.total == 0}">
+          <span class="i-lucide-sparkles"></span><p th:text="#{list.empty}">
+            这里还没有收进内容。
+          </p>
+        </div>
+        <div
+          class="moment-continuation"
+          th:if="${moments.total > 0}"
+          data-moment-continuation
+          th:data-total="${moments.total}"
+        >
+          <a
+            class="moment-continuation-action"
+            th:if="${moments.hasNext()}"
+            th:href="${moments.nextUrl}"
+            data-load-more-moments
+            data-no-page-transition
+            th:data-loading-label="#{moments.loading}"
+            th:data-error-label="#{moments.loadError}"
+          >
+            <span class="moment-continuation-icon" aria-hidden="true">
+              <span class="i-lucide-sparkles" data-moment-load-icon></span>
+            </span>
+            <span class="moment-continuation-copy">
+              <small th:text="#{moments.loadMoreEyebrow}">NEXT MOMENTS</small>
+              <strong data-moment-load-label th:text="#{moments.loadMore}"
+                >再翻开一些碎片</strong
+              >
+              <span>
+                <span
+                  data-visible-moment-count
+                  th:text="${#lists.size(moments.items)}">10</span
+                >
+                <span aria-hidden="true"> / </span>
+                <span th:text="${moments.total}">36</span>
+                <span th:text="#{moments.countSuffix}">条瞬间</span>
+              </span>
+            </span>
+            <span
+              class="i-lucide-arrow-down moment-continuation-arrow"
+              aria-hidden="true"></span>
+          </a>
+          <p
+            class="moment-continuation-end"
+            data-moment-load-end
+            th:hidden="${moments.hasNext()}"
+          >
+            <span class="i-lucide-flower-2" aria-hidden="true"></span>
+            <span th:text="#{moments.end}">今天的碎片已经全部看完。</span>
+          </p>
+        </div>
+        <noscript
+          ><akari-halo-tag-th-block th:with="result=${moments}"
+            ><Pagination /></akari-halo-tag-th-block
+          ></noscript
+        >
+      </section>
+    </div>
+  </section>
+</BaseLayout>

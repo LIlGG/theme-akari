@@ -1,0 +1,843 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/home.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${site.title}",
+    descriptionExpression: "${site.seo.description}",
+    canonicalExpression: "${site.url}",
+    schemaType: "WebSite",
+    emitDescription: false,
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="${site.title}">Akari</title>
+  </Fragment>
+
+  <div
+    class="page-view home-view is-visible"
+    data-page="home"
+    th:attr="
+      data-weather-loading=#{home.weather.loading},
+      data-weather-unavailable=#{home.weather.unavailable},
+      data-weather-clear=#{home.weather.clear},
+      data-weather-partly-cloudy=#{home.weather.partlyCloudy},
+      data-weather-cloudy=#{home.weather.cloudy},
+      data-weather-fog=#{home.weather.fog},
+      data-weather-drizzle=#{home.weather.drizzle},
+      data-weather-rain=#{home.weather.rain},
+      data-weather-snow=#{home.weather.snow},
+      data-weather-thunderstorm=#{home.weather.thunderstorm}
+    "
+    th:with="
+      latestPosts=${postFinder.list({page:1,size:12,sort:{'spec.publishTime,desc'}})},
+      homeOwner=${latestPosts.total > 0 ? latestPosts.items[0].owner : null},
+      featuredPost=${latestPosts.total > 0 ? latestPosts.items[0] : null},
+      secondaryPost=${not #strings.isEmpty(theme.config.content.media_post)
+        ? postFinder.getByName(theme.config.content.media_post)
+        : (latestPosts.total > 1 ? latestPosts.items[1] : featuredPost)},
+      tertiaryPost=${latestPosts.total > 2 ? latestPosts.items[2] : secondaryPost},
+      shelfPost=${not #strings.isEmpty(theme.config.content.shelf_post)
+        ? postFinder.getByName(theme.config.content.shelf_post)
+        : (latestPosts.total > 3 ? latestPosts.items[3] : tertiaryPost)},
+      homePhotos=${pluginFinder.available('PluginPhotos') ? photoFinder.list(1,1) : null},
+      homeMoments=${pluginFinder.available('PluginMoments') ? momentFinder.listAll() : null},
+      homeMoment=${homeMoments != null and not #lists.isEmpty(homeMoments) ? homeMoments[0] : null},
+      homeMomentPhoto=${homeMoment != null and not #lists.isEmpty(homeMoment.spec.content.medium) ? homeMoment.spec.content.medium.^[type.name == 'PHOTO'] : null},
+      mediaPage=${akariMediaPage},
+      collectionsPage=${akariCollectionsPage}
+    "
+  >
+    <div class="page-shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy" data-hero-copy>
+          <p class="eyebrow">
+            <span th:text="${theme.config.hero.eyebrow}">ただいま</span>
+            · <akari-halo-tag-th-block th:text="#{hero.welcome}"
+              >欢迎回来</akari-halo-tag-th-block
+            >
+          </p>
+          <h1 id="hero-title">
+            <akari-halo-tag-th-block
+              th:text="${theme.config.hero.title_line_1 ?: '把喜欢的事，'}"
+              >把喜欢的事，</akari-halo-tag-th-block
+            ><br />
+            <akari-halo-tag-th-block
+              th:text="${theme.config.hero.title_line_2 ?: '慢慢收进春日里。'}"
+              >慢慢收进春日里。</akari-halo-tag-th-block
+            >
+          </h1>
+          <p
+            class="hero-lead"
+            th:text="#{hero.intro(
+              ${homeOwner != null ? homeOwner.displayName : site.title},
+              ${homeOwner != null and not #strings.isEmpty(homeOwner.bio)
+                ? homeOwner.bio
+                : (not #strings.isEmpty(site.seo.description) ? site.seo.description : #messages.msg('hero.description'))}
+            )}"
+          >
+            站点主人简介
+          </p>
+          <div class="hero-actions">
+            <a class="primary-button" th:href="${akariPostsUrl}">
+              <span th:text="#{hero.posts}">读最近手记</span>
+              <span class="i-lucide-arrow-up-right" aria-hidden="true"></span>
+            </a>
+            <a
+              class="text-button"
+              th:if="${pluginFinder.available('PluginPhotos')}"
+              th:href="@{/photos}"
+            >
+              <span th:text="#{hero.photos}">去相册散步</span>
+              <span class="i-lucide-arrow-right" aria-hidden="true"></span>
+            </a>
+          </div>
+          <div class="owner-note">
+            <div class="mini-avatar">
+              <img
+                th:src="${not #strings.isEmpty(theme.config.identity.brand_logo) ? theme.config.identity.brand_logo : #theme.assets('/images/akari-avatar.png')}"
+                alt=""
+                width="44"
+                height="44"
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+              />
+            </div>
+            <div>
+              <strong
+                th:text="${homeOwner != null ? homeOwner.displayName : site.title}"
+                >站点主人</strong
+              >
+              <span>
+                <span class="status-dot"></span>
+                <akari-halo-tag-th-block
+                  th:text="${latestPosts.total > 0
+                    ? #messages.msg('home.owner.latest', latestPosts.items[0].spec.title)
+                    : #messages.msg('home.empty')}"
+                  >正在整理最近的生活胶卷</akari-halo-tag-th-block
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="hero-scene"
+          data-hero-scene
+          th:aria-label="${theme.config.hero.season_label}"
+        >
+          <img
+            th:if="${not #strings.isEmpty(theme.config.hero.background_image)}"
+            class="scene-photo"
+            th:src="${thumbnail.gen(theme.config.hero.background_image, 'xl')}"
+            th:data-fallback-src="${#theme.assets('/images/akari-hero-evening.jpg')}"
+            th:alt="${theme.config.hero.season_label}"
+            fetchpriority="high"
+            decoding="async"
+            width="1600"
+            height="1200"
+          />
+          <img
+            th:unless="${not #strings.isEmpty(theme.config.hero.background_image)}"
+            class="scene-photo"
+            th:src="${#theme.assets('/images/akari-hero-evening.jpg')}"
+            alt=""
+            fetchpriority="high"
+            decoding="async"
+            width="1600"
+            height="1200"
+          />
+          <div class="scene-wash" aria-hidden="true"></div>
+          <img
+            th:if="${not #strings.isEmpty(theme.config.hero.character_image)}"
+            class="hero-character"
+            th:src="${theme.config.hero.character_image}"
+            th:data-fallback-src="${#theme.assets('/images/akari-character.png')}"
+            th:alt="${theme.config.hero.season_label}"
+            width="2000"
+            height="3000"
+            sizes="(max-width: 767px) 55vw, (max-width: 1024px) 38vw, 360px"
+            decoding="async"
+            fetchpriority="high"
+          />
+          <img
+            th:unless="${not #strings.isEmpty(theme.config.hero.character_image)}"
+            class="hero-character"
+            th:src="${#theme.assets('/images/akari-character.png')}"
+            th:alt="${theme.config.hero.season_label}"
+            width="2000"
+            height="3000"
+            sizes="(max-width: 767px) 55vw, (max-width: 1024px) 38vw, 360px"
+            decoding="async"
+            fetchpriority="high"
+          />
+          <div
+            class="scene-label"
+            th:with="seasonMonth=${#dates.format(#dates.createNow(),'MM')}"
+          >
+            <span
+              th:if="${seasonMonth == '12' or seasonMonth == '01' or seasonMonth == '02'}"
+              class="i-lucide-snowflake"
+              aria-hidden="true"></span>
+            <span
+              th:if="${seasonMonth == '03' or seasonMonth == '04' or seasonMonth == '05'}"
+              class="i-lucide-flower-2"
+              aria-hidden="true"></span>
+            <span
+              th:if="${seasonMonth == '06' or seasonMonth == '07' or seasonMonth == '08'}"
+              class="i-lucide-sun"
+              aria-hidden="true"></span>
+            <span
+              th:if="${seasonMonth == '09' or seasonMonth == '10' or seasonMonth == '11'}"
+              class="i-lucide-leaf"
+              aria-hidden="true"></span>
+            <span>
+              <small th:text="|SEASON ${seasonMonth}|">SEASON 04</small>
+              <span th:text="${theme.config.hero.season_label}">樱色晚风</span>
+            </span>
+          </div>
+          <div class="scene-bubble">
+            <span th:text="${theme.config.hero.note_label}">今日小纸条</span>
+            <strong th:text="|“${theme.config.hero.note}”|"
+              >“晚风很好，适合绕远路回家。”</strong
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="today-strip" th:aria-label="#{home.status}">
+        <div>
+          <span class="i-lucide-calendar-days" aria-hidden="true"></span>
+          <span
+            data-home-date
+            th:with="today=${#dates.createNow()}, chineseLocale=${#strings.startsWith(#locale.toLanguageTag(), 'zh')}"
+            th:data-server-date="${#dates.format(today, 'yyyy-MM-dd')}"
+            th:text="${chineseLocale
+              ? #messages.msg('date.month.' + #dates.format(today, 'M'))
+                + #messages.msg('date.day.' + #dates.format(today, 'd'))
+                + ' · ' + #dates.format(today, 'EEEE')
+              : #dates.format(today, #messages.msg('date.today'))}"
+            >日期</span
+          >
+        </div>
+        <p th:if="${latestPosts.total > 0}">
+          <span th:text="#{home.today}">今天也在认真生活，最近更新了 </span>
+          <a
+            class="inline-link"
+            th:href="${latestPosts.items[0].status.permalink}"
+            th:text="|《${latestPosts.items[0].spec.title}》|"
+          >
+            《沿海电车的第七站》
+          </a>
+        </p>
+        <p th:if="${latestPosts.total == 0}" th:text="#{home.empty}">
+          小屋已经收拾好，发布第一篇手记就能点亮它。
+        </p>
+        <span
+          class="weather is-loading"
+          th:if="${theme.config.content.show_weather}"
+          data-live-weather
+        >
+          <span class="i-lucide-cloud-sun" data-weather-icon aria-hidden="true"
+          ></span>
+          <span data-weather-text th:text="#{home.weather.loading}"
+            >正在获取附近天气</span
+          >
+        </span>
+      </section>
+
+      <section class="content-section" aria-labelledby="life-title" data-reveal>
+        <div class="section-heading">
+          <div>
+            <p class="kicker">LIFE COLLAGE</p>
+            <h2 id="life-title" th:text="#{home.collage}">最近生活拼贴</h2>
+          </div>
+          <p th:text="#{home.latest.subtitle}">
+            文章、声音与片刻，不必被分成互不相干的抽屉。
+          </p>
+        </div>
+
+        <div class="life-grid">
+          <article
+            class="feature-story"
+            th:if="${featuredPost != null}"
+            th:with="post=${featuredPost},readingMinutes=${#annotations.getOrDefault(featuredPost,'akari.theme.halo.run/reading-minutes','')}"
+          >
+            <a
+              class="media-button"
+              th:href="${post.status.permalink}"
+              th:aria-label="${post.spec.title}"
+            >
+              <img
+                th:if="${not #strings.isEmpty(post.spec.cover)}"
+                th:src="${thumbnail.gen(post.spec.cover, 'l')}"
+                th:data-fallback-src="${#theme.assets('/images/akari-cover-journey.jpg')}"
+                th:alt="${post.spec.title}"
+                width="1400"
+                height="1050"
+              />
+              <img
+                th:unless="${not #strings.isEmpty(post.spec.cover)}"
+                th:src="${#theme.assets('/images/akari-cover-journey.jpg')}"
+                th:alt="${post.spec.title}"
+                width="1400"
+                height="1050"
+              />
+              <span class="image-tag">
+                <span class="i-lucide-book-open-text" aria-hidden="true"></span>
+                <span
+                  th:text="#{home.badge.note(${not #lists.isEmpty(post.categories) ? post.categories[0].spec.displayName : #messages.msg('post.uncategorized')})}"
+                  >旅行手记</span
+                >
+              </span>
+            </a>
+            <div class="feature-copy">
+              <p
+                class="meta"
+                data-home-reading-time
+                th:data-reading-url="${post.status.permalink}"
+                th:data-reading-fallback="|${post.spec.title} ${post.status.excerpt}|"
+                th:data-reading-template="${#messages.msg('home.latest.reading','__MINUTES__')}"
+              >
+                <akari-halo-tag-th-block th:if="${post.spec.pinned}">
+                  <span th:text="#{post.pinned}">置顶故事</span><span> · </span>
+                </akari-halo-tag-th-block>
+                <time
+                  th:text="${#dates.format(post.spec.publishTime,'yyyy.MM.dd')}"
+                  >2026.07.28</time
+                >
+                <span> · </span>
+                <span
+                  data-reading-minutes
+                  th:data-configured-minutes="${readingMinutes}"
+                  th:text="${not #strings.isEmpty(readingMinutes) ? #messages.msg('home.latest.reading',readingMinutes) : #messages.msg('home.latest.reading','…')}"
+                  >… MIN</span
+                >
+              </p>
+              <h3>
+                <a
+                  class="title-link"
+                  th:href="${post.status.permalink}"
+                  th:text="${post.spec.title}">沿海电车的第七站</a
+                >
+              </h3>
+              <p th:text="${post.status.excerpt}">
+                把黄昏留在车窗里，也把没有按下快门的那一秒写下来。
+              </p>
+              <div class="tag-row">
+                <a
+                  th:each="tag : ${post.tags}"
+                  th:href="${tag.status.permalink}"
+                  th:text="|# ${tag.spec.displayName}|"># 镰仓</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <article
+            class="now-playing card"
+            th:if="${secondaryPost != null}"
+            th:with="
+              mediaType=${#annotations.getOrDefault(secondaryPost,'akari.theme.halo.run/media-type','none')},
+              mediaUrl=${#annotations.getOrDefault(secondaryPost,'akari.theme.halo.run/media-url','')},
+              mediaSubtitle=${#annotations.getOrDefault(secondaryPost,'akari.theme.halo.run/media-subtitle',secondaryPost.status.excerpt)},
+              mediaProgress=${#annotations.getOrDefault(secondaryPost,'akari.theme.halo.run/media-progress','')}
+            "
+          >
+            <div class="card-topline">
+              <span>
+                <span
+                  th:class="${mediaType == 'listening' ? 'i-lucide-headphones' : 'i-lucide-notebook-tabs'}"
+                  aria-hidden="true"></span>
+                <span
+                  th:text="${mediaType == 'listening' ? #messages.msg('home.nowPlaying') : #messages.msg('home.latestNote')}"
+                  >NOW PLAYING</span
+                >
+              </span>
+              <span
+                th:if="${mediaType == 'listening' and not #strings.isEmpty(mediaUrl)}"
+                data-media-duration
+                th:data-audio-src="${mediaUrl}">--:--</span
+              >
+              <span
+                th:unless="${mediaType == 'listening' and not #strings.isEmpty(mediaUrl)}"
+                th:text="${not #strings.isEmpty(mediaProgress) ? mediaProgress : #dates.format(secondaryPost.spec.publishTime,'MM.dd')}"
+                >07.31</span
+              >
+            </div>
+            <a
+              class="now-playing-cover"
+              th:href="${secondaryPost.status.permalink}"
+            >
+              <img
+                th:src="${#strings.isEmpty(secondaryPost.spec.cover)
+                  ? (mediaType == 'listening' ? #theme.assets('/images/akari-cover-listening.jpg') : (mediaType == 'watching' ? #theme.assets('/images/akari-cover-cinema.jpg') : #theme.assets('/images/akari-cover-reading.jpg')))
+                  : thumbnail.gen(secondaryPost.spec.cover,'m')}"
+                th:data-fallback-src="${mediaType == 'listening' ? #theme.assets('/images/akari-cover-listening.jpg') : (mediaType == 'watching' ? #theme.assets('/images/akari-cover-cinema.jpg') : #theme.assets('/images/akari-cover-reading.jpg'))}"
+                th:alt="${secondaryPost.spec.title}"
+                width="1280"
+                height="853"
+                loading="lazy"
+              />
+            </a>
+            <div class="track-copy">
+              <div>
+                <strong
+                  ><a
+                    th:href="${secondaryPost.status.permalink}"
+                    th:text="${secondaryPost.spec.title}">最近的媒体札记</a
+                  ></strong
+                >
+                <span th:text="${mediaSubtitle}">最近更新的内容</span>
+              </div>
+              <button
+                class="round-play audio-toggle"
+                th:if="${mediaType == 'listening' and not #strings.isEmpty(mediaUrl)}"
+                type="button"
+                data-audio-toggle
+                th:data-audio-id="|post:${secondaryPost.metadata.name}|"
+                th:data-audio-src="${mediaUrl}"
+                th:data-audio-title="${secondaryPost.spec.title}"
+                th:data-audio-artist="${secondaryPost.owner != null ? secondaryPost.owner.displayName : site.title}"
+                th:data-audio-artwork="${#strings.isEmpty(secondaryPost.spec.cover) ? #theme.assets('/images/akari-cover-listening.jpg') : thumbnail.gen(secondaryPost.spec.cover,'m')}"
+                th:aria-label="#{media.play(${secondaryPost.spec.title})}"
+                th:data-play-label="#{media.play(${secondaryPost.spec.title})}"
+                th:data-pause-label="#{media.pause(${secondaryPost.spec.title})}"
+              >
+                <span class="i-lucide-play" data-audio-icon aria-hidden="true"
+                ></span>
+              </button>
+            </div>
+          </article>
+
+          <akari-halo-tag-th-block
+            th:if="${pluginFinder.available('PluginMoments')}"
+          >
+            <article
+              class="moment-note card"
+              th:if="${not #lists.isEmpty(homeMoments)}"
+              th:with="moment=${homeMoments[0]}"
+            >
+              <div class="moment-head">
+                <div class="mini-avatar">
+                  <img
+                    th:src="${moment.owner != null and not #strings.isEmpty(moment.owner.avatar)
+                      ? moment.owner.avatar
+                      : (not #strings.isEmpty(site.logo) ? site.logo : #theme.assets('/images/akari-character.png'))}"
+                    th:alt="${moment.owner != null ? moment.owner.displayName : site.title}"
+                  />
+                </div>
+                <div>
+                  <strong
+                    th:text="#{home.owner.moment(${moment.owner != null ? moment.owner.displayName : site.title})}"
+                    >站长的瞬间</strong
+                  >
+                  <span
+                    th:text="${#dates.format(moment.spec.releaseTime,'MM.dd · HH:mm')}"
+                    >07.31 · 16:42</span
+                  >
+                </div>
+                <span class="i-lucide-sparkles" aria-hidden="true"></span>
+              </div>
+              <div
+                class="moment-snippet"
+                th:utext="${moment.spec.content.html}"
+              >
+              </div>
+              <a
+                class="text-button"
+                th:href="@{|/moments/${moment.metadata.name}|}"
+              >
+                <span th:text="#{home.moreMoments}">继续看碎片</span><span
+                  class="i-lucide-arrow-right"
+                  aria-hidden="true"></span>
+              </a>
+            </article>
+            <article
+              class="moment-note card"
+              th:if="${#lists.isEmpty(homeMoments) and tertiaryPost != null}"
+            >
+              <div class="moment-head">
+                <div class="mini-avatar">
+                  <img
+                    th:src="${tertiaryPost.owner != null and not #strings.isEmpty(tertiaryPost.owner.avatar)
+                      ? tertiaryPost.owner.avatar
+                      : (not #strings.isEmpty(site.logo) ? site.logo : #theme.assets('/images/akari-character.png'))}"
+                    th:alt="${tertiaryPost.owner != null ? tertiaryPost.owner.displayName : site.title}"
+                  />
+                </div>
+                <div>
+                  <strong
+                    th:text="${tertiaryPost.owner != null ? tertiaryPost.owner.displayName : site.title}"
+                    >站长</strong
+                  >
+                  <span
+                    th:text="${#dates.format(tertiaryPost.spec.publishTime,'MM.dd')}"
+                    >07.31</span
+                  >
+                </div>
+                <span class="i-lucide-sparkles" aria-hidden="true"></span>
+              </div>
+              <p th:text="${tertiaryPost.status.excerpt}">最近写下的片段。</p>
+              <a class="text-button" th:href="${tertiaryPost.status.permalink}">
+                <span th:text="#{media.open}">打开札记</span><span
+                  class="i-lucide-arrow-right"
+                  aria-hidden="true"></span>
+              </a>
+            </article>
+          </akari-halo-tag-th-block>
+
+          <article
+            class="moment-note card"
+            th:if="${not pluginFinder.available('PluginMoments') and tertiaryPost != null}"
+          >
+            <div class="moment-head">
+              <div class="mini-avatar">
+                <img
+                  th:src="${tertiaryPost.owner != null and not #strings.isEmpty(tertiaryPost.owner.avatar)
+                    ? tertiaryPost.owner.avatar
+                    : (not #strings.isEmpty(site.logo) ? site.logo : #theme.assets('/images/akari-character.png'))}"
+                  th:alt="${tertiaryPost.owner != null ? tertiaryPost.owner.displayName : site.title}"
+                />
+              </div>
+              <div>
+                <strong
+                  th:text="${tertiaryPost.owner != null ? tertiaryPost.owner.displayName : site.title}"
+                  >站长</strong
+                >
+                <span
+                  th:text="${#dates.format(tertiaryPost.spec.publishTime,'MM.dd')}"
+                  >07.31</span
+                >
+              </div>
+              <span class="i-lucide-sparkles" aria-hidden="true"></span>
+            </div>
+            <p th:text="${tertiaryPost.status.excerpt}">最近写下的片段。</p>
+            <a class="text-button" th:href="${tertiaryPost.status.permalink}">
+              <span th:text="#{media.open}">打开札记</span><span
+                class="i-lucide-arrow-right"
+                aria-hidden="true"></span>
+            </a>
+          </article>
+
+          <article
+            class="shelf-peek card"
+            th:if="${shelfPost != null}"
+            th:with="shelfLabel=${#annotations.getOrDefault(shelfPost,'akari.theme.halo.run/shelf-label','')}"
+          >
+            <div>
+              <p class="kicker">
+                <span>MY SHELF</span>
+                <span
+                  th:if="${not #strings.isEmpty(shelfLabel)}"
+                  th:text="| · ${shelfLabel}|"
+                >
+                  · VOL.03</span
+                >
+              </p>
+              <h3>
+                <a
+                  th:href="${shelfPost.status.permalink}"
+                  th:text="${shelfPost.spec.title}">最近收进书架的故事</a
+                >
+              </h3>
+              <p th:text="${shelfPost.status.excerpt}">
+                书架不只展示评分，也保存当时为什么喜欢。
+              </p>
+            </div>
+            <a class="shelf-cover" th:href="${shelfPost.status.permalink}">
+              <img
+                th:src="${#strings.isEmpty(shelfPost.spec.cover) ? #theme.assets('/images/akari-cover-reading.jpg') : thumbnail.gen(shelfPost.spec.cover,'m')}"
+                th:data-fallback-src="${#theme.assets('/images/akari-cover-reading.jpg')}"
+                th:alt="${shelfPost.spec.title}"
+                width="1280"
+                height="1707"
+                loading="lazy"
+              />
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section
+        class="content-section latest-section"
+        aria-labelledby="latest-title"
+        th:if="${latestPosts.total > 0}"
+        data-reveal
+      >
+        <div class="section-heading">
+          <div>
+            <p class="kicker">LATEST STORIES</p><h2
+              id="latest-title"
+              th:text="#{home.latest}"
+            >
+              最近写下的
+            </h2>
+          </div>
+          <a class="text-button" th:href="${akariPostsUrl}"
+            ><span th:text="#{home.allPosts}">全部手记</span><span
+              class="i-lucide-arrow-right"></span></a
+          >
+        </div>
+        <div class="post-grid">
+          <article
+            class="post-card"
+            th:each="post,stat : ${latestPosts.items}"
+            th:if="${stat.index < 3}"
+            th:with="
+              readingMinutes=${#annotations.getOrDefault(post,'akari.theme.halo.run/reading-minutes','')},
+              fallbackCover=${stat.index == 0
+                ? (not #strings.isEmpty(theme.config.content.latest_fallback_cover_1)
+                  ? thumbnail.gen(theme.config.content.latest_fallback_cover_1,'m')
+                  : #theme.assets('/images/akari-cover-journey.jpg'))
+                : (stat.index == 1
+                  ? (not #strings.isEmpty(theme.config.content.latest_fallback_cover_2)
+                    ? thumbnail.gen(theme.config.content.latest_fallback_cover_2,'m')
+                    : #theme.assets('/images/akari-cover-journal.jpg'))
+                  : (not #strings.isEmpty(theme.config.content.latest_fallback_cover_3)
+                    ? thumbnail.gen(theme.config.content.latest_fallback_cover_3,'m')
+                    : #theme.assets('/images/akari-cover-cinema.jpg')))}
+            "
+          >
+            <a class="post-image" th:href="${post.status.permalink}">
+              <img
+                th:src="${not #strings.isEmpty(post.spec.cover) ? thumbnail.gen(post.spec.cover,'m') : fallbackCover}"
+                th:data-fallback-src="${fallbackCover}"
+                th:alt="${post.spec.title}"
+                width="1200"
+                height="690"
+                loading="lazy"
+              />
+              <span
+                th:text="${not #lists.isEmpty(post.categories) ? post.categories[0].spec.displayName : #messages.msg('post.uncategorized')}"
+                >未分类</span
+              >
+            </a>
+            <div class="post-copy">
+              <p
+                class="meta"
+                data-home-reading-time
+                th:data-reading-url="${post.status.permalink}"
+                th:data-reading-fallback="|${post.spec.title} ${post.status.excerpt}|"
+                th:data-reading-template="${#messages.msg('home.latest.reading','__MINUTES__')}"
+              >
+                <time
+                  th:text="${#dates.format(post.spec.publishTime,'yyyy.MM.dd')}"
+                  >2026.07.14</time
+                >
+                <span> · </span>
+                <span
+                  data-reading-minutes
+                  th:data-configured-minutes="${readingMinutes}"
+                  th:text="${not #strings.isEmpty(readingMinutes) ? #messages.msg('home.latest.reading',readingMinutes) : #messages.msg('home.latest.reading','…')}"
+                  >… MIN</span
+                >
+              </p>
+              <h3>
+                <a
+                  class="title-link"
+                  th:href="${post.status.permalink}"
+                  th:text="${post.spec.title}">晚风吹进房间之后</a
+                >
+              </h3>
+              <p th:text="${post.status.excerpt}">
+                关掉顶灯，留一盏桌灯，房间就会变成只属于自己的片场。
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section
+        class="content-section media-room"
+        aria-labelledby="media-title"
+        data-reveal
+        th:if="${pluginFinder.available('PluginPhotos') or pluginFinder.available('PluginMoments') or mediaPage != null}"
+      >
+        <div class="section-heading light-heading">
+          <div>
+            <p class="kicker">MEDIA ROOM</p><h2
+              id="media-title"
+              th:text="#{home.media}"
+            >
+              去我的媒体房间
+            </h2>
+          </div>
+          <p th:text="#{home.media.subtitle}">
+            照片、声音、书影音，都有自己的观看方式。
+          </p>
+        </div>
+        <div class="media-links">
+          <a
+            class="media-link media-link-wide"
+            th:if="${pluginFinder.available('PluginPhotos')}"
+            th:href="@{/photos}"
+          >
+            <img
+              th:src="${homePhotos != null and homePhotos.total > 0 ? thumbnail.gen(homePhotos.items[0].spec.url,'m') : (not #strings.isEmpty(theme.config.hero.background_image) ? thumbnail.gen(theme.config.hero.background_image,'m') : #theme.assets('/images/akari-hero-evening.jpg'))}"
+              alt=""
+              loading="lazy"
+            />
+            <span>
+              <small
+                data-home-photo-count
+                th:data-count-template="${#messages.msg('home.media.photos.count','__COUNT__')}"
+                th:text="${#messages.msg('home.media.photos.count','…')}"
+                >… 张生活切片</small
+              >
+              <strong th:text="#{nav.photos}">夜樱相册</strong>
+            </span>
+            <span class="i-lucide-arrow-up-right" aria-hidden="true"></span>
+          </a>
+          <a
+            class="media-link"
+            th:if="${pluginFinder.available('PluginMoments')}"
+            th:href="@{/moments}"
+          >
+            <img
+              th:src="${homeMomentPhoto != null ? thumbnail.gen(homeMomentPhoto.url,'m') : (secondaryPost != null and not #strings.isEmpty(secondaryPost.spec.cover) ? thumbnail.gen(secondaryPost.spec.cover,'m') : #theme.assets('/images/akari-cover-listening.jpg'))}"
+              alt=""
+              loading="lazy"
+            />
+            <span
+              ><small th:text="#{home.media.moments}">生活碎片</small><strong
+                th:text="#{nav.moments}">瞬间</strong
+              ></span
+            >
+            <span class="i-lucide-arrow-up-right" aria-hidden="true"></span>
+          </a>
+          <a
+            class="media-link"
+            th:if="${mediaPage != null}"
+            th:href="${mediaPage.status.permalink}"
+          >
+            <img
+              th:src="${shelfPost != null and not #strings.isEmpty(shelfPost.spec.cover) ? thumbnail.gen(shelfPost.spec.cover,'m') : #theme.assets('/images/akari-cover-reading.jpg')}"
+              alt=""
+              loading="lazy"
+            />
+            <span
+              ><small th:text="#{home.media.shelf}">最近收藏</small><strong
+                th:text="#{nav.media}">书影音架</strong
+              ></span
+            >
+            <span class="i-lucide-arrow-up-right" aria-hidden="true"></span>
+          </a>
+        </div>
+      </section>
+
+      <section
+        class="content-section house-map"
+        aria-labelledby="house-map-title"
+        data-reveal
+        th:with="
+          categoryCount=${#lists.size(categoryFinder.listAll())},
+          tagCount=${#lists.size(tagFinder.listAll())}
+        "
+      >
+        <div class="section-heading">
+          <div>
+            <p class="kicker">ROOM DIRECTORY</p>
+            <h2 id="house-map-title" th:text="#{home.directory}">
+              小屋还有这些房间
+            </h2>
+          </div>
+          <p th:text="#{home.directory.subtitle}">
+            按时间、兴趣或关系继续逛，不让内容只停在首页。
+          </p>
+        </div>
+
+        <div class="house-map-grid">
+          <a class="room-card" th:href="${site.routes.archivesUri}">
+            <span class="room-icon room-icon-coral"
+              ><span class="i-lucide-archive" aria-hidden="true"></span></span
+            >
+            <span>
+              <small
+                data-home-archive-meta
+                th:data-archive-url="${site.routes.archivesUri}"
+                th:data-post-count="${latestPosts.total}"
+                th:data-count-template="${#messages.msg('home.directory.archives.meta','__POSTS__','__YEARS__')}"
+                th:text="${#messages.msg('home.directory.archives.meta',latestPosts.total,'…')}"
+                >0 篇 · … 年</small
+              >
+              <strong th:text="#{home.directory.archives}">时间归档</strong>
+              <em th:text="#{home.directory.archives.description}"
+                >沿着发布时间慢慢翻回故事的起点</em
+              >
+            </span>
+            <span class="i-lucide-arrow-up-right" aria-hidden="true"></span>
+          </a>
+
+          <a
+            class="room-card"
+            th:href="${collectionsPage != null ? collectionsPage.status.permalink : site.routes.categoriesUri}"
+          >
+            <span class="room-icon room-icon-mint"
+              ><span class="i-lucide-tags" aria-hidden="true"></span></span
+            >
+            <span>
+              <small
+                th:text="#{home.directory.collections.meta(${categoryCount},${tagCount})}"
+                >0 类 · 0 枚标签</small
+              >
+              <strong th:text="#{home.directory.collections}">兴趣抽屉</strong>
+              <em th:text="#{home.directory.collections.description}"
+                >按分类与标签找到想读的内容</em
+              >
+            </span>
+            <span class="i-lucide-arrow-up-right" aria-hidden="true"></span>
+          </a>
+
+          <a
+            class="room-card"
+            th:if="${pluginFinder.available('PluginLinks')}"
+            th:href="@{/links}"
+          >
+            <span class="room-icon room-icon-sun"
+              ><span class="i-lucide-users-round" aria-hidden="true"
+              ></span></span
+            >
+            <span>
+              <small th:text="#{home.directory.links.meta}"
+                >友邻通道已点亮</small
+              >
+              <strong th:text="#{home.directory.links}">友邻门牌</strong>
+              <em th:text="#{home.directory.links.description}"
+                >顺着亮灯的窗口去看看大家</em
+              >
+            </span>
+            <span class="i-lucide-arrow-up-right" aria-hidden="true"></span>
+          </a>
+
+          <a
+            class="room-card"
+            th:if="${akariGuestbookPage != null}"
+            th:href="${akariGuestbookUrl}"
+          >
+            <span class="room-icon room-icon-berry"
+              ><span class="i-lucide-heart" aria-hidden="true"></span></span
+            >
+            <span>
+              <small
+                data-home-guestbook-meta
+                th:data-guestbook-url="${akariGuestbookUrl}"
+                th:data-count-template="${#messages.msg('home.directory.guestbook.meta','__COUNT__')}"
+                th:text="${#messages.msg('home.directory.guestbook.meta','…')}"
+                >… 张纸条</small
+              >
+              <strong th:text="#{home.directory.guestbook}">玄关留言簿</strong>
+              <em th:text="#{home.directory.guestbook.description}"
+                >打个招呼，或者交换一首歌</em
+              >
+            </span>
+            <span class="i-lucide-arrow-up-right" aria-hidden="true"></span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

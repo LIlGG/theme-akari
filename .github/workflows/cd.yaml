@@ -1,0 +1,60 @@
+name: CD
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  validate-release:
+    name: Validate release metadata
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Match release tag and theme versions
+        shell: bash
+        run: |
+          release_version="${GITHUB_REF_NAME#v}"
+          package_version="$(node --print "require('./package.json').version")"
+          theme_version="$(sed -nE 's/^[[:space:]]{2}version:[[:space:]]*"?([^"[:space:]]+)"?[[:space:]]*$/\1/p' theme.yaml | head -n 1)"
+
+          if [[ -z "$theme_version" ]]; then
+            echo "::error::Unable to read spec.version from theme.yaml."
+            exit 1
+          fi
+
+          if [[ "$release_version" != "$package_version" || "$release_version" != "$theme_version" ]]; then
+            echo "::error::Release tag ($GITHUB_REF_NAME), package.json ($package_version), and theme.yaml ($theme_version) must use the same version."
+            exit 1
+          fi
+
+      - name: Check App Store credentials
+        env:
+          HALO_PAT: ${{ secrets.HALO_PAT }}
+        run: |
+          if [[ -z "$HALO_PAT" ]]; then
+            echo "::error::The HALO_PAT secret is required to publish app-8rojpuw1."
+            exit 1
+          fi
+
+  publish:
+    name: Publish theme
+    needs: validate-release
+    permissions:
+      contents: write
+    uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v4
+    secrets:
+      halo-pat: ${{ secrets.HALO_PAT }}
+    with:
+      app-id: app-8rojpuw1
+      node-version: 24
+      pnpm-version: ""

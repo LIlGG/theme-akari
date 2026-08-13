@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/entries/error.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${status + ' · ' + site.title}",
+    titleFallback: "Request error",
+    descriptionExpression: "${site.seo.description}",
+    schemaType: "WebPage",
+    robots: "noindex, nofollow",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${status} · ${site.title}|">Request error</title>
+  </Fragment>
+
+  <section class="page-view notfound-view is-visible" data-page="error">
+    <div class="notfound-card" data-hero-copy>
+      <div class="notfound-scene">
+        <img
+          th:src="${#theme.assets('/images/akari-character.png')}"
+          alt=""
+        /><span th:text="${status}">400</span>
+      </div>
+      <div>
+        <p class="eyebrow">
+          <span>LOST PAGE</span> · <akari-halo-tag-th-block
+            th:text="#{error.eyebrow}">Lost</akari-halo-tag-th-block
+          >
+        </p>
+        <h1 th:text="${error?.title ?: #messages.msg('error.4xx.title')}">
+          Unable to continue
+        </h1>
+        <p th:text="#{error.4xx.subtitle}">
+          The request could not be completed.
+        </p>
+        <div class="hero-actions">
+          <a class="primary-button" th:href="@{/}"
+            ><span class="i-lucide-house"></span><span
+              th:text="#{error.backHome}">Home</span
+            ></a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

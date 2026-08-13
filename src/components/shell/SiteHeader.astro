@@ -1,0 +1,223 @@
+<header
+  class="site-header"
+  data-header
+  transition:persist="akari-header"
+  th:with="primaryMenu=${menuFinder.getPrimary()}"
+>
+  <div class="header-inner">
+    <a
+      class="brand"
+      th:href="@{/}"
+      th:aria-label="${theme.config.identity.brand_name ?: site.title}"
+      data-astro-prefetch="hover"
+    >
+      <span class="brand-mark" aria-hidden="true">
+        <img
+          th:if="${not #strings.isEmpty(theme.config.identity.brand_logo)}"
+          th:src="${theme.config.identity.brand_logo}"
+          alt=""
+          width="40"
+          height="40"
+          decoding="async"
+          fetchpriority="high"
+        />
+        <img
+          th:unless="${not #strings.isEmpty(theme.config.identity.brand_logo)}"
+          class="brand-default-logo"
+          th:src="${#theme.assets('/images/akari-logo.svg')}"
+          alt=""
+          width="40"
+          height="40"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </span>
+      <span>
+        <strong th:text="${theme.config.identity.brand_name ?: site.title}"
+          >Akari</strong
+        >
+        <small
+          th:text="${not #strings.isEmpty(theme.config.identity.brand_tagline)
+            ? theme.config.identity.brand_tagline
+            : (not #strings.isEmpty(site.subtitle) ? site.subtitle : #messages.msg('site.tagline'))}"
+          >晚灯小屋</small
+        >
+      </span>
+    </a>
+
+    <nav class="desktop-nav" th:aria-label="#{nav.primary}">
+      <akari-halo-tag-th-block th:if="${primaryMenu != null}">
+        <a
+          class="nav-link"
+          th:each="menuItem,menuItemStat : ${primaryMenu.menuItems}"
+          th:if="${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','') == 'primary' or (#strings.isEmpty(#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','')) and menuItemStat.index < 5)}"
+          th:href="${menuItem.status.href}"
+          th:target="${menuItem.spec.target?.value}"
+          th:data-nav-path="${menuItem.status.href}"
+          data-astro-prefetch="hover"
+        >
+          <span
+            class="menu-item-icon nav-icon"
+            aria-hidden="true"
+            th:with="menuIcon=${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/icon','')}"
+          >
+            <akari-halo-tag-th-block
+              th:if="${#strings.startsWith(menuIcon,'<svg')}"
+              th:utext="${menuIcon}"></akari-halo-tag-th-block>
+            <span
+              th:unless="${#strings.startsWith(menuIcon,'<svg')}"
+              class="i-lucide-sparkles"></span>
+          </span>
+          <span th:text="${menuItem.status.displayName}">菜单</span>
+        </a>
+
+        <div
+          class="more-nav"
+          data-more
+          th:if="${#lists.size(primaryMenu.menuItems) > 5 or not #lists.isEmpty(primaryMenu.menuItems.?[#annotations.getOrDefault(#this,'akari.theme.halo.run/menu-placement','') == 'more'])}"
+        >
+          <button
+            class="nav-link more-nav-button"
+            type="button"
+            data-more-trigger
+            aria-expanded="false"
+          >
+            <span class="i-lucide-layout-grid nav-icon" aria-hidden="true"
+            ></span>
+            <span th:text="#{nav.more}">更多</span>
+            <span class="i-lucide-chevron-down nav-chevron" aria-hidden="true"
+            ></span>
+          </button>
+          <div class="more-nav-panel" data-more-panel hidden>
+            <a
+              th:each="menuItem,menuItemStat : ${primaryMenu.menuItems}"
+              th:if="${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','') == 'more' or (#strings.isEmpty(#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','')) and menuItemStat.index >= 5)}"
+              th:href="${menuItem.status.href}"
+              th:target="${menuItem.spec.target?.value}"
+              th:data-nav-path="${menuItem.status.href}"
+              data-astro-prefetch="hover"
+            >
+              <span
+                class="more-menu-icon"
+                aria-hidden="true"
+                th:with="menuIcon=${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/icon','')}"
+              >
+                <akari-halo-tag-th-block
+                  th:if="${#strings.startsWith(menuIcon,'<svg')}"
+                  th:utext="${menuIcon}"></akari-halo-tag-th-block>
+                <span
+                  th:unless="${#strings.startsWith(menuIcon,'<svg')}"
+                  class="i-lucide-sparkles"></span>
+              </span>
+              <span>
+                <strong th:text="${menuItem.status.displayName}">菜单</strong>
+                <small
+                  th:text="${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-description',#messages.msg('nav.more.default'))}"
+                  >打开这个房间</small
+                >
+              </span>
+            </a>
+          </div>
+        </div>
+      </akari-halo-tag-th-block>
+    </nav>
+
+    <div class="header-tools">
+      <button
+        th:if="${pluginFinder.available('PluginSearchWidget')}"
+        class="icon-button"
+        type="button"
+        data-search
+        th:aria-label="#{nav.search}"
+      >
+        <span class="i-lucide-search" aria-hidden="true"></span>
+      </button>
+      <button
+        th:if="${theme.config.appearance.allow_color_scheme}"
+        class="icon-button"
+        type="button"
+        data-theme-toggle
+        th:data-light-label="#{theme.light}"
+        th:data-dark-label="#{theme.dark}"
+        th:aria-label="#{theme.dark}"
+      >
+        <span class="i-lucide-moon" data-theme-icon aria-hidden="true"></span>
+      </button>
+      <button
+        class="icon-button mobile-menu-button"
+        type="button"
+        data-menu-trigger
+        th:data-open-label="#{nav.menu.open}"
+        th:data-close-label="#{nav.menu.close}"
+        aria-expanded="false"
+        aria-controls="ak-mobile-menu"
+        th:aria-label="#{nav.menu.open}"
+      >
+        <span class="i-lucide-menu" data-menu-icon aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <nav
+    id="ak-mobile-menu"
+    class="mobile-nav"
+    data-mobile-menu
+    th:aria-label="#{nav.mobile}"
+    hidden
+  >
+    <akari-halo-tag-th-block th:if="${primaryMenu != null}">
+      <a
+        th:each="menuItem,menuItemStat : ${primaryMenu.menuItems}"
+        th:if="${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','') == 'primary' or (#strings.isEmpty(#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','')) and menuItemStat.index < 5)}"
+        th:href="${menuItem.status.href}"
+        th:target="${menuItem.spec.target?.value}"
+        th:data-nav-path="${menuItem.status.href}"
+        data-astro-prefetch="tap"
+      >
+        <span
+          class="menu-item-icon"
+          aria-hidden="true"
+          th:with="menuIcon=${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/icon','')}"
+        >
+          <akari-halo-tag-th-block
+            th:if="${#strings.startsWith(menuIcon,'<svg')}"
+            th:utext="${menuIcon}"></akari-halo-tag-th-block>
+          <span
+            th:unless="${#strings.startsWith(menuIcon,'<svg')}"
+            class="i-lucide-sparkles"></span>
+        </span>
+        <span th:text="${menuItem.status.displayName}">菜单</span>
+      </a>
+
+      <akari-halo-tag-th-block
+        th:if="${#lists.size(primaryMenu.menuItems) > 5 or not #lists.isEmpty(primaryMenu.menuItems.?[#annotations.getOrDefault(#this,'akari.theme.halo.run/menu-placement','') == 'more'])}"
+      >
+        <div class="mobile-nav-divider">
+          <span th:text="#{nav.more}">更多</span>
+        </div>
+        <a
+          th:each="menuItem,menuItemStat : ${primaryMenu.menuItems}"
+          th:if="${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','') == 'more' or (#strings.isEmpty(#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','')) and menuItemStat.index >= 5)}"
+          th:href="${menuItem.status.href}"
+          th:target="${menuItem.spec.target?.value}"
+          th:data-nav-path="${menuItem.status.href}"
+          data-astro-prefetch="tap"
+        >
+          <span
+            class="menu-item-icon"
+            aria-hidden="true"
+            th:with="menuIcon=${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/icon','')}"
+          >
+            <akari-halo-tag-th-block
+              th:if="${#strings.startsWith(menuIcon,'<svg')}"
+              th:utext="${menuIcon}"></akari-halo-tag-th-block>
+            <span
+              th:unless="${#strings.startsWith(menuIcon,'<svg')}"
+              class="i-lucide-sparkles"></span>
+          </span>
+          <span th:text="${menuItem.status.displayName}">菜单</span>
+        </a>
+      </akari-halo-tag-th-block>
+    </akari-halo-tag-th-block>
+  </nav>
+</header>

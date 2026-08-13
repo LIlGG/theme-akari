@@ -1,0 +1,61 @@
+<footer class="site-footer" transition:persist="akari-footer">
+  <div>
+    <span class="brand-mark" aria-hidden="true">
+      <img
+        th:if="${not #strings.isEmpty(theme.config.identity.brand_logo)}"
+        th:src="${theme.config.identity.brand_logo}"
+        alt=""
+        width="40"
+        height="40"
+      />
+      <img
+        th:unless="${not #strings.isEmpty(theme.config.identity.brand_logo)}"
+        class="brand-default-logo"
+        th:src="${#theme.assets('/images/akari-logo.svg')}"
+        alt=""
+        width="40"
+        height="40"
+      />
+    </span>
+    <div>
+      <strong
+        th:text="|${not #strings.isEmpty(theme.config.identity.brand_tagline) ? theme.config.identity.brand_tagline : (not #strings.isEmpty(site.subtitle) ? site.subtitle : #messages.msg('site.tagline'))} ${theme.config.identity.brand_name ?: site.title}|"
+        >晚灯小屋 Akari</strong
+      >
+      <p th:text="${theme.config.footer.slogan}">
+        把喜欢的事，慢慢收进春日里。
+      </p>
+    </div>
+  </div>
+  <nav th:aria-label="#{footer.nav}">
+    <a
+      class="inline-link"
+      th:href="${site.routes.archivesUri}"
+      th:text="#{nav.archives}">归档</a
+    >
+    <a
+      class="inline-link"
+      th:if="${pluginFinder.available('PluginLinks')}"
+      th:href="@{/links}"
+      th:text="#{nav.links}">友邻</a
+    >
+    <a
+      class="inline-link"
+      th:if="${akariGuestbookPage != null}"
+      th:href="${akariGuestbookUrl}"
+      th:text="#{nav.guestbook}">留言</a
+    >
+    <a class="inline-link" th:href="@{/rss.xml}" target="_blank" rel="alternate"
+      >RSS</a
+    >
+  </nav>
+  <p>
+    <span
+      th:if="${#strings.isEmpty(theme.config.footer.copyright)}"
+      th:text="|© ${#dates.year(#dates.createNow())} ${site.title}|"></span>
+    <span
+      th:unless="${#strings.isEmpty(theme.config.footer.copyright)}"
+      th:text="${theme.config.footer.copyright}"></span>
+  </p>
+  <akari-halo-tag-halo-footer></akari-halo-tag-halo-footer>
+</footer>

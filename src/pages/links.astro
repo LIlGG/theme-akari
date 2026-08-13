@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/links.css";
+import FriendLinksContent from "../components/links/FriendLinksContent.astro";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression:
+      "${akariLinksPage != null and not #strings.isEmpty(akariLinksPage.spec.title) ? akariLinksPage.spec.title : linksTitle}",
+    titleFallback: "Links",
+    descriptionExpression:
+      "${akariLinksPage != null and not #strings.isEmpty(akariLinksPage.status.excerpt) ? akariLinksPage.status.excerpt : site.seo.description}",
+    canonicalExpression: "${site.url + '/links'}",
+    schemaType: "CollectionPage",
+  }}
+>
+  <Fragment slot="head">
+    <title
+      th:with="linksPage=${akariLinksPage}"
+      th:text="|${linksPage != null and not #strings.isEmpty(linksPage.spec.title) ? linksPage.spec.title : linksTitle} · ${site.title}|"
+    >
+      友邻 · Akari
+    </title>
+  </Fragment>
+
+  <section
+    class="page-view inner-view is-visible"
+    data-page="links"
+    th:with="linksPage=${akariLinksPage},linkGroups=${groups},linkCount=${#aggregates.sum(linkGroups.![#lists.size(links)])},guestbookPage=${akariGuestbookPage}"
+  >
+    <div class="inner-shell">
+      <FriendLinksContent />
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,83 @@
+/* Shared detail-page navigation and comment mount spacing. */
+.article-navigation {
+  margin: 18px 0 72px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.article-navigation a {
+  min-height: 104px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.article-navigation a:hover,
+.article-navigation a:focus-visible {
+  border-color: color-mix(in srgb, var(--coral) 42%, var(--border));
+  box-shadow: var(--shadow-low);
+  transform: translateY(-2px);
+}
+
+.article-navigation .is-next {
+  text-align: right;
+}
+
+.article-navigation a:only-child {
+  grid-column: 1 / -1;
+}
+
+.article-navigation small,
+.article-navigation strong {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.article-navigation .is-next small,
+.article-navigation .is-next strong {
+  justify-content: flex-end;
+}
+
+.article-navigation small {
+  margin-bottom: 5px;
+  color: var(--ink-3);
+}
+
+.article-navigation small svg {
+  width: 15px;
+}
+
+.article-navigation strong {
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 18px;
+}
+
+.comment-preview {
+  padding-top: 8px;
+}
+
+@media (max-width: 767px) {
+  .article-navigation {
+    margin-bottom: 58px;
+  }
+
+  .article-navigation .is-next,
+  .article-navigation .is-next small,
+  .article-navigation .is-next strong {
+    justify-content: flex-start;
+    text-align: left;
+  }
+}

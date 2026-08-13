@@ -1,0 +1,78 @@
+---
+import PersistentPlayer from "../player/PersistentPlayer.astro";
+---
+
+<button
+  class="back-top-note"
+  transition:persist="akari-back-top"
+  type="button"
+  data-back-top
+  th:aria-label="#{footer.backTop}"
+  th:title="#{footer.backTop}"
+  hidden
+>
+  <span class="back-top-ring" aria-hidden="true">
+    <span class="back-top-arrow"><span class="i-lucide-arrow-up"></span></span>
+  </span>
+  <span class="back-top-label" th:text="#{footer.backTop.short}">归灯</span>
+</button>
+
+<div
+  data-persistent-player-host
+  transition:persist="akari-player"
+  th:attr="
+        data-current-label=#{player.current},
+        data-next-label=#{player.next},
+        data-untitled-label=#{player.untitled},
+        data-play-label=#{player.play},
+        data-pause-label=#{player.pause},
+        data-progress-label=#{player.progress},
+        data-expand-label=#{player.expand},
+        data-collapse-label=#{player.collapse},
+        data-close-label=#{player.close},
+        data-error-label=#{media.error}
+      "
+>
+  <PersistentPlayer />
+</div>
+
+<dialog class="ak-lightbox" data-lightbox transition:persist="akari-lightbox">
+  <button
+    class="ak-icon-button lightbox-close"
+    type="button"
+    data-lightbox-close
+    th:aria-label="#{lightbox.close}"
+  >
+    <span class="i-lucide-x"></span>
+  </button>
+  <button
+    class="ak-icon-button lightbox-previous"
+    type="button"
+    data-lightbox-previous
+    th:aria-label="#{lightbox.previous}"
+  >
+    <span class="i-lucide-chevron-left"></span>
+  </button>
+  <button
+    class="ak-icon-button lightbox-next"
+    type="button"
+    data-lightbox-next
+    th:aria-label="#{lightbox.next}"
+  >
+    <span class="i-lucide-chevron-right"></span>
+  </button>
+  <figure>
+    <img data-lightbox-image alt="" />
+    <figcaption data-lightbox-caption></figcaption>
+  </figure>
+</dialog>
+
+<div
+  class="ak-toast"
+  data-toast
+  role="status"
+  aria-live="polite"
+  hidden
+  transition:persist="akari-toast"
+>
+</div>

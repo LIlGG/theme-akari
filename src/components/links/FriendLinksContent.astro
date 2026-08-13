@@ -1,0 +1,125 @@
+<header class="page-intro friends-intro" data-reveal>
+  <div>
+    <p
+      class="eyebrow"
+      th:with="configuredEyebrow=${linksPage != null ? #annotations.get(linksPage, 'akari.theme.halo.run/links-eyebrow') : ''}"
+    >
+      <span>NEIGHBORHOOD</span> · <akari-halo-tag-th-block
+        th:text="${#strings.isEmpty(configuredEyebrow) ? #messages.msg('links.eyebrow') : configuredEyebrow}"
+        >友邻门牌</akari-halo-tag-th-block
+      >
+    </p>
+    <h1
+      th:with="configuredTitle=${linksPage != null ? #annotations.get(linksPage, 'akari.theme.halo.run/links-title') : ''}"
+      th:text="${#strings.isEmpty(configuredTitle) ? #messages.msg('links.heroTitle') : configuredTitle}"
+    >
+      顺着灯光去串门。
+    </h1>
+    <p
+      th:with="configuredSubtitle=${linksPage != null ? #annotations.get(linksPage, 'akari.theme.halo.run/links-subtitle') : ''}"
+      th:text="${#strings.isEmpty(configuredSubtitle) ? #messages.msg('links.subtitle') : configuredSubtitle}"
+    >
+      不是互换权重的名单，是我会认真打开、偶尔留言的个人站点。
+    </p>
+  </div>
+  <div class="door-sign">
+    <span class="i-lucide-lamp-wall-up"></span><span
+      th:text="#{links.count(${linkCount})}">12 户亮着灯</span
+    >
+  </div>
+</header>
+
+<section
+  class="friend-group"
+  th:each="linkGroup,groupStat : ${linkGroups}"
+  th:if="${not #lists.isEmpty(linkGroup.links)}"
+>
+  <div class="section-heading">
+    <div>
+      <p class="kicker">LINK GROUP</p><h2
+        th:text="${linkGroup.spec.displayName}"
+      >
+        常来串门
+      </h2>
+    </div>
+    <p th:text="#{links.count(${#lists.size(linkGroup.links)})}">12 户亮着灯</p>
+  </div>
+  <div class="friend-grid">
+    <a
+      class="friend-card"
+      th:each="link,stat : ${linkGroup.links}"
+      th:href="${link.spec.url}"
+      target="_blank"
+      rel="noopener noreferrer"
+      data-reveal
+    >
+      <span
+        class="friend-avatar friend-avatar-stack"
+        th:classappend="${stat.index % 4 == 0 ? ' avatar-coral' : (stat.index % 4 == 1 ? ' avatar-mint' : (stat.index % 4 == 2 ? ' avatar-sun' : ' avatar-berry'))}"
+      >
+        <span
+          th:text="${#strings.toUpperCase(#strings.substring(link.spec.displayName,0,1))}"
+          >木</span
+        >
+        <img
+          th:if="${not #strings.isEmpty(link.spec.logo)}"
+          th:src="${link.spec.logo}"
+          th:alt="${link.spec.displayName}"
+          loading="lazy"
+        />
+      </span>
+      <div>
+        <p>
+          <strong th:text="${link.spec.displayName}">木屿手帐</strong><span
+            class="online-dot"></span>
+        </p>
+        <small th:text="${linkGroup.spec.displayName}">插画 · 手帐 · 植物</small
+        >
+        <p th:text="${link.spec.description}">认真生活的个人站点。</p>
+        <span class="friend-visit"
+          ><span th:text="#{links.visit}">去串门</span>
+          <span class="i-lucide-arrow-up-right"></span></span
+        >
+      </div>
+    </a>
+    <a
+      class="friend-card friend-invite"
+      th:if="${groupStat.last and guestbookPage != null}"
+      th:href="${guestbookPage.status.permalink}"
+      data-reveal
+    >
+      <span class="friend-avatar"><span class="i-lucide-plus"></span></span>
+      <div>
+        <p>
+          <strong th:text="#{links.applyTitle}">留一盏空灯</strong>
+        </p>
+        <small th:text="#{links.applyLabel}">欢迎认真生活的个人博客</small>
+        <p th:text="#{links.applyDescription}">
+          请先来留言簿坐一会儿，再交换彼此的门牌。
+        </p>
+        <span class="friend-visit"
+          ><span th:text="#{links.applyAction}">去写小纸条</span>
+          <span class="i-lucide-arrow-right"></span></span
+        >
+      </div>
+    </a>
+  </div>
+</section>
+
+<aside
+  class="friend-note"
+  th:with="configuredPolicyTitle=${linksPage != null ? #annotations.get(linksPage, 'akari.theme.halo.run/links-policy-title') : ''},configuredPolicy=${linksPage != null ? #annotations.get(linksPage, 'akari.theme.halo.run/links-policy') : ''}"
+>
+  <span class="i-lucide-shield-check"></span>
+  <div>
+    <strong
+      th:text="${#strings.isEmpty(configuredPolicyTitle) ? #messages.msg('links.policyTitle') : configuredPolicyTitle}"
+      >关于这些门牌</strong
+    >
+    <p
+      th:text="${not #strings.isEmpty(configuredPolicy) ? configuredPolicy : (not #strings.isEmpty(legacyPolicy) and legacyPolicy != '48 px 头像、两行近况、明确状态；失联站点保留 90 天后移入纪念册，不用灰掉的卡片制造压力。' ? legacyPolicy : #messages.msg('links.policyText'))}"
+    >
+      这里收录的是我愿意常来串门的站点。
+    </p>
+  </div>
+</aside>

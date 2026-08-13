@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Check and package theme
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: 9.15.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check and build release package
+        run: pnpm build
+
+      - name: Inspect release package
+        shell: bash
+        run: |
+          mapfile -t archives < <(find dist -maxdepth 1 -type f -name 'theme-*.zip' -print)
+          if (( ${#archives[@]} != 1 )); then
+            echo "::error::Expected exactly one theme ZIP, found ${#archives[@]}."
+            exit 1
+          fi
+
+          archive="${archives[0]}"
+          unzip -t "$archive"
+
+          for required_file in theme.yaml settings.yaml annotations.yaml README.md LICENSE docs/USER_GUIDE.md templates/index.html; do
+            if ! unzip -Z1 "$archive" | grep -Fxq "$required_file"; then
+              echo "::error::Missing required package entry: $required_file"
+              exit 1
+            fi
+          done
+
+          if unzip -Z1 "$archive" | grep -Eq '(^|/)(src|node_modules|prototype|design-qa|architecture)(/|$)'; then
+            echo "::error::The release package contains development-only files."
+            exit 1
+          fi
+
+      - name: Upload theme package
+        uses: actions/upload-artifact@v7
+        with:
+          name: theme-akari
+          path: dist/*.zip
+          if-no-files-found: error
+          retention-days: 7

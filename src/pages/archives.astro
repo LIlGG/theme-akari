@@ -1,0 +1,264 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/archives.css";
+import Pagination from "../components/content/Pagination.astro";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${#messages.msg('archive.title')}",
+    titleFallback: "Archives",
+    descriptionExpression: "${#messages.msg('archive.subtitle')}",
+    canonicalExpression: "${site.url + site.routes.archivesUri}",
+    schemaType: "CollectionPage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|#{archive.title} · ${site.title}|">Archives</title>
+  </Fragment>
+
+  <section
+    class="page-view inner-view is-visible"
+    data-page="archives"
+    th:with="yearCount=${#lists.size(archives.items)},momentCount=${pluginFinder.available('PluginMoments') ? #lists.size(momentFinder.listAll()) : 0}"
+  >
+    <div class="inner-shell">
+      <header class="page-intro archive-intro" data-reveal>
+        <div>
+          <p class="eyebrow">
+            <span>TIME ARCHIVE</span> · <akari-halo-tag-th-block
+              th:text="#{archive.eyebrow}">往回翻</akari-halo-tag-th-block
+            >
+          </p>
+          <h1
+            data-archive-summary
+            th:data-archive-summary-template="${#messages.msg('archive.summary','__YEARS__','__POSTS__')}"
+            th:text="#{archive.summary(${yearCount},${archives.total})}"
+          >
+            四年，四十二篇。
+          </h1>
+          <p th:text="#{archive.subtitle}">
+            不是内容仓库，是一条能看见生活缓慢变化的时间线。
+          </p>
+        </div>
+        <div class="archive-stats" th:aria-label="#{archive.stats}">
+          <div>
+            <strong th:text="${archives.total}">42</strong><span
+              th:text="#{archive.posts}">篇手记</span
+            >
+          </div>
+          <div th:if="${pluginFinder.available('PluginMoments')}">
+            <strong th:text="${momentCount}">68</strong><span
+              th:text="#{archive.moments}">条瞬间</span
+            >
+          </div>
+          <div>
+            <strong data-archive-year-count th:text="${yearCount}">4</strong
+            ><span th:text="#{archive.springs}">个春天</span>
+          </div>
+        </div>
+      </header>
+
+      <section
+        class="archive-results"
+        data-archive-results
+        th:data-total="${archives.total}"
+        aria-live="polite"
+      >
+        <div class="archive-layout" th:if="${archives.total > 0}">
+          <nav
+            class="year-rail"
+            data-archive-year-rail
+            th:aria-label="#{archive.yearNav}"
+          >
+            <a
+              class="year-button"
+              th:each="archive,stat : ${archives.items}"
+              th:classappend="${stat.first ? ' is-active' : ''}"
+              th:href="|#archive-${archive.year}|"
+              data-archive-year-link
+              th:data-archive-year="${archive.year}"
+            >
+              <strong th:text="${archive.year}">2026</strong>
+              <span
+                data-archive-year-link-count
+                th:data-archive-count-template="${#messages.msg('archive.postCount','__COUNT__')}"
+                th:text="#{archive.postCount(${#aggregates.sum(archive.months.![#lists.size(posts)])})}"
+                >14 篇</span
+              >
+            </a>
+            <script is:inline data-astro-rerun>
+              (() => {
+                const results = document.querySelector(
+                  '[data-page="archives"] [data-archive-results]',
+                );
+                if (!results || !location.hash.startsWith("#archive-")) return;
+
+                let selectedYear = "";
+                try {
+                  selectedYear = decodeURIComponent(
+                    location.hash.slice("#archive-".length),
+                  );
+                } catch {
+                  return;
+                }
+
+                const links = [
+                  ...results.querySelectorAll("[data-archive-year-link]"),
+                ];
+                const selected = links.find(
+                  (link) => link.dataset.archiveYear === selectedYear,
+                );
+                if (!selected) return;
+
+                links.forEach((link) => {
+                  const active = link === selected;
+                  link.classList.toggle("is-active", active);
+                  if (active) link.setAttribute("aria-current", "true");
+                  else link.removeAttribute("aria-current");
+                });
+              })();
+            </script>
+          </nav>
+          <div class="archive-years" data-archive-years>
+            <section
+              class="archive-year"
+              th:each="archive : ${archives.items}"
+              th:id="|archive-${archive.year}|"
+              data-archive-year-section
+              th:data-archive-year="${archive.year}"
+            >
+              <div class="archive-year-heading">
+                <span th:text="${archive.year}">2026</span><p
+                  th:text="#{archive.yearNote}"
+                >
+                  慢慢写下的日子
+                </p>
+              </div>
+              <div
+                class="archive-month"
+                th:each="month : ${archive.months}"
+                data-archive-month
+                th:data-archive-month="${month.month}"
+              >
+                <h2>
+                  <span
+                    th:text="${#messages.msg('archive.month.' + month.month)}"
+                    >七月</span
+                  >
+                  <small
+                    th:text="${#messages.msg('archive.monthAbbr.' + month.month)}"
+                    >JUL.</small
+                  >
+                </h2>
+                <a
+                  class="archive-entry"
+                  th:each="post : ${month.posts}"
+                  th:with="readingMinutes=${#annotations.getOrDefault(post,'akari.theme.halo.run/reading-minutes','')}"
+                  th:href="${post.status.permalink}"
+                  data-archive-entry
+                  data-archive-reading-time
+                  th:data-post-name="${post.metadata.name}"
+                  th:data-reading-url="${post.status.permalink}"
+                  th:data-reading-fallback="|${post.spec.title} ${post.status.excerpt}|"
+                  th:data-reading-template="${#messages.msg('archive.readingTime','__MINUTES__')}"
+                >
+                  <time
+                    th:text="${#dates.format(post.spec.publishTime,'MM.dd')}"
+                    >07.28</time
+                  >
+                  <span>
+                    <strong th:text="${post.spec.title}"
+                      >沿海电车的第七站</strong
+                    >
+                    <small class="archive-entry-meta">
+                      <span
+                        class="archive-entry-category"
+                        th:if="${not #lists.isEmpty(post.categories)}"
+                        th:text="${post.categories[0].spec.displayName}"
+                        >旅行</span
+                      >
+                      <span
+                        class="archive-entry-meta-separator"
+                        th:if="${not #lists.isEmpty(post.categories)}"
+                        aria-hidden="true"
+                      >
+                        ·
+                      </span>
+                      <span
+                        data-reading-minutes
+                        th:data-configured-minutes="${readingMinutes}"
+                        th:text="${not #strings.isEmpty(readingMinutes) ? #messages.msg('archive.readingTime',readingMinutes) : #messages.msg('archive.readingTime','…')}"
+                        >8 分钟</span
+                      >
+                    </small>
+                  </span>
+                  <span class="i-lucide-arrow-up-right"></span>
+                </a>
+              </div>
+            </section>
+            <div class="archive-continuation" data-archive-continuation>
+              <a
+                class="archive-continuation-action"
+                th:if="${archives.hasNext()}"
+                th:href="${archives.nextUrl}"
+                data-load-more-archives
+                data-no-page-transition
+                th:data-loading-label="#{archive.loading}"
+                th:data-error-label="#{archive.loadError}"
+              >
+                <span class="archive-continuation-index" aria-hidden="true">
+                  <span class="i-lucide-book-open-text" data-archive-load-icon
+                  ></span>
+                </span>
+                <span class="archive-continuation-copy">
+                  <small th:text="#{archive.loadMoreEyebrow}"
+                    >EARLIER PAGES</small
+                  >
+                  <strong data-archive-load-label th:text="#{archive.loadMore}"
+                    >继续翻到更早</strong
+                  >
+                  <span>
+                    <span
+                      data-visible-archive-count
+                      th:text="${#aggregates.sum(archives.items.![#aggregates.sum(months.![#lists.size(posts)])])}"
+                      >10</span
+                    >
+                    <span aria-hidden="true"> / </span>
+                    <span th:text="${archives.total}">42</span>
+                    <span th:text="#{archive.posts}">篇手记</span>
+                  </span>
+                </span>
+                <span class="archive-continuation-mark" aria-hidden="true">
+                  <span class="i-lucide-arrow-down"></span>
+                </span>
+              </a>
+              <p
+                class="archive-continuation-end"
+                data-archive-load-end
+                role="status"
+                aria-live="polite"
+                th:hidden="${archives.hasNext()}"
+              >
+                <span class="i-lucide-book-heart" aria-hidden="true"></span>
+                <span th:text="#{archive.end}"
+                  >已经翻到这本时间册的第一页。</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="empty-state" th:if="${archives.total == 0}">
+          <span class="i-lucide-archive"></span><p th:text="#{list.empty}">
+            这里还没有收进内容。
+          </p>
+        </div>
+        <noscript
+          ><akari-halo-tag-th-block th:with="result=${archives}"
+            ><Pagination /></akari-halo-tag-th-block
+          ></noscript
+        >
+      </section>
+    </div>
+  </section>
+</BaseLayout>

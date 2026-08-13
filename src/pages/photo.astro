@@ -1,0 +1,83 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/gallery.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${photo.spec.displayName}",
+    titleFallback: "Photo",
+    descriptionExpression:
+      "${not #strings.isEmpty(photo.spec.description) ? photo.spec.description : #messages.msg('photos.subtitle')}",
+    canonicalExpression: "${site.url + photo.permalink}",
+    imageExpression:
+      "${#strings.startsWith(photo.spec.url, 'http') ? photo.spec.url : site.url + photo.spec.url}",
+    schemaType: "ImageGallery",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${photo.spec.displayName} · ${site.title}|">Photo</title>
+  </Fragment>
+
+  <article class="page-view inner-view is-visible" data-page="photo">
+    <div class="inner-shell">
+      <header class="page-intro" data-hero-copy>
+        <p class="eyebrow">
+          <span>PHOTO</span> · <span th:text="|${position} / ${total}|"
+            >1 / 1</span
+          >
+        </p>
+        <h1 th:text="${photo.spec.displayName}">Photo</h1>
+        <p
+          th:text="${photo.spec.description ?: #messages.msg('photos.subtitle')}"
+        >
+          Description
+        </p>
+      </header>
+      <button
+        class="photo-detail"
+        type="button"
+        data-lightbox-trigger
+        th:aria-label="#{photos.open(${photo.spec.displayName})}"
+        th:attr="data-lightbox-src=${photo.spec.url},data-lightbox-caption=${photo.spec.displayName}"
+      >
+        <img
+          th:src="${thumbnail.gen(photo.spec.url, 'xl')}"
+          th:srcset="|${thumbnail.gen(photo.spec.url, 'm')} 800w, ${thumbnail.gen(photo.spec.url, 'l')} 1200w, ${thumbnail.gen(photo.spec.url, 'xl')} 1600w|"
+          sizes="(max-width: 1200px) 100vw, 1200px"
+          th:alt="${photo.spec.displayName}"
+        />
+      </button>
+      <nav class="article-navigation photo-navigation">
+        <a th:if="${prev != null}" th:href="${photoUrl.detail(prev)}">
+          <small
+            ><span class="i-lucide-arrow-left"></span><span
+              th:text="#{post.previous}">Previous</span
+            ></small
+          >
+          <strong th:text="${prev.spec.displayName}">Photo</strong>
+        </a>
+        <a th:if="${next != null}" th:href="${photoUrl.detail(next)}">
+          <small
+            ><span th:text="#{post.next}">Next</span><span
+              class="i-lucide-arrow-right"></span></small
+          >
+          <strong th:text="${next.spec.displayName}">Photo</strong>
+        </a>
+      </nav>
+      <div class="photo-back">
+        <a class="secondary-button" th:href="${backUrl}"
+          ><span class="i-lucide-images"></span><span th:text="#{photos.title}"
+            >Photos</span
+          ></a
+        >
+      </div>
+      <section class="comment-preview" th:if="${haloCommentEnabled}">
+        <akari-halo-tag-halo-comment
+          group="core.halo.run"
+          kind="Photo"
+          th:attr="name=${photo.metadata.name}"></akari-halo-tag-halo-comment>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

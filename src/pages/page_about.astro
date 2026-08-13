@@ -1,0 +1,119 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/about.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${singlePage.spec.title}",
+    titleFallback: "About",
+    descriptionExpression:
+      "${not #strings.isEmpty(singlePage.status.excerpt) ? singlePage.status.excerpt : site.seo.description}",
+    canonicalExpression: "${site.url + singlePage.status.permalink}",
+    schemaType: "AboutPage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${singlePage.spec.title} · ${site.title}|">About</title>
+  </Fragment>
+
+  <section
+    class="page-view inner-view is-visible"
+    data-page="about"
+    th:with="
+      recent=${postFinder.list({page:1,size:1})},
+      profile=${recent.total > 0 ? recent.items[0].owner : null},
+      spiritLabel=${#annotations.getOrDefault(singlePage,'akari.theme.halo.run/about-spirit-label','')},
+      currentNote=${#annotations.getOrDefault(singlePage,'akari.theme.halo.run/about-current','')},
+      favoriteNote=${#annotations.getOrDefault(singlePage,'akari.theme.halo.run/about-favorite','')}
+    "
+  >
+    <div class="inner-shell">
+      <div class="about-layout">
+        <div class="about-character" data-hero-scene>
+          <img
+            th:if="${not #strings.isEmpty(singlePage.spec.cover)}"
+            th:src="${singlePage.spec.cover}"
+            th:data-fallback-src="${#theme.assets('/images/akari-character.png')}"
+            th:alt="${profile != null ? profile.displayName : site.title}"
+          />
+          <img
+            th:if="${#strings.isEmpty(singlePage.spec.cover) and not #strings.isEmpty(theme.config.hero.character_image)}"
+            th:src="${theme.config.hero.character_image}"
+            th:data-fallback-src="${#theme.assets('/images/akari-character.png')}"
+            th:alt="${profile != null ? profile.displayName : site.title}"
+          />
+          <img
+            th:if="${#strings.isEmpty(singlePage.spec.cover) and #strings.isEmpty(theme.config.hero.character_image)}"
+            th:src="${#theme.assets('/images/akari-character.png')}"
+            th:alt="${profile != null ? profile.displayName : site.title}"
+          />
+          <span
+            th:text="|${#strings.isEmpty(spiritLabel) ? 'ORIGINAL SPIRIT' : spiritLabel} · ${theme.config.identity.brand_name ?: site.title}|"
+            >ORIGINAL SPIRIT · AKARI</span
+          >
+        </div>
+        <div class="about-copy" data-hero-copy>
+          <p class="eyebrow">
+            <span>ABOUT ME</span> · <akari-halo-tag-th-block
+              th:text="#{about.eyebrow}">认识一下</akari-halo-tag-th-block
+            >
+          </p>
+          <h1
+            th:text="#{about.hello(${profile != null ? profile.displayName : site.title})}"
+          >
+            你好，我是站长。
+          </h1>
+          <p
+            class="large-copy"
+            th:text="${profile != null and not #strings.isEmpty(profile.bio)
+              ? profile.bio
+              : (not #strings.isEmpty(singlePage.status.excerpt) ? singlePage.status.excerpt : site.seo.description)}"
+          >
+            关于站长的介绍。
+          </p>
+          <div class="about-facts">
+            <div>
+              <span th:text="#{about.current}">正在做</span>
+              <strong
+                th:text="${#strings.isEmpty(currentNote) ? (recent.total > 0 ? recent.items[0].spec.title : site.title) : currentNote}"
+                >整理一册旅行小志</strong
+              >
+            </div>
+            <div>
+              <span th:text="#{about.favorite}">最近在看</span>
+              <strong
+                th:text="${#strings.isEmpty(favoriteNote) ? (not #strings.isEmpty(singlePage.status.excerpt) ? singlePage.status.excerpt : site.seo.description) : favoriteNote}"
+                >日常系动画与城市摄影集</strong
+              >
+            </div>
+            <div>
+              <span th:text="#{about.updates}">站点更新</span>
+              <strong
+                th:text="${pluginFinder.available('PluginMoments')
+                  ? #messages.msg('about.stats', recent.total, #lists.size(momentFinder.listAll()))
+                  : #messages.msg('home.postCount', recent.total)}"
+                >42 篇手记 · 68 条瞬间</strong
+              >
+            </div>
+          </div>
+          <a
+            class="primary-button"
+            th:if="${akariGuestbookPage != null}"
+            th:href="${akariGuestbookUrl}"
+          >
+            <span th:text="#{about.greet}">向屋主打个招呼</span><span
+              class="i-lucide-send"></span>
+          </a>
+        </div>
+      </div>
+      <div
+        class="about-prose"
+        data-about-prose
+        th:if="${not #strings.isEmpty(singlePage.content.content)}"
+        th:utext="${singlePage.content.content}"
+      >
+      </div>
+    </div>
+  </section>
+</BaseLayout>

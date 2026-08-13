@@ -1,0 +1,301 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/guestbook.css";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${singlePage.spec.title}",
+    titleFallback: "Guestbook",
+    descriptionExpression:
+      "${not #strings.isEmpty(singlePage.status.excerpt) ? singlePage.status.excerpt : site.seo.description}",
+    canonicalExpression: "${site.url + singlePage.status.permalink}",
+    schemaType: "WebPage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${singlePage.spec.title} · ${site.title}|">
+      Guestbook
+    </title>
+  </Fragment>
+
+  <section
+    class="page-view inner-view is-visible"
+    data-page="guestbook"
+    data-akari-guestbook
+    data-comment-group="content.halo.run"
+    data-comment-version="v1alpha1"
+    data-comment-kind="SinglePage"
+    th:data-comment-name="${singlePage.metadata.name}"
+    th:data-comment-enabled="${haloCommentEnabled}"
+    th:data-comment-plugin="${pluginFinder.available('PluginCommentWidget')}"
+    th:data-message-limit="${theme.config.content.guestbook_message_limit ?: 140}"
+    th:data-label-count-suffix="#{guestbook.countSuffix}"
+    th:data-label-empty="#{guestbook.empty}"
+    th:data-label-upvote="#{guestbook.upvote}"
+    th:data-label-reply="#{guestbook.reply}"
+    th:data-label-cancel-reply="#{guestbook.cancelReply}"
+    th:data-label-submit-reply="#{guestbook.submitReply}"
+    th:data-label-reply-placeholder="#{guestbook.replyPlaceholder}"
+    th:data-label-load-error="#{guestbook.loadError}"
+    th:data-label-submit-success="#{guestbook.submitSuccess}"
+    th:data-label-submit-pending="#{guestbook.submitPending}"
+    th:data-label-submit-error="#{guestbook.submitError}"
+    th:data-label-name-required="#{guestbook.nameRequired}"
+    th:data-label-email-required="#{guestbook.emailRequired}"
+    th:data-label-email-invalid="#{guestbook.emailInvalid}"
+    th:data-label-website-invalid="#{guestbook.websiteInvalid}"
+    th:data-label-message-required="#{guestbook.messageRequired}"
+    th:data-label-reviewing="#{guestbook.reviewing}"
+    th:data-label-no-replies="#{guestbook.noReplies}"
+    th:data-label-captcha-required="#{guestbook.captchaRequired}"
+    th:data-label-login-required="#{guestbook.loginRequired}"
+  >
+    <div class="inner-shell guestbook-shell">
+      <header class="page-intro" data-reveal>
+        <p class="eyebrow">
+          <span>GUESTBOOK</span> · <akari-halo-tag-th-block
+            th:text="#{guestbook.eyebrow}">玄关纸条</akari-halo-tag-th-block
+          >
+        </p>
+        <h1
+          th:text="${singlePage.spec.title ?: #messages.msg('guestbook.mvpHeading')}"
+        >
+          来过，就写点什么吧。
+        </h1>
+        <p
+          th:text="${not #strings.isEmpty(singlePage.status.excerpt) ? singlePage.status.excerpt : #messages.msg('guestbook.mvpSubtitle')}"
+        >
+          可以是一句问候、一首正在循环的歌，或者今天发生的小事。
+        </p>
+      </header>
+
+      <div class="guestbook-layout">
+        <form class="message-form" data-guestbook-form novalidate data-reveal>
+          <div class="form-heading">
+            <span class="room-icon room-icon-coral"
+              ><span class="i-lucide-pencil-line"></span></span
+            >
+            <div>
+              <strong th:text="#{guestbook.newNote}">新纸条</strong>
+              <small th:text="#{guestbook.savedBy}"
+                >由 Halo 评论系统安全保存</small
+              >
+            </div>
+          </div>
+
+          <label>
+            <span th:text="#{guestbook.displayName}">你的称呼</span>
+            <input
+              type="text"
+              name="displayName"
+              maxlength="48"
+              autocomplete="nickname"
+              data-guestbook-name
+              th:placeholder="#{guestbook.displayNamePlaceholder}"
+              required
+            />
+          </label>
+
+          <div class="guestbook-guest-fields" data-guestbook-guest-fields>
+            <label>
+              <span th:text="#{guestbook.email}">邮箱</span>
+              <input
+                type="email"
+                name="email"
+                maxlength="254"
+                autocomplete="email"
+                data-guestbook-email
+                th:placeholder="#{guestbook.emailPlaceholder}"
+                required
+              />
+            </label>
+            <label>
+              <span th:text="#{guestbook.website}">个人站点（可选）</span>
+              <input
+                type="url"
+                name="website"
+                maxlength="2048"
+                autocomplete="url"
+                data-guestbook-website
+                th:placeholder="#{guestbook.websitePlaceholder}"
+              />
+            </label>
+          </div>
+
+          <label>
+            <span th:text="#{guestbook.message}">想说的话</span>
+            <textarea
+              name="message"
+              rows="5"
+              th:maxlength="${theme.config.content.guestbook_message_limit ?: 140}"
+              data-guestbook-message
+              th:placeholder="#{guestbook.messagePlaceholder}"
+              required></textarea>
+            <small data-guestbook-counter>0 / 140</small>
+          </label>
+
+          <fieldset class="guestbook-moods">
+            <legend th:text="#{guestbook.moodLegend}">给纸条贴一枚心情</legend>
+            <div class="guestbook-mood-options">
+              <label>
+                <input type="radio" name="mood" value="sun" checked />
+                <span
+                  ><span class="i-lucide-sun"></span><akari-halo-tag-th-block
+                    th:text="#{guestbook.moodSunny}"
+                    >晴朗</akari-halo-tag-th-block
+                  ></span
+                >
+              </label>
+              <label>
+                <input type="radio" name="mood" value="tea" />
+                <span
+                  ><span class="i-lucide-coffee"></span><akari-halo-tag-th-block
+                    th:text="#{guestbook.moodQuiet}"
+                    >安静</akari-halo-tag-th-block
+                  ></span
+                >
+              </label>
+              <label>
+                <input type="radio" name="mood" value="star" />
+                <span
+                  ><span class="i-lucide-sparkles"
+                  ></span><akari-halo-tag-th-block
+                    th:text="#{guestbook.moodBright}"
+                    >闪亮</akari-halo-tag-th-block
+                  ></span
+                >
+              </label>
+            </div>
+          </fieldset>
+
+          <div
+            class="guestbook-captcha comment-captcha-panel"
+            data-guestbook-captcha
+            role="group"
+            aria-labelledby="guestbook-captcha-title"
+            hidden
+          >
+            <div class="comment-captcha-intro">
+              <span class="comment-captcha-mark" aria-hidden="true">
+                <span class="i-lucide-shield-check"></span>
+              </span>
+              <span>
+                <strong
+                  id="guestbook-captcha-title"
+                  th:text="#{guestbook.captchaTitle}">访客校验</strong
+                >
+                <small
+                  id="guestbook-captcha-hint"
+                  th:text="#{guestbook.captchaHint}">点击图片可以换一张</small
+                >
+              </span>
+            </div>
+            <div class="comment-captcha-controls">
+              <button
+                class="comment-captcha-image"
+                type="button"
+                data-captcha-refresh
+                th:aria-label="#{guestbook.refreshCaptcha}"
+              >
+                <img data-captcha-image data-runtime-image alt="" />
+                <span class="i-lucide-refresh-cw" aria-hidden="true"></span>
+              </button>
+              <label class="comment-captcha-field">
+                <span th:text="#{guestbook.captcha}">验证码</span>
+                <input
+                  type="text"
+                  name="captchaCode"
+                  inputmode="text"
+                  autocomplete="off"
+                  data-captcha-code
+                  aria-describedby="guestbook-captcha-hint"
+                  th:placeholder="#{guestbook.captchaPlaceholder}"
+                />
+              </label>
+            </div>
+          </div>
+
+          <button
+            class="primary-button guestbook-submit"
+            type="submit"
+            data-guestbook-submit
+          >
+            <span class="i-lucide-send"></span>
+            <span th:text="#{guestbook.submit}">把纸条贴上去</span>
+          </button>
+          <p class="form-note">
+            <span class="i-lucide-shield-check"></span>
+            <span th:text="#{guestbook.formNote}"
+              >纸条会遵循本站的审核与隐私规则；访客资料用于评论身份识别。</span
+            >
+          </p>
+
+          <div
+            class="guestbook-form-state"
+            data-guestbook-form-state
+            aria-live="polite"
+          >
+          </div>
+        </form>
+
+        <section
+          class="message-wall"
+          aria-labelledby="message-wall-title"
+          data-reveal
+        >
+          <div class="message-wall-heading">
+            <div>
+              <p class="kicker">MESSAGE WALL</p><h2
+                id="message-wall-title"
+                th:text="#{guestbook.wall}"
+              >
+                最近贴上的
+              </h2>
+            </div>
+            <span data-guestbook-total>…</span>
+          </div>
+
+          <div
+            class="comment-paper"
+            data-guestbook-list
+            aria-live="polite"
+            aria-busy="true"
+          >
+            <div class="guestbook-skeleton" aria-hidden="true"></div>
+            <div class="guestbook-skeleton" aria-hidden="true"></div>
+            <div class="guestbook-skeleton" aria-hidden="true"></div>
+          </div>
+
+          <button
+            class="guestbook-load-more"
+            type="button"
+            data-guestbook-load-more
+            hidden
+          >
+            <span class="i-lucide-sticky-note"></span>
+            <span th:text="#{guestbook.loadMore}">再揭几张纸条</span>
+            <span class="i-lucide-arrow-down"></span>
+          </button>
+
+          <div class="empty-state" th:if="${not haloCommentEnabled}">
+            <span class="i-lucide-message-circle-off"></span><p
+              th:text="#{guestbook.closed}"
+            >
+              Guestbook closed
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div
+      class="guestbook-toast"
+      data-guestbook-toast
+      role="status"
+      aria-live="polite"
+      hidden
+    >
+    </div>
+  </section>
+</BaseLayout>

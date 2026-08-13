@@ -1,0 +1,218 @@
+/* Akari style layer: shared-responsive. Generated once from the visual baseline, then maintained by hand. */
+.motion-ready [data-motion-reveal] {
+  will-change: transform, opacity;
+}
+
+/*
+ * The head script adds motion-stage before the body is parsed. This guarantees
+ * that entrance elements never paint in their final state before the route
+ * module can animate them. Inline Motion styles take ownership immediately
+ * after mounting, and app.ts removes the temporary stage class.
+ */
+.motion-ready.motion-stage [data-reveal]:not([data-page-transition-animated]),
+.motion-ready.motion-stage
+  .article-afterword
+  > :not([data-page-transition-animated]),
+.motion-ready.motion-stage .archive-month:not([data-page-transition-animated]),
+.motion-ready.motion-stage .tag-drawer:not([data-page-transition-animated]),
+.motion-ready.motion-stage .friend-note:not([data-page-transition-animated]),
+.motion-ready.motion-stage
+  .message-wall
+  > :not([data-page-transition-animated]),
+.motion-ready.motion-stage .about-facts:not([data-page-transition-animated]) {
+  opacity: 0;
+}
+
+@media (max-width: 1023px) {
+  .mobile-menu-button {
+    display: inline-grid;
+  }
+
+  .archive-layout {
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 38px;
+  }
+
+  .guestbook-layout {
+    gap: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .archive-years {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :root {
+    --header-height: 64px;
+    --radius-hero: 24px;
+  }
+
+  body {
+    background:
+      radial-gradient(
+          circle at 10px 10px,
+          color-mix(in srgb, var(--coral) 9%, transparent) 1px,
+          transparent 1.25px
+        )
+        0 0 / 20px 20px,
+      var(--canvas);
+  }
+
+  .header-inner,
+  .page-shell,
+  .inner-shell,
+  .site-footer,
+  .article-hero,
+  .article-layout {
+    width: min(100% - 24px, 1200px);
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px 12px 12px 5px;
+  }
+
+  .hero-actions .text-button {
+    justify-content: center;
+  }
+
+  .scene-label {
+    top: 12px;
+    left: 12px;
+  }
+
+  .scene-bubble {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .page-intro h1,
+  .about-copy h1 {
+    font-size: 40px;
+  }
+
+  .back-top-note {
+    right: 12px;
+    bottom: 14px;
+    width: 58px;
+    min-height: 72px;
+    border-radius: 17px 17px 17px 6px;
+  }
+
+  .global-player .round-play {
+    width: 44px;
+    height: 44px;
+  }
+
+  .lightbox-prev,
+  .lightbox-next {
+    top: auto;
+    bottom: 16px;
+  }
+
+  .lightbox-prev {
+    left: calc(50% - 54px);
+  }
+
+  .lightbox-next {
+    right: calc(50% - 54px);
+  }
+
+  .house-map-grid,
+  .category-board,
+  .comment-list,
+  .article-navigation,
+  .reading-shelf,
+  .friend-grid,
+  .guestbook-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .comment-preview .section-heading {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  .album-toolbar .filter-row {
+    width: 100%;
+  }
+
+  .archive-intro,
+  .media-intro,
+  .friends-intro {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .archive-stats {
+    width: 100%;
+    padding: 14px;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .archive-stats div {
+    min-width: 0;
+  }
+
+  .archive-layout {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .archive-year-heading {
+    min-height: 76px;
+  }
+
+  .archive-year-heading > span {
+    font-size: 66px;
+  }
+
+  .archive-year-heading p {
+    max-width: 120px;
+    text-align: right;
+  }
+
+  .archive-entry {
+    grid-template-columns: 48px minmax(0, 1fr) 18px;
+    gap: 10px;
+  }
+
+  .media-feature .primary-button {
+    width: 100%;
+  }
+
+  .guestbook-layout {
+    gap: 44px;
+  }
+
+  .player-expanded {
+    grid-column: 1 / -1;
+    grid-template-columns: 76px 1fr;
+  }
+
+  #player-expand {
+    grid-column: 3;
+  }
+
+  #player-close {
+    grid-column: 4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

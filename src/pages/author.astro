@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/entries/listings.css";
+import Pagination from "../components/content/Pagination.astro";
+---
+
+<BaseLayout
+  seo={{
+    titleExpression: "${author.spec.displayName}",
+    titleFallback: "Author",
+    descriptionExpression:
+      "${not #strings.isEmpty(author.spec.bio) ? author.spec.bio : site.seo.description}",
+    canonicalExpression: "${site.url + '/authors/' + author.metadata.name}",
+    imageExpression:
+      "${not #strings.isEmpty(author.spec.avatar) ? author.spec.avatar : (not #strings.isEmpty(site.logo) ? site.logo : site.url + #theme.assets('/images/akari-cover-journal.jpg'))}",
+    schemaType: "ProfilePage",
+  }}
+>
+  <Fragment slot="head">
+    <title th:text="|${author.spec.displayName} · ${site.title}|">Author</title>
+  </Fragment>
+
+  <section class="page-view inner-view is-visible" data-page="author">
+    <div class="inner-shell">
+      <header class="page-intro author-intro" data-hero-copy>
+        <img
+          th:if="${not #strings.isEmpty(author.spec.avatar)}"
+          class="author-intro-avatar"
+          th:src="${author.spec.avatar}"
+          th:alt="${author.spec.displayName}"
+        />
+        <div>
+          <p class="eyebrow">
+            <span>AUTHOR</span> · <span
+              th:text="#{home.postCount(${posts.total})}">0 stories</span
+            >
+          </p>
+          <h1 th:text="${author.spec.displayName}">Author</h1>
+          <p th:text="${author.spec.bio}">Bio</p>
+        </div>
+      </header>
+      <div class="post-list" th:if="${posts.total > 0}">
+        <article
+          th:each="post,stat : ${posts.items}"
+          th:with="fallbackCover=${stat.index % 4 == 0
+            ? #theme.assets('/images/akari-cover-journal.jpg')
+            : (stat.index % 4 == 1
+              ? #theme.assets('/images/akari-cover-journey.jpg')
+              : (stat.index % 4 == 2
+                ? #theme.assets('/images/akari-cover-reading.jpg')
+                : #theme.assets('/images/akari-cover-cinema.jpg')))}"
+          data-reveal
+        >
+          <a th:href="${post.status.permalink}">
+            <img
+              th:if="${not #strings.isEmpty(post.spec.cover)}"
+              th:src="${thumbnail.gen(post.spec.cover, 'm')}"
+              th:data-fallback-src="${fallbackCover}"
+              th:alt="${post.spec.title}"
+              loading="lazy"
+            />
+            <img
+              th:unless="${not #strings.isEmpty(post.spec.cover)}"
+              th:src="${fallbackCover}"
+              th:alt="${post.spec.title}"
+              loading="lazy"
+            />
+          </a>
+          <div>
+            <p class="meta">
+              <time
+                th:text="${#dates.format(post.spec.publishTime,'yyyy.MM.dd')}"
+                >2026.07.28</time
+              >
+            </p>
+            <h2>
+              <a
+                class="title-link"
+                th:href="${post.status.permalink}"
+                th:text="${post.spec.title}">沿海电车的第七站</a
+              >
+            </h2>
+            <p th:text="${post.status.excerpt}">把黄昏留在车窗里。</p>
+          </div>
+        </article>
+      </div>
+      <div class="empty-state" th:if="${posts.total == 0}">
+        <span class="i-lucide-book-dashed"></span><p th:text="#{list.empty}">
+          Empty
+        </p>
+      </div>
+      <akari-halo-tag-th-block th:with="result=${posts}"
+        ><Pagination /></akari-halo-tag-th-block
+      >
+    </div>
+  </section>
+</BaseLayout>

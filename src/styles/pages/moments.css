@@ -1,0 +1,440 @@
+/* Akari style layer: moments. Generated once from the visual baseline, then maintained by hand. */
+.timeline {
+  position: relative;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 40px;
+  left: 7px;
+  width: 1px;
+  background: var(--border-strong);
+}
+
+.timeline article {
+  margin-left: 40px;
+  margin-bottom: 28px;
+  padding: 24px;
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-feature);
+}
+
+.timeline article::before {
+  content: "";
+  position: absolute;
+  top: 27px;
+  left: -40px;
+  width: 13px;
+  height: 13px;
+  background: var(--coral);
+  border: 4px solid var(--canvas);
+  border-radius: 50%;
+}
+
+.timeline time {
+  color: var(--coral);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.timeline p {
+  margin: 10px 0 18px;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 17px;
+  line-height: 1.85;
+}
+
+.timeline img {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.moment-detail-timeline {
+  margin-top: 0;
+}
+
+.moment-detail-owner {
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.moment-detail-owner > img,
+.moment-detail-owner > span {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+}
+
+.moment-detail-owner > img {
+  object-fit: cover;
+}
+
+.moment-detail-owner > span {
+  display: grid;
+  place-items: center;
+  color: var(--berry);
+  background: var(--surface-soft);
+  font-weight: 700;
+}
+
+.moment-detail-owner strong,
+.moment-detail-owner time {
+  display: block;
+}
+
+.moment-detail-owner time {
+  margin-top: 3px;
+  color: var(--ink-3);
+  font-size: 11px;
+}
+
+.moment-continuation {
+  position: relative;
+  margin: 4px 0 0 40px;
+  padding-top: 22px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.moment-continuation::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--border) 14%,
+    var(--border) 86%,
+    transparent
+  );
+}
+
+.moment-continuation-action {
+  position: relative;
+  isolation: isolate;
+  width: min(430px, 100%);
+  min-height: 84px;
+  overflow: hidden;
+  padding: 12px 17px 12px 12px;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) 24px;
+  align-items: center;
+  gap: 14px;
+  color: var(--ink);
+  background:
+    radial-gradient(
+      circle at 88% 20%,
+      color-mix(in srgb, var(--peach) 68%, transparent) 0 2px,
+      transparent 3px
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface) 82%, var(--peach)),
+      var(--surface) 62%
+    );
+  border: 1px solid color-mix(in srgb, var(--coral) 18%, var(--border));
+  border-radius: 25px 25px 25px 9px;
+  box-shadow: var(--shadow-low);
+  text-align: left;
+  text-decoration: none;
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.moment-continuation-action::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -44px;
+  right: -32px;
+  width: 130px;
+  height: 130px;
+  border: 1px solid color-mix(in srgb, var(--coral) 12%, transparent);
+  border-radius: 50%;
+}
+
+.moment-continuation-action:hover {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--coral) 52%, var(--border));
+  box-shadow: 0 15px 36px rgba(77, 49, 60, 0.12);
+  transform: translateY(-3px) rotate(-0.2deg);
+}
+
+.moment-continuation-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  color: var(--berry);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--peach) 86%, var(--surface)),
+    color-mix(in srgb, var(--sun) 55%, var(--surface))
+  );
+  border: 1px solid color-mix(in srgb, var(--coral) 14%, transparent);
+  border-radius: 19px 19px 19px 7px;
+  transition: transform 260ms ease;
+}
+
+.moment-continuation-icon > span {
+  width: 24px;
+  height: 24px;
+}
+
+.moment-continuation-action:hover .moment-continuation-icon {
+  transform: rotate(5deg) scale(1.03);
+}
+
+.moment-continuation-copy {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.moment-continuation-copy small {
+  color: var(--berry);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+}
+
+.moment-continuation-copy strong {
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.moment-continuation-copy > span {
+  color: var(--ink-3);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.moment-continuation-arrow {
+  width: 20px;
+  height: 20px;
+  color: var(--coral);
+  transition: transform 220ms ease;
+}
+
+.moment-continuation-action:hover .moment-continuation-arrow {
+  transform: translateY(4px);
+}
+
+.moment-continuation-action.is-loading {
+  pointer-events: none;
+  opacity: 0.72;
+}
+
+.moment-continuation .is-spinning {
+  animation: load-more-spin 0.8s linear infinite;
+}
+
+.moment-continuation-end {
+  min-height: 42px;
+  margin: 0;
+  padding: 0 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-3);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.moment-continuation-end > span:first-child {
+  width: 17px;
+  height: 17px;
+  color: var(--coral);
+}
+
+.moment-continuation-action[hidden],
+.moment-continuation-end[hidden] {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .moment-continuation {
+    margin-left: 30px;
+  }
+
+  .moment-continuation-action {
+    min-height: 78px;
+    grid-template-columns: 52px minmax(0, 1fr) 20px;
+    gap: 11px;
+    padding: 10px 13px 10px 10px;
+    border-radius: 22px 22px 22px 8px;
+  }
+
+  .moment-continuation-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 17px 17px 17px 6px;
+  }
+}
+
+@media (max-width: 767px) {
+  .timeline article {
+    margin-left: 30px;
+    padding: 20px;
+  }
+
+  .timeline article::before {
+    left: -29px;
+  }
+}
+
+.timeline .moment-rich-content p {
+  margin: 0;
+}
+
+.timeline .moment-media {
+  margin-top: 16px;
+}
+
+.timeline .moment-media button {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.timeline .moment-media img,
+.timeline .moment-media video {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+/* Moment echoes keep the article response language, but read as one intimate column. */
+.moment-comments {
+  margin-top: 48px;
+  padding-top: 34px;
+  border-top: 1px solid var(--border);
+}
+
+.moment-comments-heading {
+  position: relative;
+}
+
+.moment-comments-heading::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: 0;
+  width: 52px;
+  height: 5px;
+  background: var(--coral);
+  border-radius: 999px;
+}
+
+.moment-comments .article-response-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.moment-comments .article-response-card.is-pinned {
+  grid-column: auto;
+}
+
+.moment-comment-composer {
+  background:
+    linear-gradient(
+      112deg,
+      color-mix(in srgb, var(--surface-mint) 52%, transparent),
+      transparent 52%
+    ),
+    var(--surface);
+}
+
+.moment-comment-composer::before {
+  background: var(--mint);
+}
+
+.moment-comment-composer .article-comment-composer-mark {
+  color: var(--mint);
+  background: color-mix(in srgb, var(--surface-mint) 72%, var(--surface));
+  border-color: color-mix(in srgb, var(--mint) 28%, var(--border));
+}
+
+@media (max-width: 767px) {
+  .article-comments-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .article-comment-compose-toggle {
+    align-self: flex-start;
+  }
+
+  .article-comment-composer {
+    padding: 20px;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .article-comment-composer-mark {
+    width: 48px;
+    height: 48px;
+  }
+
+  .article-comment-composer-copy {
+    grid-template-columns: 1fr;
+  }
+
+  .article-comment-composer-title,
+  .article-comment-composer-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .article-comment-captcha,
+  .article-inline-captcha {
+    grid-template-columns: 1fr;
+  }
+
+  .article-comment-captcha > button,
+  .article-inline-captcha > button {
+    width: 122px;
+  }
+
+  .article-response-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .article-response-card.is-pinned {
+    grid-column: auto;
+  }
+
+  .article-comment-toast {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-response-skeleton {
+    opacity: 1;
+    animation: none;
+  }
+}

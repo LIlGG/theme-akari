@@ -1,0 +1,5 @@
+{
+  "verbose": false,
+  "watch": ["src/**/*", "public/**/*", "astro.config.mjs", "uno.config.ts"],
+  "ext": "astro,vue,ts,html,css"
+}
