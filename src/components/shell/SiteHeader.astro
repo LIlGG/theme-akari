@@ -1,3 +1,7 @@
+---
+import MenuItemIcon from "./MenuItemIcon.astro";
+---
+
 <header
   class="site-header"
   data-header
@@ -47,29 +51,92 @@
 
     <nav class="desktop-nav" th:aria-label="#{nav.primary}">
       <akari-halo-tag-th-block th:if="${primaryMenu != null}">
-        <a
-          class="nav-link"
+        <akari-halo-tag-th-block
           th:each="menuItem,menuItemStat : ${primaryMenu.menuItems}"
           th:if="${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','') == 'primary' or (#strings.isEmpty(#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','')) and menuItemStat.index < 5)}"
-          th:href="@{${menuItem.status.href}}"
-          th:target="${menuItem.spec.target?.value}"
-          th:data-nav-path="@{${menuItem.status.href}}"
-          data-astro-prefetch="hover"
         >
-          <span
-            class="menu-item-icon nav-icon"
-            aria-hidden="true"
-            th:with="menuIcon=${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/icon','')}"
+          <a
+            class="nav-link"
+            th:if="${#lists.isEmpty(menuItem.children)}"
+            th:href="@{${menuItem.status.href}}"
+            th:target="${menuItem.spec.target?.value}"
+            th:data-nav-path="@{${menuItem.status.href}}"
+            data-astro-prefetch="hover"
           >
-            <akari-halo-tag-th-block
-              th:if="${#strings.startsWith(menuIcon,'<svg')}"
-              th:utext="${menuIcon}"></akari-halo-tag-th-block>
-            <span
-              th:unless="${#strings.startsWith(menuIcon,'<svg')}"
-              class="i-lucide-sparkles"></span>
-          </span>
-          <span th:text="${menuItem.status.displayName}">菜单</span>
-        </a>
+            <MenuItemIcon />
+            <span th:text="${menuItem.status.displayName}">菜单</span>
+          </a>
+
+          <div
+            class="nav-submenu"
+            data-desktop-submenu
+            th:unless="${#lists.isEmpty(menuItem.children)}"
+          >
+            <div class="nav-submenu-primary">
+              <a
+                class="nav-link nav-submenu-parent"
+                data-nav-parent
+                th:href="@{${menuItem.status.href}}"
+                th:target="${menuItem.spec.target?.value}"
+                th:data-nav-path="@{${menuItem.status.href}}"
+                data-astro-prefetch="hover"
+              >
+                <MenuItemIcon />
+                <span th:text="${menuItem.status.displayName}">菜单</span>
+              </a>
+              <button
+                class="nav-submenu-trigger"
+                type="button"
+                data-desktop-submenu-trigger
+                aria-expanded="false"
+                th:aria-controls="|desktop-submenu-${menuItem.metadata.name}|"
+                th:aria-label="|${menuItem.status.displayName} · ${#messages.msg('nav.submenu.open')}|"
+                th:data-parent-label="${menuItem.status.displayName}"
+                th:data-open-label="#{nav.submenu.open}"
+                th:data-close-label="#{nav.submenu.close}"
+                aria-haspopup="true"
+              >
+                <span class="i-lucide-chevron-down" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div
+              class="nav-submenu-panel"
+              data-desktop-submenu-panel
+              th:id="|desktop-submenu-${menuItem.metadata.name}|"
+              hidden
+            >
+              <div class="nav-submenu-heading">
+                <span th:text="#{nav.submenu.eyebrow}">SUB ROOMS</span>
+                <strong th:text="${menuItem.status.displayName}">菜单</strong>
+              </div>
+              <a
+                class="nav-submenu-link"
+                th:each="childMenuItem : ${menuItem.children}"
+                th:href="@{${childMenuItem.status.href}}"
+                th:target="${childMenuItem.spec.target?.value}"
+                th:data-nav-path="@{${childMenuItem.status.href}}"
+                data-astro-prefetch="hover"
+              >
+                <MenuItemIcon
+                  className="nav-submenu-icon"
+                  itemVariable="childMenuItem"
+                />
+                <span>
+                  <strong th:text="${childMenuItem.status.displayName}"
+                    >子菜单</strong
+                  >
+                  <small
+                    th:text="${#annotations.getOrDefault(childMenuItem,'akari.theme.halo.run/menu-description',#messages.msg('nav.submenu.default'))}"
+                    >打开这间小屋</small
+                  >
+                </span>
+                <span
+                  class="i-lucide-arrow-up-right nav-submenu-arrow"
+                  aria-hidden="true"></span>
+              </a>
+            </div>
+          </div>
+        </akari-halo-tag-th-block>
 
         <div
           class="more-nav"
@@ -89,34 +156,57 @@
             ></span>
           </button>
           <div class="more-nav-panel" data-more-panel hidden>
-            <a
+            <div
+              class="more-nav-entry"
               th:each="menuItem,menuItemStat : ${primaryMenu.menuItems}"
               th:if="${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','') == 'more' or (#strings.isEmpty(#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','')) and menuItemStat.index >= 5)}"
-              th:href="@{${menuItem.status.href}}"
-              th:target="${menuItem.spec.target?.value}"
-              th:data-nav-path="@{${menuItem.status.href}}"
-              data-astro-prefetch="hover"
             >
-              <span
-                class="more-menu-icon"
-                aria-hidden="true"
-                th:with="menuIcon=${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/icon','')}"
+              <a
+                class="more-nav-parent"
+                data-nav-parent
+                th:href="@{${menuItem.status.href}}"
+                th:target="${menuItem.spec.target?.value}"
+                th:data-nav-path="@{${menuItem.status.href}}"
+                data-astro-prefetch="hover"
               >
-                <akari-halo-tag-th-block
-                  th:if="${#strings.startsWith(menuIcon,'<svg')}"
-                  th:utext="${menuIcon}"></akari-halo-tag-th-block>
+                <MenuItemIcon className="more-menu-icon" />
+                <span>
+                  <strong th:text="${menuItem.status.displayName}">菜单</strong>
+                  <small
+                    th:text="${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-description',#messages.msg('nav.more.default'))}"
+                    >打开这个房间</small
+                  >
+                </span>
                 <span
-                  th:unless="${#strings.startsWith(menuIcon,'<svg')}"
-                  class="i-lucide-sparkles"></span>
-              </span>
-              <span>
-                <strong th:text="${menuItem.status.displayName}">菜单</strong>
-                <small
-                  th:text="${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-description',#messages.msg('nav.more.default'))}"
-                  >打开这个房间</small
+                  th:if="${not #lists.isEmpty(menuItem.children)}"
+                  class="i-lucide-chevron-right more-nav-parent-arrow"
+                  aria-hidden="true"></span>
+              </a>
+              <div
+                class="more-nav-children"
+                th:if="${not #lists.isEmpty(menuItem.children)}"
+              >
+                <a
+                  th:each="childMenuItem : ${menuItem.children}"
+                  th:href="@{${childMenuItem.status.href}}"
+                  th:target="${childMenuItem.spec.target?.value}"
+                  th:data-nav-path="@{${childMenuItem.status.href}}"
+                  data-astro-prefetch="hover"
                 >
-              </span>
-            </a>
+                  <span class="more-nav-child-line" aria-hidden="true"></span>
+                  <MenuItemIcon
+                    className="more-nav-child-icon"
+                    itemVariable="childMenuItem"
+                  />
+                  <span th:text="${childMenuItem.status.displayName}"
+                    >子菜单</span
+                  >
+                  <span
+                    class="i-lucide-arrow-up-right more-nav-child-arrow"
+                    aria-hidden="true"></span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </akari-halo-tag-th-block>
@@ -167,28 +257,78 @@
     hidden
   >
     <akari-halo-tag-th-block th:if="${primaryMenu != null}">
-      <a
+      <akari-halo-tag-th-block
         th:each="menuItem,menuItemStat : ${primaryMenu.menuItems}"
         th:if="${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','') == 'primary' or (#strings.isEmpty(#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','')) and menuItemStat.index < 5)}"
-        th:href="@{${menuItem.status.href}}"
-        th:target="${menuItem.spec.target?.value}"
-        th:data-nav-path="@{${menuItem.status.href}}"
-        data-astro-prefetch="tap"
       >
-        <span
-          class="menu-item-icon"
-          aria-hidden="true"
-          th:with="menuIcon=${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/icon','')}"
+        <a
+          th:if="${#lists.isEmpty(menuItem.children)}"
+          th:href="@{${menuItem.status.href}}"
+          th:target="${menuItem.spec.target?.value}"
+          th:data-nav-path="@{${menuItem.status.href}}"
+          data-astro-prefetch="tap"
         >
-          <akari-halo-tag-th-block
-            th:if="${#strings.startsWith(menuIcon,'<svg')}"
-            th:utext="${menuIcon}"></akari-halo-tag-th-block>
-          <span
-            th:unless="${#strings.startsWith(menuIcon,'<svg')}"
-            class="i-lucide-sparkles"></span>
-        </span>
-        <span th:text="${menuItem.status.displayName}">菜单</span>
-      </a>
+          <MenuItemIcon className="menu-item-icon" />
+          <span th:text="${menuItem.status.displayName}">菜单</span>
+        </a>
+        <div
+          class="mobile-nav-group"
+          data-mobile-submenu
+          th:unless="${#lists.isEmpty(menuItem.children)}"
+        >
+          <div class="mobile-nav-row">
+            <a
+              class="mobile-nav-parent"
+              data-nav-parent
+              th:href="@{${menuItem.status.href}}"
+              th:target="${menuItem.spec.target?.value}"
+              th:data-nav-path="@{${menuItem.status.href}}"
+              data-astro-prefetch="tap"
+            >
+              <MenuItemIcon className="menu-item-icon" />
+              <span th:text="${menuItem.status.displayName}">菜单</span>
+            </a>
+            <button
+              class="mobile-submenu-trigger"
+              type="button"
+              data-mobile-submenu-trigger
+              aria-expanded="false"
+              th:aria-controls="|mobile-submenu-${menuItem.metadata.name}|"
+              th:aria-label="|${menuItem.status.displayName} · ${#messages.msg('nav.submenu.open')}|"
+              th:data-parent-label="${menuItem.status.displayName}"
+              th:data-open-label="#{nav.submenu.open}"
+              th:data-close-label="#{nav.submenu.close}"
+              aria-haspopup="true"
+            >
+              <span class="i-lucide-chevron-down" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div
+            class="mobile-submenu-panel"
+            data-mobile-submenu-panel
+            th:id="|mobile-submenu-${menuItem.metadata.name}|"
+            hidden
+          >
+            <a
+              th:each="childMenuItem : ${menuItem.children}"
+              th:href="@{${childMenuItem.status.href}}"
+              th:target="${childMenuItem.spec.target?.value}"
+              th:data-nav-path="@{${childMenuItem.status.href}}"
+              data-astro-prefetch="tap"
+            >
+              <span class="mobile-submenu-thread" aria-hidden="true"></span>
+              <MenuItemIcon
+                className="mobile-submenu-icon"
+                itemVariable="childMenuItem"
+              />
+              <span th:text="${childMenuItem.status.displayName}">子菜单</span>
+              <span
+                class="i-lucide-arrow-up-right mobile-submenu-arrow"
+                aria-hidden="true"></span>
+            </a>
+          </div>
+        </div>
+      </akari-halo-tag-th-block>
 
       <akari-halo-tag-th-block
         th:if="${#lists.size(primaryMenu.menuItems) > 5 or not #lists.isEmpty(primaryMenu.menuItems.?[#annotations.getOrDefault(#this,'akari.theme.halo.run/menu-placement','') == 'more'])}"
@@ -196,28 +336,79 @@
         <div class="mobile-nav-divider">
           <span th:text="#{nav.more}">更多</span>
         </div>
-        <a
+        <akari-halo-tag-th-block
           th:each="menuItem,menuItemStat : ${primaryMenu.menuItems}"
           th:if="${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','') == 'more' or (#strings.isEmpty(#annotations.getOrDefault(menuItem,'akari.theme.halo.run/menu-placement','')) and menuItemStat.index >= 5)}"
-          th:href="@{${menuItem.status.href}}"
-          th:target="${menuItem.spec.target?.value}"
-          th:data-nav-path="@{${menuItem.status.href}}"
-          data-astro-prefetch="tap"
         >
-          <span
-            class="menu-item-icon"
-            aria-hidden="true"
-            th:with="menuIcon=${#annotations.getOrDefault(menuItem,'akari.theme.halo.run/icon','')}"
+          <a
+            th:if="${#lists.isEmpty(menuItem.children)}"
+            th:href="@{${menuItem.status.href}}"
+            th:target="${menuItem.spec.target?.value}"
+            th:data-nav-path="@{${menuItem.status.href}}"
+            data-astro-prefetch="tap"
           >
-            <akari-halo-tag-th-block
-              th:if="${#strings.startsWith(menuIcon,'<svg')}"
-              th:utext="${menuIcon}"></akari-halo-tag-th-block>
-            <span
-              th:unless="${#strings.startsWith(menuIcon,'<svg')}"
-              class="i-lucide-sparkles"></span>
-          </span>
-          <span th:text="${menuItem.status.displayName}">菜单</span>
-        </a>
+            <MenuItemIcon className="menu-item-icon" />
+            <span th:text="${menuItem.status.displayName}">菜单</span>
+          </a>
+          <div
+            class="mobile-nav-group"
+            data-mobile-submenu
+            th:unless="${#lists.isEmpty(menuItem.children)}"
+          >
+            <div class="mobile-nav-row">
+              <a
+                class="mobile-nav-parent"
+                data-nav-parent
+                th:href="@{${menuItem.status.href}}"
+                th:target="${menuItem.spec.target?.value}"
+                th:data-nav-path="@{${menuItem.status.href}}"
+                data-astro-prefetch="tap"
+              >
+                <MenuItemIcon className="menu-item-icon" />
+                <span th:text="${menuItem.status.displayName}">菜单</span>
+              </a>
+              <button
+                class="mobile-submenu-trigger"
+                type="button"
+                data-mobile-submenu-trigger
+                aria-expanded="false"
+                th:aria-controls="|mobile-submenu-${menuItem.metadata.name}|"
+                th:aria-label="|${menuItem.status.displayName} · ${#messages.msg('nav.submenu.open')}|"
+                th:data-parent-label="${menuItem.status.displayName}"
+                th:data-open-label="#{nav.submenu.open}"
+                th:data-close-label="#{nav.submenu.close}"
+                aria-haspopup="true"
+              >
+                <span class="i-lucide-chevron-down" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div
+              class="mobile-submenu-panel"
+              data-mobile-submenu-panel
+              th:id="|mobile-submenu-${menuItem.metadata.name}|"
+              hidden
+            >
+              <a
+                th:each="childMenuItem : ${menuItem.children}"
+                th:href="@{${childMenuItem.status.href}}"
+                th:target="${childMenuItem.spec.target?.value}"
+                th:data-nav-path="@{${childMenuItem.status.href}}"
+                data-astro-prefetch="tap"
+              >
+                <span class="mobile-submenu-thread" aria-hidden="true"></span>
+                <MenuItemIcon
+                  className="mobile-submenu-icon"
+                  itemVariable="childMenuItem"
+                />
+                <span th:text="${childMenuItem.status.displayName}">子菜单</span
+                >
+                <span
+                  class="i-lucide-arrow-up-right mobile-submenu-arrow"
+                  aria-hidden="true"></span>
+              </a>
+            </div>
+          </div>
+        </akari-halo-tag-th-block>
       </akari-halo-tag-th-block>
     </akari-halo-tag-th-block>
   </nav>
