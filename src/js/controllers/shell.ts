@@ -28,6 +28,7 @@ function resetSubmenu(
   triggerSelector: string,
   panelSelector: string,
 ) {
+  delete group.dataset.submenuPinned;
   const trigger = group.querySelector<HTMLButtonElement>(triggerSelector);
   const panel = group.querySelector<HTMLElement>(panelSelector);
   if (!trigger || !panel) {
