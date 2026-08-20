@@ -41,7 +41,7 @@ spec:
       - name: 友邻门牌
         description: 使用链接管理插件展示动态友链，并配置友链页专属文案。
         file: page_links.html
-  version: 0.1.0
+  version: 0.2.0
   requires: ">=2.25.0"
   license:
     - name: GPL-3.0
