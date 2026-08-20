@@ -130,6 +130,219 @@
   background: color-mix(in srgb, var(--peach) 60%, transparent);
 }
 
+.nav-submenu {
+  position: relative;
+}
+
+.nav-submenu.is-open::after {
+  content: "";
+  height: 16px;
+  position: absolute;
+  z-index: 3;
+  top: 100%;
+  right: -16px;
+  left: -16px;
+}
+
+.nav-submenu-primary {
+  position: relative;
+  border-radius: 12px;
+}
+
+.nav-submenu-parent {
+  padding-right: 34px;
+  white-space: nowrap;
+}
+
+.nav-submenu-trigger {
+  width: 28px;
+  height: 36px;
+  padding: 0;
+  position: absolute;
+  top: 4px;
+  right: 3px;
+  border: 0;
+  border-radius: 9px;
+  color: var(--ink-3);
+  background: transparent;
+  display: grid;
+  place-items: center;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease;
+}
+
+.nav-submenu-trigger:hover,
+.nav-submenu-trigger:focus-visible,
+.nav-submenu.is-open .nav-submenu-trigger {
+  color: var(--coral);
+  background: transparent;
+}
+
+.nav-submenu-trigger > span {
+  width: 14px;
+  height: 14px;
+  transition: transform 180ms ease;
+}
+
+.nav-submenu-trigger[aria-expanded="true"] > span {
+  transform: rotate(180deg);
+}
+
+.nav-submenu.has-active-child .nav-submenu-parent,
+.nav-submenu-parent.is-child-active {
+  color: var(--coral);
+  background: color-mix(in srgb, var(--peach) 60%, transparent);
+}
+
+.nav-submenu-panel {
+  width: 306px;
+  max-height: min(70dvh, 520px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px;
+  position: absolute;
+  z-index: 4;
+  top: calc(100% + 12px);
+  left: 50%;
+  translate: -50% 0;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, var(--berry));
+  border-radius: 19px 19px 19px 7px;
+  background:
+    radial-gradient(
+        circle at 13px 13px,
+        color-mix(in srgb, var(--coral) 7%, transparent) 1px,
+        transparent 1.3px
+      )
+      0 0 / 26px 26px,
+    color-mix(in srgb, var(--surface) 97%, transparent);
+  box-shadow: var(--shadow-high);
+  backdrop-filter: blur(18px);
+  transform-origin: top center;
+}
+
+.nav-submenu-panel[hidden] {
+  display: none;
+}
+
+.nav-submenu-heading {
+  margin: 1px 4px 7px;
+  padding: 8px 9px 9px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 74%, transparent);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.nav-submenu-heading span {
+  color: var(--coral);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.nav-submenu-heading strong {
+  max-width: 13em;
+  overflow: hidden;
+  color: var(--ink-3);
+  font-size: 10px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-submenu-link {
+  min-height: 58px;
+  padding: 8px 9px;
+  border-radius: 14px;
+  color: inherit;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    transform 180ms ease;
+}
+
+.nav-submenu-link + .nav-submenu-link {
+  margin-top: 4px;
+}
+
+.nav-submenu-link:hover,
+.nav-submenu-link:focus-visible,
+.nav-submenu-link.is-active {
+  color: var(--coral);
+  background: color-mix(in srgb, var(--peach) 46%, var(--surface));
+}
+
+.nav-submenu-link:hover,
+.nav-submenu-link:focus-visible {
+  transform: translateX(1px);
+}
+
+.nav-submenu-icon {
+  width: 36px;
+  height: 36px;
+  border: 1px solid color-mix(in srgb, var(--border) 76%, transparent);
+  border-radius: 11px 11px 11px 4px;
+  color: var(--coral);
+  background: color-mix(in srgb, var(--peach) 58%, transparent);
+  display: grid;
+  place-items: center;
+}
+
+.nav-submenu-icon > :where(svg, [class*="i-lucide-"]) {
+  width: 18px;
+  height: 18px;
+}
+
+.nav-submenu-link > span:nth-child(2),
+.nav-submenu-link strong,
+.nav-submenu-link small {
+  min-width: 0;
+  display: block;
+}
+
+.nav-submenu-link strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-submenu-link small {
+  margin-top: 2px;
+  overflow: hidden;
+  color: var(--ink-3);
+  font-size: 10px;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-submenu-arrow {
+  width: 15px;
+  height: 15px;
+  color: var(--ink-3);
+  opacity: 0.62;
+  transition:
+    color 160ms ease,
+    transform 180ms ease;
+}
+
+.nav-submenu-link:hover .nav-submenu-arrow,
+.nav-submenu-link:focus-visible .nav-submenu-arrow {
+  color: var(--coral);
+  opacity: 1;
+  transform: translate(1px, -1px);
+}
+
 .header-tools {
   display: flex;
   align-items: center;
@@ -195,6 +408,107 @@
 .mobile-nav button:hover {
   color: var(--coral);
   background: var(--surface-soft);
+}
+
+.mobile-nav-group {
+  border-radius: 11px;
+}
+
+.mobile-nav-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  align-items: center;
+  border-radius: 10px;
+  transition: background-color 160ms ease;
+}
+
+.mobile-nav-row > .mobile-nav-parent {
+  width: auto;
+  min-width: 0;
+}
+
+.mobile-submenu-trigger {
+  width: 38px !important;
+  height: 38px;
+  min-height: 38px !important;
+  padding: 0 !important;
+  justify-content: center;
+  color: var(--ink-3);
+}
+
+.mobile-submenu-trigger > span {
+  width: 16px;
+  height: 16px;
+  transition: transform 180ms ease;
+}
+
+.mobile-submenu-trigger[aria-expanded="true"] > span {
+  transform: rotate(180deg);
+}
+
+.mobile-nav-group.is-open > .mobile-nav-row,
+.mobile-nav-group.has-active-child > .mobile-nav-row {
+  background: color-mix(in srgb, var(--peach) 38%, transparent);
+}
+
+.mobile-nav-group.has-active-child .mobile-nav-parent,
+.mobile-nav-parent.is-child-active {
+  color: var(--coral);
+}
+
+.mobile-submenu-panel {
+  margin: 3px 7px 7px 20px;
+  padding: 5px 0 5px 11px;
+  overflow: hidden;
+  border-left: 1px solid color-mix(in srgb, var(--coral) 32%, var(--border));
+}
+
+.mobile-submenu-panel[hidden] {
+  display: none;
+}
+
+.mobile-nav .mobile-submenu-panel a {
+  min-height: 43px;
+  padding: 3px 8px 3px 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: 12px 30px minmax(0, 1fr) 16px;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.mobile-nav .mobile-submenu-panel a:hover,
+.mobile-nav .mobile-submenu-panel a:focus-visible,
+.mobile-nav .mobile-submenu-panel a.is-active {
+  transform: translateX(2px);
+}
+
+.mobile-submenu-thread {
+  width: 12px;
+  height: 1px;
+  margin-left: -11px;
+  background: color-mix(in srgb, var(--coral) 32%, var(--border));
+}
+
+.mobile-submenu-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px 9px 9px 3px;
+  color: var(--coral);
+  background: color-mix(in srgb, var(--peach) 52%, transparent);
+  display: grid;
+  place-items: center;
+}
+
+.mobile-submenu-icon > :where(svg, [class*="i-lucide-"]) {
+  width: 16px;
+  height: 16px;
+}
+
+.mobile-submenu-arrow {
+  width: 14px;
+  height: 14px;
+  color: var(--ink-3);
 }
 
 .mobile-nav svg {
@@ -673,13 +987,77 @@ kbd {
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
-  width: 292px;
+  width: 312px;
   padding: 10px;
   background: color-mix(in srgb, var(--surface) 96%, transparent);
   border: 1px solid var(--border);
   border-radius: 18px;
   box-shadow: var(--shadow-high);
   backdrop-filter: blur(18px);
+}
+
+.more-nav-entry + .more-nav-entry {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+.more-nav-panel .more-nav-parent {
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+}
+
+.more-nav-parent.is-child-active,
+.more-nav-entry.has-active-child > .more-nav-parent {
+  color: var(--coral);
+  background: color-mix(in srgb, var(--peach) 42%, transparent);
+}
+
+.more-nav-parent-arrow {
+  width: 14px;
+  height: 14px;
+  color: var(--ink-3);
+}
+
+.more-nav-children {
+  margin: 2px 5px 7px 27px;
+  padding: 3px 0 3px 11px;
+  border-left: 1px solid color-mix(in srgb, var(--coral) 30%, var(--border));
+}
+
+.more-nav-panel .more-nav-children a {
+  min-height: 38px;
+  padding: 3px 7px 3px 0;
+  display: grid;
+  grid-template-columns: 11px 28px minmax(0, 1fr) 14px;
+  gap: 7px;
+  font-size: 11px;
+}
+
+.more-nav-child-line {
+  width: 11px;
+  height: 1px;
+  margin-left: -11px;
+  background: color-mix(in srgb, var(--coral) 30%, var(--border));
+}
+
+.more-nav-child-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--coral);
+  background: transparent;
+  display: grid;
+  place-items: center;
+}
+
+.more-nav-child-icon > :where(svg, [class*="i-lucide-"]) {
+  width: 15px;
+  height: 15px;
+}
+
+.more-nav-child-arrow {
+  width: 13px;
+  height: 13px;
+  color: var(--ink-3);
 }
 
 .more-nav-panel::before {

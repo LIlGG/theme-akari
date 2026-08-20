@@ -76,6 +76,7 @@ spec:
       name: "akari.theme.halo.run/menu-placement"
       label: 导航位置
       value: primary
+      help: 仅一级菜单项生效；子菜单会跟随所属的一级菜单展示。
       options:
         - label: 主导航
           value: primary
@@ -84,7 +85,7 @@ spec:
     - $formkit: text
       name: "akari.theme.halo.run/menu-description"
       label: 菜单补充说明
-      help: 仅在“更多”面板中显示，例如“按时间翻阅所有手记”。
+      help: 用于“更多”面板与桌面端二级导航，例如“按时间翻阅所有手记”。
 ---
 apiVersion: v1alpha1
 kind: AnnotationSetting

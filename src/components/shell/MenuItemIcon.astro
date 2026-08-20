@@ -1,0 +1,23 @@
+---
+interface Props {
+  className?: string;
+  itemVariable?: string;
+}
+
+const { className = "menu-item-icon nav-icon", itemVariable = "menuItem" } =
+  Astro.props;
+const menuIconExpression = `\${#annotations.getOrDefault(${itemVariable},'akari.theme.halo.run/icon','')}`;
+---
+
+<span
+  class={className}
+  aria-hidden="true"
+  th:with={`menuIcon=${menuIconExpression}`}
+>
+  <akari-halo-tag-th-block
+    th:if="${#strings.startsWith(menuIcon,'<svg')}"
+    th:utext="${menuIcon}"></akari-halo-tag-th-block>
+  <span
+    th:unless="${#strings.startsWith(menuIcon,'<svg')}"
+    class="i-lucide-sparkles"></span>
+</span>
