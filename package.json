@@ -37,7 +37,7 @@
     "typescript": "6.0.3",
     "typescript-eslint": "8.66.0",
     "unocss": "66.7.5",
-    "astro": "7.2.0",
+    "astro": "7.2.8",
     "motion": "12.43.0",
     "tocbot": "4.36.8"
   },
