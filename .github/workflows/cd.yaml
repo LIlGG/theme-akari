@@ -51,7 +51,7 @@ jobs:
     needs: validate-release
     permissions:
       contents: write
-    uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v4
+    uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v5
     secrets:
       halo-pat: ${{ secrets.HALO_PAT }}
     with:
